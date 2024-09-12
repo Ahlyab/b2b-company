@@ -1,26 +1,22 @@
 import React, { useState } from "react";
-import { loginImg, logo } from "../../Assests/index";
+import { loginImg } from "../../Assests/index";
 import "./ForgotPassword.css";
 import ImageSection from "../../Components/Login/ImageSection";
 import EmailConfirm from "../../Components/ForgotPassword/EmailConfirm";
+import VerificationScreen from "../../Components/ForgotPassword/VerificationScreen";
+import ResetPassword from "../../Components/ForgotPassword/ResetPassword";
 
 const ForgotPassword = () => {
   const [componentState, setComponentState] = useState(1);
   return (
     <div className="forgot-password-container">
-      {/* Form Section */}
-      <div className="forgot-password-form-container">
-        <div className="forgot-password-form">
-          <img src={logo} alt="Logo" className="forgot-password-logo" />
-          <h1 className="forgot-password-title">Forgot Your Password</h1>
-          <p className="forgot-password-description">
-            Enter your email address below and we will send you a link to reset
-            your password.
-          </p>
-
-          <EmailConfirm />
-        </div>
-      </div>
+      {componentState === 1 && (
+        <EmailConfirm setComponentState={setComponentState} />
+      )}
+      {componentState === 2 && (
+        <VerificationScreen setComponentState={setComponentState} />
+      )}
+      {componentState === 3 && <ResetPassword />}
       <ImageSection img={loginImg} />
     </div>
   );
