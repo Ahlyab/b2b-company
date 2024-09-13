@@ -10,6 +10,12 @@
 
 }
 
+.profile-icon {
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
 /* create a media query for sm screen */
 @media (max-width: 767.98px) {
     .App-header-icon-menu {
@@ -250,6 +256,7 @@ html, body, #root {
   
 .up {
   margin-top: -15px;
+  color: var(--theme-secondary-color);
 }
 
   @media (min-width: 768px) {

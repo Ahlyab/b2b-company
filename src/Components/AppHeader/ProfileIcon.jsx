@@ -23,8 +23,8 @@ export default function ProfileIcon() {
     setAnchorEl(null);
   };
   return (
-    <React.Fragment>
-      <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
+    <>
+      <div className="profile-icon">
         <Tooltip title="Account settings">
           <IconButton
             onClick={handleClick}
@@ -37,7 +37,7 @@ export default function ProfileIcon() {
             <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
           </IconButton>
         </Tooltip>
-      </Box>
+      </div>
       <Menu
         anchorEl={anchorEl}
         id="account-menu"
@@ -102,6 +102,6 @@ export default function ProfileIcon() {
           Logout
         </MenuItem>
       </Menu>
-    </React.Fragment>
+    </>
   );
 }
