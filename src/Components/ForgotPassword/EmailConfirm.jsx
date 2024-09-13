@@ -1,4 +1,4 @@
-import { TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import React from "react";
 import { logo } from "../../Assests";
 import { Link } from "react-router-dom";
@@ -36,9 +36,9 @@ const EmailConfirm = ({ setComponentState }) => {
             </Link>
           </div>
 
-          <button type="submit" className="btn btn-primary w-100">
+          <Button variant="contained" type="submit" className=" w-100">
             Submit
-          </button>
+          </Button>
         </form>
       </div>
     </div>

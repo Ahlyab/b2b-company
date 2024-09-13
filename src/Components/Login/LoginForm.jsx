@@ -1,5 +1,6 @@
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
+  Button,
   IconButton,
   InputAdornment,
   InputLabel,
@@ -71,9 +72,9 @@ const LoginForm = () => {
           Forgot Password?
         </Link>
       </div>
-      <button type="submit" className="btn btn-primary w-100">
+      <Button variant="contained" type="submit" className=" w-100">
         Login
-      </button>
+      </Button>
     </form>
   );
 };

@@ -1,7 +1,7 @@
-import { TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import React from "react";
 import { logo } from "../../Assests";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const ResetPassword = () => {
   const navigate = useNavigate();
@@ -39,10 +39,15 @@ const ResetPassword = () => {
               required
             />
           </div>
+          <div className="d-flex justify-content-end mb-3 mt-0">
+            <Link className="up" to="/">
+              Back to Login
+            </Link>
+          </div>
 
-          <button type="submit" className="btn btn-primary w-100">
+          <Button variant="contained" type="submit" className=" w-100">
             Reset Password
-          </button>
+          </Button>
         </form>
       </div>
     </div>

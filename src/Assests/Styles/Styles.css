@@ -1,0 +1,370 @@
+/* App header */
+
+.App-header-title {
+    text-wrap: nowrap;
+}
+
+.App-header-icon-menu {
+    margin-right: 120px;
+    display: none !important;
+
+}
+
+/* create a media query for sm screen */
+@media (max-width: 767.98px) {
+    .App-header-icon-menu {
+        display: block !important;
+    }
+}
+
+/* App sidebar */
+
+/* Styles for the container div */
+.drawer-container {
+    width: var(--drawer-width);
+    flex-shrink: 0;
+  }
+  
+  /* Styles for the Drawer paper */
+  .drawer-paper {
+    box-sizing: border-box;
+    width: var(--drawer-width);
+  }
+
+  /* ------------------------------------------------------------- */
+  
+  
+  /* Hide drawer on mobile by default */
+  @media (max-width: 767.98px) {
+    .drawer-container {
+      display: none;
+    }
+
+    .drawer-temmporary {
+        display: none;
+      }
+      .drawer-permanent {
+        display: none;
+      }
+    
+  }
+  
+  /* Show drawer on larger screens */
+  @media (min-width: 768px) {
+    .drawer-container {
+      display: block; /* Ensure it's visible on larger screens */
+    }
+
+    .drawer-temmporary {
+        display: block;
+      }
+
+      .drawer-permanent {
+        display: block;
+      }
+  }
+  
+
+
+
+/* Dashboard layout */
+
+.Dashboard-layout-container {
+    display: flex;
+}
+
+.Dashboard-layout-main {
+    flex-grow: 1;
+    padding: 16px;
+}
+
+
+/* Forgot password */
+
+
+/* Reset margin and padding for the root */
+html, body, #root {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+  }
+  
+  /* Container for the entire layout */
+  .forgot-password-container {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+  }
+  
+  /* Styling for the form section */
+  .forgot-password-form-container {
+    flex: 4; /* 40% of the width */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    height: 100%;
+    background-color: #f5f5f5;
+  }
+  
+  /* Styling for the form itself */
+  .forgot-password-form {
+    width: 100%;
+    max-width: 500px;
+    padding: 3rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .forgot-password-form form {
+    width: 100%;
+  }
+
+  .forgot-password-form .input-field {
+    width: 100%;
+  }
+  
+  /* Logo styling */
+  .forgot-password-logo {
+    width: 100px;
+    height: auto;
+    margin-bottom: 1rem;
+  }
+  
+  /* Title styling */
+  .forgot-password-title {
+    margin-bottom: 1rem;
+    font-size: 24px;
+  }
+  
+  /* Description styling */
+  .forgot-password-description {
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  
+  /* Image section styling */
+  .forgot-password-image {
+    flex: 6; /* 60% of the width */
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+    display: none; /* Hide by default */
+  
+    /* Add a background image via inline styles in React component */
+  }
+  
+  @media (min-width: 768px) {
+    .forgot-password-image {
+      display: block; /* Show on medium screens and up */
+    }
+  }
+  
+
+
+/* Login */
+
+/* Reset margin and padding for the root */
+html, body, #root {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+  }
+  
+  /* Container for the entire layout */
+  .login-container {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+  }
+  
+  /* Styling for the form section */
+  .login-form-container {
+    flex: 4; /* 40% of the width */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    height: 100%;
+    background-color: #f5f5f5;
+  }
+  
+  /* Styling for the form itself */
+  .login-form {
+    width: 100%;
+    max-width: 500px;
+    padding: 3rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .login-form form {
+    width: 100%;
+  }
+
+  .login-form .input-field {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+  }
+
+  .login input {
+    width: 100%;
+    padding: 0.5rem;
+    margin: 0.5rem 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  /* Logo styling */
+  .login-logo {
+    width: 100px;
+    height: auto;
+    margin-bottom: 1rem;
+  }
+  
+  /* Title styling */
+  .login-title {
+    margin-bottom: 1rem;
+    font-size: 24px;
+  }
+  
+  /* Image section styling */
+  .login-image {
+    flex: 6; /* 60% of the width */
+    /* background-image: url('../../Assests/Images/login-img.jpg'); Replace with your image URL */
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+    display: none; /* Hide by default */
+  }
+  
+.up {
+  margin-top: -15px;
+}
+
+  @media (min-width: 768px) {
+    .login-image {
+      display: block; /* Show on medium screens and up */
+    }
+  }
+  
+
+
+
+/* Verification Screen*/
+
+/* Reset margin and padding for the root */
+html, body, #root {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+  }
+  
+  /* Container for the entire layout */
+  .verify-code-container {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+  }
+  
+  /* Styling for the form section */
+  .verify-code-form-container {
+    flex: 4; /* 40% of the width */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    height: 100%;
+    background-color: #f5f5f5;
+  }
+  
+  /* Styling for the form itself */
+  .verify-code-form {
+    width: 100%;
+    max-width: 500px;
+    padding: 3rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .verify-code-form form {
+    width: 100%;
+  }
+
+  .verify-code-form .input-field {
+    width: 100%;
+  }
+  /* Logo styling */
+  .verify-code-logo {
+    width: 100px;
+    height: auto;
+    margin-bottom: 1rem;
+  }
+  
+  /* Title styling */
+  .verify-code-title {
+    margin-bottom: 1rem;
+    font-size: 24px;
+  }
+  
+  /* Description styling */
+  .verify-code-description {
+    margin-bottom: 1.5rem;
+  }
+  
+
+.verification-input-field {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center !important;
+}
+
+
+.otp-input {
+  width: 3rem !important;
+  height: 3rem;
+  text-align: center;
+  font-size: 1.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin: 0 0.25rem;
+}
+  
+
+/* index css */
+
+
+*{
+    margin: 0;
+    box-sizing: border-box;
+  }
+  #root {
+    --theme-primary-color: #5792c9;
+    --theme-secondary-color: #3c668c;
+  }
+  
+  
+  .active {
+    background-color: var(--theme-primary-color) !important; 
+    color: white !important;
+  }
+  
+  .active-icons {
+    background-color: white !important;
+    color: white !important;
+  }

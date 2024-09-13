@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { logo } from "../../Assests";
 import OtpInput from "react-otp-input";
+import { Link } from "react-router-dom";
+import { Button } from "@mui/material";
 
 const VerificationScreen = ({ setComponentState }) => {
   const [otp, setOtp] = useState("");
@@ -29,10 +31,15 @@ const VerificationScreen = ({ setComponentState }) => {
               renderInput={(props) => <input {...props} />}
             />
           </div>
+          <div className="d-flex justify-content-end mb-3 mt-0">
+            <Link className="up" to="/">
+              Back to Login
+            </Link>
+          </div>
 
-          <button type="submit" className="btn btn-primary w-100">
+          <Button variant="contained" type="submit" className=" w-100">
             Submit
-          </button>
+          </Button>
         </form>
       </div>
     </div>
