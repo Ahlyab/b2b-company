@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { logo } from "../../Assests";
-import "./VerificationScreen.css";
+import OtpInput from "react-otp-input";
 
 const VerificationScreen = ({ setComponentState }) => {
+  const [otp, setOtp] = useState("");
   return (
     <div className="forgot-password-form-container">
       <div className="forgot-password-form">
@@ -19,16 +20,14 @@ const VerificationScreen = ({ setComponentState }) => {
           }}
         >
           <div className="mb-3 verification-input-field ">
-            {[...Array(6)].map((_, index) => (
-              <input
-                key={index}
-                type="text"
-                maxLength="1"
-                className="otp-input"
-                autoFocus={index === 0}
-                required
-              />
-            ))}
+            <OtpInput
+              value={otp}
+              inputStyle={"otp-input"}
+              onChange={setOtp}
+              numInputs={6}
+              renderSeparator={<span>-</span>}
+              renderInput={(props) => <input {...props} />}
+            />
           </div>
 
           <button type="submit" className="btn btn-primary w-100">

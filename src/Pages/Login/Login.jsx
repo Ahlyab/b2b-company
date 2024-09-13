@@ -1,6 +1,5 @@
 import React from "react";
 import { loginImg, logo } from "../../Assests/index";
-import "./Login.css";
 import ImageSection from "../../Components/Login/ImageSection";
 import LoginForm from "../../Components/Login/LoginForm";
 

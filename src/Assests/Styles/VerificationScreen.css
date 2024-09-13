@@ -6,14 +6,14 @@ html, body, #root {
   }
   
   /* Container for the entire layout */
-  .login-container {
+  .verify-code-container {
     display: flex;
     height: 100vh;
     overflow: hidden;
   }
   
   /* Styling for the form section */
-  .login-form-container {
+  .verify-code-form-container {
     flex: 4; /* 40% of the width */
     display: flex;
     align-items: center;
@@ -24,7 +24,7 @@ html, body, #root {
   }
   
   /* Styling for the form itself */
-  .login-form {
+  .verify-code-form {
     width: 100%;
     max-width: 500px;
     padding: 3rem;
@@ -35,51 +35,50 @@ html, body, #root {
     flex-direction: column;
     align-items: center;
   }
-
-  .login-form form {
-    width: 100%;
-  }
-
-  .login-form .input-field {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 1rem;
-  }
-
-  .login input {
-    width: 100%;
-    padding: 0.5rem;
-    margin: 0.5rem 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
   
+  .verify-code-form form {
+    width: 100%;
+  }
+
+  .verify-code-form .input-field {
+    width: 100%;
+  }
   /* Logo styling */
-  .login-logo {
+  .verify-code-logo {
     width: 100px;
     height: auto;
     margin-bottom: 1rem;
   }
   
   /* Title styling */
-  .login-title {
+  .verify-code-title {
     margin-bottom: 1rem;
+    font-size: 24px;
   }
   
-  /* Image section styling */
-  .login-image {
-    flex: 6; /* 60% of the width */
-    /* background-image: url('../../Assests/Images/login-img.jpg'); Replace with your image URL */
-    background-size: cover;
-    background-position: center;
-    height: 100%;
-    display: none; /* Hide by default */
+  /* Description styling */
+  .verify-code-description {
+    margin-bottom: 1.5rem;
   }
   
-  @media (min-width: 768px) {
-    .login-image {
-      display: block; /* Show on medium screens and up */
-    }
-  }
+
+.verification-input-field {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center !important;
+}
+
+
+.otp-input {
+  width: 3rem !important;
+  height: 3rem;
+  text-align: center;
+  font-size: 1.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin: 0 0.25rem;
+}
+  
+
   

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { loginImg } from "../../Assests/index";
-import "./ForgotPassword.css";
 import ImageSection from "../../Components/Login/ImageSection";
 import EmailConfirm from "../../Components/ForgotPassword/EmailConfirm";
 import VerificationScreen from "../../Components/ForgotPassword/VerificationScreen";

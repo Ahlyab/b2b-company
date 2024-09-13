@@ -1,6 +1,7 @@
 import { TextField } from "@mui/material";
 import React from "react";
 import { logo } from "../../Assests";
+import { Link } from "react-router-dom";
 
 const EmailConfirm = ({ setComponentState }) => {
   return (
@@ -29,8 +30,14 @@ const EmailConfirm = ({ setComponentState }) => {
             />
           </div>
 
+          <div className="d-flex justify-content-end mb-3 mt-0">
+            <Link className="up" to="/">
+              Back to Login
+            </Link>
+          </div>
+
           <button type="submit" className="btn btn-primary w-100">
-            Send Reset Link
+            Submit
           </button>
         </form>
       </div>

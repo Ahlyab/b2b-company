@@ -1,5 +1,4 @@
 import * as React from "react";
-import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
@@ -18,7 +17,6 @@ import DashboardLayout from "../../Layouts/DashboardLayouts/DashboardLayout";
 const drawerWidth = 240;
 
 function ResponsiveDrawer(props) {
-  const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isClosing, setIsClosing] = React.useState(false);
 
