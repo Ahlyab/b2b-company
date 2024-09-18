@@ -76,13 +76,8 @@ export default function ProfileIcon() {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem onClick={handleClose}>
-          <Avatar />
-          NAME
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <Avatar /> Email@email.com
-        </MenuItem>
+        <MenuItem onClick={handleClose}>NAME</MenuItem>
+        <MenuItem onClick={handleClose}>Email@email.com</MenuItem>
         <Divider />
         <MenuItem onClick={handleClose}>
           <ListItemIcon>

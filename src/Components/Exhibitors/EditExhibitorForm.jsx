@@ -1,11 +1,14 @@
-import { Button, TextField } from "@mui/material";
+import { Button, Divider, TextField } from "@mui/material";
 import React, { useState } from "react";
 
-const AddExhibitorForm = ({ setIsOpen, setExhibitors }) => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
+import CloseIcon from "@mui/icons-material/Close";
+
+const EditExhibitorForm = ({ title, updated, setUpdated, setIsOpen, data }) => {
+  console.log(data);
+  const [firstName, setFirstName] = useState(data.firstName);
+  const [lastName, setLastName] = useState(data.lastName);
+  const [email, setEmail] = useState(data.email);
+  const [phoneNumber, setPhoneNumber] = useState(data.phoneNumber);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -14,38 +17,46 @@ const AddExhibitorForm = ({ setIsOpen, setExhibitors }) => {
       lastName: lastName,
       email: email,
       phoneNumber: phoneNumber,
-      id: Math.floor(Math.random() * 1000),
     };
-    fetch("http://localhost:8000/exhibitors", {
-      method: "POST",
+    // update existing exhibitor
+    fetch(`http://localhost:8000/exhibitors/${data.id}`, {
+      method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(exhibitor),
     }).then(() => {
-      console.log("new exhibitor added");
+      console.log("exhibitor updated");
     });
+
     setFirstName("");
     setLastName("");
     setEmail("");
     setPhoneNumber("");
+    setUpdated(!updated);
     setIsOpen(false);
   };
 
   return (
-    <div className="container" role="presentation">
-      <form className="row" onSubmit={handleSubmit}>
-        <div className="col-12 col-md-6">
+    <div className="exhibitor-form-div" role="presentation">
+      {/* create a div and make items space between with bootstrap and also align items center */}
+      <div className="d-flex justify-content-between align-items-center">
+        <h3 className={"exhibitor-form-heading"}>{title}</h3>
+        <CloseIcon className="close-icon" onClick={() => setIsOpen(false)} />
+      </div>
+      <Divider />
+
+      <form>
+        {/* create a div and make content space-between content */}
+        <div className="d-flex justify-content-between">
           <TextField
-            className="form-control mt-4"
+            className="exhibitor-form-input"
             label="First Name"
             variant="outlined"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
             required
           />
-        </div>
-        <div className="col-12 col-md-6">
           <TextField
-            className="form-control mt-4"
+            className="exhibitor-form-input"
             label="Last Name"
             variant="outlined"
             value={lastName}
@@ -53,9 +64,9 @@ const AddExhibitorForm = ({ setIsOpen, setExhibitors }) => {
             required
           />
         </div>
-        <div className="col-12 col-md-6">
+        <div className="d-flex justify-content-between">
           <TextField
-            className="form-control mt-4"
+            className="exhibitor-form-input"
             label="Email"
             type="email"
             variant="outlined"
@@ -63,10 +74,8 @@ const AddExhibitorForm = ({ setIsOpen, setExhibitors }) => {
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-        </div>
-        <div className="col-12 col-md-6">
           <TextField
-            className="form-control mt-4"
+            className="exhibitor-form-input"
             label="Phone Number"
             type="phone"
             variant="outlined"
@@ -76,17 +85,18 @@ const AddExhibitorForm = ({ setIsOpen, setExhibitors }) => {
           />
         </div>
         <div className="d-flex justify-content-end">
-          <button
+          <Button
             variant="contained"
             color="primary"
             className="exhibitor-form-submit"
+            onClick={handleSubmit}
           >
             Submit
-          </button>
+          </Button>
         </div>
       </form>
     </div>
   );
 };
 
-export default AddExhibitorForm;
+export default EditExhibitorForm;

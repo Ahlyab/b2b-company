@@ -1,7 +1,7 @@
 import * as React from "react";
 import Drawer from "@mui/material/Drawer";
-import Button from "@mui/material/Button";
 import AddExhibitorForm from "./AddExhibitorForm";
+import { Divider } from "@mui/material";
 
 export default function AddExhibitorDrawer({ updated, setUpdated }) {
   const [state, setState] = React.useState(false);
@@ -20,15 +20,13 @@ export default function AddExhibitorDrawer({ updated, setUpdated }) {
   const form = () => (
     <div className="exhibitor-form-div" role="presentation">
       <h3 className={"exhibitor-form-heading"}>Add Exhibitor</h3>
+      <Divider />
       <AddExhibitorForm updated={updated} setUpdated={setUpdated} />
     </div>
   );
 
   return (
     <>
-      <Button variant="contained" onClick={toggleDrawer(true)}>
-        Add Exhibitor
-      </Button>
       <Drawer anchor={"right"} open={state} onClose={toggleDrawer(false)}>
         {form()}
       </Drawer>

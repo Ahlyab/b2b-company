@@ -407,7 +407,8 @@ html, body, #root {
 }
 /* create form where each line has 2 fields */
 .exhibitor-form-div {
-  width: 50rem !important;
+  width: 700px;
+  max-width: 100%;
 }
 
 .exhibitor-form-heading {
@@ -418,11 +419,27 @@ html, body, #root {
 }
 
 .exhibitor-form-input {
-  width: 45%;
+  width: 50%;
   margin: 10px !important;
 }
 
 .exhibitor-form-submit {
-  width: 90%;
   margin: 10px !important;
+}
+
+.exhibitor-form-div-close{
+  border-radius: 100% !important;
+  height: 30px !important;
+  width: 30px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+
+}
+
+.close-icon {
+  font-size: 30px !important;
+  border: 1px solid black ;
+  border-radius: 100% !important;
+  padding: 2px !important;
+
 }
