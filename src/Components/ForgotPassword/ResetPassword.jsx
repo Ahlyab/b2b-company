@@ -2,9 +2,30 @@ import { Button, TextField } from "@mui/material";
 import React from "react";
 import { logo } from "../../Assests";
 import { Link, useNavigate } from "react-router-dom";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import {
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
+} from "@mui/material";
+import FormControl from "@mui/material/FormControl";
 
 const ResetPassword = () => {
   const navigate = useNavigate();
+
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
+  const handleMouseUpPassword = (event) => {
+    event.preventDefault();
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     navigate("/");
@@ -20,24 +41,56 @@ const ResetPassword = () => {
 
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
-            <TextField
-              className="input-field"
-              id="outlined-basic"
-              label="New Password"
-              variant="outlined"
-              type="password"
-              required
-            />
+            <FormControl className="input-field">
+              <InputLabel htmlFor="outlined-adornment-password">
+                Password
+              </InputLabel>
+              <OutlinedInput
+                required={true}
+                id="outlined-adornment-password"
+                type={showPassword ? "text" : "password"}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      onMouseUp={handleMouseUpPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                label="Password"
+              />
+            </FormControl>
           </div>
           <div className="mb-3">
-            <TextField
-              className="input-field"
-              id="outlined-basic"
-              label="Confirm New Password"
-              variant="outlined"
-              type="password"
-              required
-            />
+            <FormControl className="input-field">
+              <InputLabel htmlFor="outlined-adornment-password">
+                Confirm Password
+              </InputLabel>
+              <OutlinedInput
+                required={true}
+                id="outlined-adornment-password"
+                type={showPassword ? "text" : "password"}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      onMouseUp={handleMouseUpPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                label="Confirm Password"
+              />
+            </FormControl>
           </div>
           <div className="d-flex justify-content-end mb-3 mt-0">
             <Link className="up" to="/">
