@@ -1,6 +1,5 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import Box from "@mui/material/Box";
 import { DataGrid } from "@mui/x-data-grid";
 
 const columns = [
@@ -28,7 +27,7 @@ const columns = [
   },
 ];
 
-export default function ExhibitorsTable() {
+export default function ExhibitorsTable({ updated }) {
   const [exhibitors, setExhibitors] = useState([]);
   useEffect(() => {
     fetch("http://localhost:8000/exhibitors", {
@@ -41,7 +40,7 @@ export default function ExhibitorsTable() {
         console.log(data);
         setExhibitors(data);
       });
-  }, []);
+  }, [updated]);
 
   return (
     <div className="exhibitor-table">

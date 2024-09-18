@@ -1,9 +1,9 @@
 import * as React from "react";
 import Drawer from "@mui/material/Drawer";
 import Button from "@mui/material/Button";
-import { TextField } from "@mui/material";
+import AddExhibitorForm from "./AddExhibitorForm";
 
-export default function AddExhibitorDrawer() {
+export default function AddExhibitorDrawer({ updated, setUpdated }) {
   const [state, setState] = React.useState(false);
 
   const toggleDrawer = (open) => (event) => {
@@ -20,37 +20,7 @@ export default function AddExhibitorDrawer() {
   const form = () => (
     <div className="exhibitor-form-div" role="presentation">
       <h3 className={"exhibitor-form-heading"}>Add Exhibitor</h3>
-
-      <form>
-        <TextField
-          className="exhibitor-form-input"
-          label="First Name"
-          variant="outlined"
-        />
-        <TextField
-          className="exhibitor-form-input"
-          label="Last Name"
-          variant="outlined"
-        />
-        <TextField
-          className="exhibitor-form-input"
-          label="Email"
-          variant="outlined"
-        />
-        <TextField
-          className="exhibitor-form-input"
-          label="Phone Number"
-          variant="outlined"
-        />
-        <Button
-          variant="contained"
-          color="primary"
-          type="submit"
-          className="exhibitor-form-submit"
-        >
-          Submit
-        </Button>
-      </form>
+      <AddExhibitorForm updated={updated} setUpdated={setUpdated} />
     </div>
   );
 

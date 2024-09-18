@@ -1,9 +1,10 @@
 import { Button } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import ExhibitorsTable from "../../Components/Exhibitors/ExhibitorsTable";
 import AddExhibitorDrawer from "../../Components/Exhibitors/AddExhibitorDrawer";
 
 const Exhibitors = () => {
+  const [updated, setUpdated] = useState(false);
   return (
     <>
       <div
@@ -15,12 +16,9 @@ const Exhibitors = () => {
         }}
       >
         <h2>Exhibitors</h2>
-        {/* <Button variant="contained" color="primary">
-          Add Exhibitor
-        </Button> */}
-        <AddExhibitorDrawer />
+        <AddExhibitorDrawer updated={updated} setUpdated={setUpdated} />
       </div>
-      <ExhibitorsTable />
+      <ExhibitorsTable updated={updated} />
     </>
   );
 };
