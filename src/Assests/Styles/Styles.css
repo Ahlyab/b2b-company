@@ -1,4 +1,39 @@
+/* index css */
+
+
+*{
+  margin: 0;
+  box-sizing: border-box;
+}
+#root {
+  --theme-primary-color: #5792c9;
+  --theme-secondary-color: #3c668c;
+}
+
+
+.active {
+  background-color: #5792c9 !important; 
+  color: white !important;
+}
+
+.active-icon {
+  color: white !important;
+}
+
+
 /* App header */
+
+.App-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #333 !important;
+    background-color: white !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* z-index: 100; */
+    flex-direction: row !important;
+    position:fixed;
+  }
 
 .App-header-title {
     text-wrap: nowrap;
@@ -6,7 +41,9 @@
 
 .App-header-icon-menu {
     margin-right: 120px;
-    display: none !important;
+    margin-left: 20px;
+    /* display: none !important; */
+    visibility: hidden;
 
 }
 
@@ -16,10 +53,19 @@
   text-align: center;
 }
 
+.profile-icon-button {
+  display: "inline-flex";
+  align-items: "center";
+  cursor: "pointer";
+  margin-left: 16px;
+  margin-right: 16px;
+}
+
 /* create a media query for sm screen */
 @media (max-width: 767.98px) {
     .App-header-icon-menu {
         display: block !important;
+        visibility: visible;
     }
 }
 
@@ -353,25 +399,30 @@ html, body, #root {
 }
   
 
-/* index css */
 
+/*-------------------------- Exhibitor */
+.exhibitor-table {
+  height: 400px;
+  width: 100%;
+}
+/* create form where each line has 2 fields */
+.exhibitor-form-div {
+  width: 50rem !important;
+}
 
-*{
-    margin: 0;
-    box-sizing: border-box;
-  }
-  #root {
-    --theme-primary-color: #5792c9;
-    --theme-secondary-color: #3c668c;
-  }
-  
-  
-  .active {
-    background-color: var(--theme-primary-color) !important; 
-    color: white !important;
-  }
-  
-  .active-icons {
-    background-color: white !important;
-    color: white !important;
-  }
+.exhibitor-form-heading {
+  font-size: 30px;
+  text-align: center;
+  font-weight: bold;
+  margin: 20px 0;
+}
+
+.exhibitor-form-input {
+  width: 45%;
+  margin: 10px !important;
+}
+
+.exhibitor-form-submit {
+  width: 90%;
+  margin: 10px !important;
+}

@@ -5,7 +5,7 @@ import AppHeader from "./AppHeader";
 import Sidebar from "./AppSidebar";
 import { Outlet } from "react-router-dom";
 
-const drawerWidth = 240;
+const drawerWidth = 280;
 
 const DashboardLayout = () => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -17,9 +17,10 @@ const DashboardLayout = () => {
   };
 
   const handleDrawerToggle = () => {
-    if (!isClosing) {
-      setMobileOpen(!mobileOpen);
-    }
+    // if (!isClosing) {
+    //   setMobileOpen(!mobileOpen);
+    // }
+    setMobileOpen(!mobileOpen);
   };
 
   return (

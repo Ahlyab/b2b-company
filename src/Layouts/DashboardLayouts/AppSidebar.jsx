@@ -53,7 +53,6 @@ const AppSidebar = ({
           style={{ width: "100px", height: "auto" }} // Adjust size as needed
         />
       </div>
-      <Toolbar />
       <Divider />
       <List>
         {options.map((option, index) => (
@@ -61,10 +60,15 @@ const AppSidebar = ({
             <ListItemButton
               LinkComponent={Link}
               to={option.path}
-              // selected={location.pathname === option.path}
               className={location.pathname === option.path ? "active" : ""}
             >
-              <ListItemIcon>{option.icon}</ListItemIcon>
+              <ListItemIcon
+                className={
+                  location.pathname === option.path ? "active-icon" : ""
+                }
+              >
+                {option.icon}
+              </ListItemIcon>
               <ListItemText primary={option.title} />
             </ListItemButton>
           </ListItem>

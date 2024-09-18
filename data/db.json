@@ -1,0 +1,74 @@
+{
+    "exhibitors": [
+        {
+            "id": 1,
+            "firstName": "John",
+            "lastName": "Doe",
+            "email": "john.doe@example.com",
+            "phoneNumber": "123-456-7890"
+        },
+        {
+            "id": 2,
+            "firstName": "Jane",
+            "lastName": "Smith",
+            "email": "jane.smith@example.com",
+            "phoneNumber": "234-567-8901"
+        },
+        {
+            "id": 3,
+            "firstName": "Michael",
+            "lastName": "Johnson",
+            "email": "michael.johnson@example.com",
+            "phoneNumber": "345-678-9012"
+        },
+        {
+            "id": 4,
+            "firstName": "Emily",
+            "lastName": "Davis",
+            "email": "emily.davis@example.com",
+            "phoneNumber": "456-789-0123"
+        },
+        {
+            "id": 5,
+            "firstName": "David",
+            "lastName": "Brown",
+            "email": "david.brown@example.com",
+            "phoneNumber": "567-890-1234"
+        },
+        {
+            "id": 6,
+            "firstName": "Sarah",
+            "lastName": "Miller",
+            "email": "sarah.miller@example.com",
+            "phoneNumber": "678-901-2345"
+        },
+        {
+            "id": 7,
+            "firstName": "James",
+            "lastName": "Wilson",
+            "email": "james.wilson@example.com",
+            "phoneNumber": "789-012-3456"
+        },
+        {
+            "id": 8,
+            "firstName": "Linda",
+            "lastName": "Martinez",
+            "email": "linda.martinez@example.com",
+            "phoneNumber": "890-123-4567"
+        },
+        {
+            "id": 9,
+            "firstName": "Robert",
+            "lastName": "Garcia",
+            "email": "robert.garcia@example.com",
+            "phoneNumber": "901-234-5678"
+        },
+        {
+            "id": 10,
+            "firstName": "Jessica",
+            "lastName": "Rodriguez",
+            "email": "jessica.rodriguez@example.com",
+            "phoneNumber": "012-345-6789"
+        }
+    ]
+}
