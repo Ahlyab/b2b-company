@@ -1,7 +1,7 @@
 import { Button, TextField } from "@mui/material";
 import React, { useState } from "react";
 
-const AddExhibitorForm = ({ setIsOpen, setExhibitors }) => {
+const AddExhibitorForm = ({ setIsOpen, updated, setUpdated }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -14,7 +14,6 @@ const AddExhibitorForm = ({ setIsOpen, setExhibitors }) => {
       lastName: lastName,
       email: email,
       phoneNumber: phoneNumber,
-      id: Math.floor(Math.random() * 1000),
     };
     fetch("http://localhost:8000/exhibitors", {
       method: "POST",
@@ -27,6 +26,7 @@ const AddExhibitorForm = ({ setIsOpen, setExhibitors }) => {
     setLastName("");
     setEmail("");
     setPhoneNumber("");
+    setUpdated(!updated);
     setIsOpen(false);
   };
 
@@ -76,11 +76,7 @@ const AddExhibitorForm = ({ setIsOpen, setExhibitors }) => {
           />
         </div>
         <div className="d-flex justify-content-end">
-          <button
-            variant="contained"
-            color="primary"
-            className="exhibitor-form-submit"
-          >
+          <button className="btn custom-btn exhibitor-form-submit">
             Submit
           </button>
         </div>

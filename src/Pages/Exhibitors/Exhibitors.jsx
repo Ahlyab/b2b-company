@@ -1,20 +1,31 @@
 import React, { useEffect, useState } from "react";
-import ExhibitorsTable from "../../Components/Exhibitors/ExhibitorsTable";
 import CustomDrawer from "../../Components/GeneralComponents/CustomDrawer";
 import AddExhibitorForm from "../../Components/Exhibitors/AddExhibitorForm";
 import { DataGrid } from "@mui/x-data-grid";
 import DeleteModal from "../../Components/Exhibitors/DeleteModal";
-import { Button } from "@mui/material";
 import { DeleteOutline } from "@mui/icons-material";
+import EditIcon from "@mui/icons-material/Edit";
+import EditExhibitorForm from "../../Components/Exhibitors/EditExhibitorForm";
 
 const Exhibitors = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [id, setId] = useState(null);
+  const [updated, setUpdated] = useState(false);
 
   // for drawer
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpenEdit, setIsOpenEdit] = useState(false);
+
+  // edit
+  const [rowData, setRowData] = useState(null);
+
+  const handleEdit = (params) => {
+    console.log(params);
+    setRowData(params.row);
+    setIsOpenEdit(true);
+  };
 
   const handleDelete = (id) => {
     handleOpen();
@@ -49,42 +60,27 @@ const Exhibitors = () => {
       headerName: "Delete",
       width: 150,
       renderCell: (params) => (
-        <Button
-          variant="contained"
-          color="error"
-          size="small"
+        <button
+          className="btn btn-danger"
           style={{ marginLeft: 16 }}
           onClick={() => {
             handleDelete(params.row.id);
           }}
         >
           <DeleteOutline />
-        </Button>
+        </button>
       ),
     },
-    // {
-    //   field: "edit",
-    //   headerName: "Edit",
-    //   width: 150,
-    //   renderCell: (params) => (
-    //     <CustomDrawer
-    //       title={<EditIcon />}
-    //       isOpen={isOpen}
-    //       setIsOpen={setIsOpen}
-    //       updated={updated}
-    //       setUpdated={setUpdated}
-    //       component={
-    //         <EditExhibitorForm
-    //           title={"Edit Exhibitor"}
-    //           updated={updated}
-    //           setUpdated={setUpdated}
-    //           setIsOpen={setIsOpen}
-    //           data={params.row}
-    //         />
-    //       }
-    //     />
-    //   ),
-    // },
+    {
+      field: "edit",
+      headerName: "Edit",
+      width: 150,
+      renderCell: (params) => (
+        <button className="btn" onClick={() => handleEdit(params)}>
+          <EditIcon />
+        </button>
+      ),
+    },
   ];
 
   const [exhibitors, setExhibitors] = useState([]);
@@ -104,7 +100,7 @@ const Exhibitors = () => {
         console.log(data);
         setExhibitors(data);
       });
-  }, []);
+  }, [updated]);
 
   return (
     <>
@@ -114,13 +110,13 @@ const Exhibitors = () => {
             <h2>Exhibitors</h2>
           </div>
           <div className="col-6 text-end">
-            <button variant="contained" onClick={handleOpenDrawer}>
+            <button className="btn custom-btn" onClick={handleOpenDrawer}>
               Add Exhibitor
             </button>
           </div>
         </div>
         <div className="row">
-          <div className="col-12 exhibitor-table">
+          <div className="col-12 exhibitor-table mt-4">
             <DataGrid
               rows={exhibitors}
               columns={columns}
@@ -133,13 +129,13 @@ const Exhibitors = () => {
               }}
               pageSizeOptions={[5]}
             />
-            {/* <DeleteModal
-        setUpdated={setUpdated}
-        open={open}
-        handleOpen={handleOpen}
-        handleClose={handleClose}
-        id={id}
-      /> */}
+            <DeleteModal
+              setUpdated={setUpdated}
+              open={open}
+              handleOpen={handleOpen}
+              handleClose={handleClose}
+              id={id}
+            />
           </div>
         </div>
       </div>
@@ -151,6 +147,23 @@ const Exhibitors = () => {
           <AddExhibitorForm
             setExhibitors={setExhibitors}
             setIsOpen={setIsOpen}
+            updated={updated}
+            setUpdated={setUpdated}
+          />
+        }
+      />
+
+      <CustomDrawer
+        title={"Edit Exhibitor"}
+        isOpen={isOpenEdit}
+        setIsOpen={setIsOpenEdit}
+        component={
+          <EditExhibitorForm
+            setExhibitors={setExhibitors}
+            setIsOpen={setIsOpenEdit}
+            updated={updated}
+            setUpdated={setUpdated}
+            data={rowData}
           />
         }
       />

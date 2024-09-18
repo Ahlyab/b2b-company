@@ -41,15 +41,15 @@ export default function DeleteModal({ setUpdated, open, handleClose, id }) {
             This data will be deteled permanently.
           </p>
           <div>
-            <Button onClick={handleClose}>Cancel</Button>
-            <Button
-              variant="contained"
-              color="error"
-              size="small"
+            <button className="btn custom-btn m-1" onClick={handleClose}>
+              Cancel
+            </button>
+            <button
+              className="btn btn-danger m-1 del-btn"
               onClick={handleDelete}
             >
               Delete
-            </Button>
+            </button>
           </div>
         </div>
       </Modal>

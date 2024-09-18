@@ -5,6 +5,7 @@ import CloseIcon from "@mui/icons-material/Close";
 
 const EditExhibitorForm = ({ title, updated, setUpdated, setIsOpen, data }) => {
   console.log(data);
+  console.log(setIsOpen);
   const [firstName, setFirstName] = useState(data.firstName);
   const [lastName, setLastName] = useState(data.lastName);
   const [email, setEmail] = useState(data.email);
@@ -37,15 +38,7 @@ const EditExhibitorForm = ({ title, updated, setUpdated, setIsOpen, data }) => {
 
   return (
     <div className="exhibitor-form-div" role="presentation">
-      {/* create a div and make items space between with bootstrap and also align items center */}
-      <div className="d-flex justify-content-between align-items-center">
-        <h3 className={"exhibitor-form-heading"}>{title}</h3>
-        <CloseIcon className="close-icon" onClick={() => setIsOpen(false)} />
-      </div>
-      <Divider />
-
       <form>
-        {/* create a div and make content space-between content */}
         <div className="d-flex justify-content-between">
           <TextField
             className="exhibitor-form-input"

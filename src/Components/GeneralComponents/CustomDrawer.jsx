@@ -1,7 +1,8 @@
 import * as React from "react";
 import Drawer from "@mui/material/Drawer";
-import Button from "@mui/material/Button";
+import CloseIcon from "@mui/icons-material/Close";
 import { Divider } from "@mui/material";
+import { CloseOutlined } from "@mui/icons-material";
 
 const CustomDrawer = ({ isOpen, setIsOpen, title, component }) => {
   const toggleDrawer = (open) => (event) => {
@@ -24,9 +25,15 @@ const CustomDrawer = ({ isOpen, setIsOpen, title, component }) => {
         className="m-0"
         PaperProps={{ className: "exhibitor-form-div" }}
       >
-        <div className="d-flex justify-content-between">
-          <h2>{title}</h2>
-          <div className="cross-icon">x</div>
+        <div
+          onClick={toggleDrawer(false)}
+          className="d-flex justify-content-between mt-2 mb-2"
+        >
+          <h2 className="drawer-title">{title}</h2>
+          {/* <div className="cross-icon">X</div> */}
+          <div class="close-button" onClick={toggleDrawer(false)}>
+            &times;
+          </div>
         </div>
         <Divider />
         {component}

@@ -1,16 +1,13 @@
 import * as React from "react";
-import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import Divider from "@mui/material/Divider";
-import Typography from "@mui/material/Typography";
 import Tooltip from "@mui/material/Tooltip";
-import PersonAdd from "@mui/icons-material/PersonAdd";
 import KeyIcon from "@mui/icons-material/Key";
-import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
+import { logo } from "../../Assests/index";
 
 export default function ProfileIcon() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -35,7 +32,9 @@ export default function ProfileIcon() {
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
           >
-            <Avatar sx={{ width: 40, height: 40 }}>M</Avatar>
+            <Avatar sx={{ width: 40, height: 40 }} src={logo}>
+              A
+            </Avatar>
           </div>
         </Tooltip>
       </div>
@@ -76,8 +75,8 @@ export default function ProfileIcon() {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem onClick={handleClose}>NAME</MenuItem>
-        <MenuItem onClick={handleClose}>Email@email.com</MenuItem>
+        <MenuItem onClick={handleClose}>Ahlyab</MenuItem>
+        <MenuItem onClick={handleClose}>Ahlyabasad@gmail.com</MenuItem>
         <Divider />
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
