@@ -17,19 +17,18 @@ export default function DeleteModal({
   open,
   handleClose,
   selectedObject,
-  exhibitors,
-  setExhibitors,
+  data,
+  setData,
+  url,
 }) {
   const handleDelete = () => {
     console.log(selectedObject.id);
-    fetch(`http://localhost:8000/exhibitors/${selectedObject.id}`, {
+    fetch(`${url}${selectedObject.id}`, {
       method: "DELETE",
     }).then(() => {
       console.log("exhibitor deleted");
-      const updatedExhibitors = exhibitors.filter(
-        (item) => item.id !== selectedObject.id
-      );
-      setExhibitors(updatedExhibitors);
+      const updatedData = data.filter((item) => item.id !== selectedObject.id);
+      setData(updatedData);
       handleClose();
     });
   };

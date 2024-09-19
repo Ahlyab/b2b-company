@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from "react";
 import CustomDrawer from "../../Components/GeneralComponents/CustomDrawer";
 import AddAndUpdateExhibitorForm from "../../Components/Exhibitors/AddAndUpdateExhibitorForm";
-import { DataGrid } from "@mui/x-data-grid";
 import DeleteModal from "../../Components/Exhibitors/DeleteModal";
 import { DeleteOutline } from "@mui/icons-material";
 import EditIcon from "@mui/icons-material/Edit";
+import ReactTable from "@meta-dev-zone/react-table";
 
 const Exhibitors = () => {
   const [open, setOpen] = useState(false); // Delete Modal
   const [isOpen, setIsOpen] = useState(false);
   const [selectedObject, setSelectedObject] = useState(null);
+  const [exhibitors, setExhibitors] = useState([]);
 
+  const handleOpenDrawer = () => {
+    setIsOpen(true);
+  };
   const handleOpen = () => setOpen(true);
 
   const handleClose = () => {
@@ -20,7 +24,7 @@ const Exhibitors = () => {
 
   const handleEdit = (params) => {
     console.log(params);
-    setSelectedObject(params.row);
+    setSelectedObject(params);
     setIsOpen(true);
   };
 
@@ -31,66 +35,42 @@ const Exhibitors = () => {
 
   const handleDelete = (row) => {
     setSelectedObject(row);
-
     handleOpen();
   };
 
   const columns = [
-    { field: "id", headerName: "ID", width: 90 },
+    { id: "id", label: "ID" },
+    { id: "firstName", label: "First name" },
+    { id: "lastName", label: "Last name" },
+    { id: "email", label: "Email" },
+    { id: "phoneNumber", label: "phoneNumber" },
     {
-      field: "firstName",
-      headerName: "First name",
-      width: 150,
-    },
-    {
-      field: "lastName",
-      headerName: "Last name",
-      width: 150,
-    },
-    {
-      field: "email",
-      headerName: "Email",
-      type: "number",
-      width: 250,
-    },
-    {
-      field: "phoneNumber",
-      headerName: "phoneNumber",
-      width: 180,
-    },
-    {
-      field: "delete",
-      headerName: "Delete",
-      width: 150,
-      renderCell: (params) => (
-        <button
-          className="btn btn-danger"
-          style={{ marginLeft: 16 }}
-          onClick={() => {
-            handleDelete(params.row);
-          }}
-        >
-          <DeleteOutline />
-        </button>
-      ),
-    },
-    {
-      field: "edit",
-      headerName: "Edit",
-      width: 150,
-      renderCell: (params) => (
-        <button className="btn" onClick={() => handleEdit(params)}>
-          <EditIcon />
-        </button>
-      ),
+      id: "actions",
+      label: "Actions",
+      type: "actions",
+      actions: ["edit", "delete"],
+      renderData: (row) => {
+        return (
+          <div>
+            <>
+              <button className="btn" onClick={() => handleEdit(row)}>
+                <EditIcon />
+              </button>
+              <button
+                className="btn btn-danger"
+                style={{ marginLeft: 16 }}
+                onClick={() => {
+                  handleDelete(row);
+                }}
+              >
+                <DeleteOutline />
+              </button>
+            </>
+          </div>
+        );
+      },
     },
   ];
-
-  const [exhibitors, setExhibitors] = useState([]);
-
-  const handleOpenDrawer = () => {
-    setIsOpen(true);
-  };
 
   useEffect(() => {
     fetch("http://localhost:8000/exhibitors", {
@@ -101,7 +81,13 @@ const Exhibitors = () => {
       })
       .then((data) => {
         console.log(data);
-        setExhibitors(data);
+        const arr = data.map((item) => {
+          return {
+            ...item,
+            name: item.name + " " + item.lastName,
+          };
+        });
+        setExhibitors(arr);
       });
   }, []);
 
@@ -119,18 +105,14 @@ const Exhibitors = () => {
           </div>
         </div>
         <div className="row">
-          <div className="col-12 exhibitor-table mt-4">
-            <DataGrid
-              rows={exhibitors}
-              columns={columns}
-              initialState={{
-                pagination: {
-                  paginationModel: {
-                    pageSize: 5,
-                  },
-                },
-              }}
-              pageSizeOptions={[5]}
+          <div className="col-12 exhibitor-table mt-4 mb-2">
+            <ReactTable
+              data={exhibitors}
+              TABLE_HEAD={columns}
+              is_sticky_header={false}
+              is_hide_footer_pagination={false}
+              is_hide_header_pagination={false}
+              is_hide_search={true}
             />
           </div>
         </div>
@@ -153,9 +135,10 @@ const Exhibitors = () => {
         open={open}
         handleOpen={handleOpen}
         handleClose={handleClose}
-        exhibitors={exhibitors}
-        setExhibitors={setExhibitors}
+        data={exhibitors}
+        setData={setExhibitors}
         selectedObject={selectedObject}
+        url="http://localhost:8000/exhibitors/"
       />
     </>
   );

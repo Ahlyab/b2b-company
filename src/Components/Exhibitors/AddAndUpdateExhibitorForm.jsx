@@ -14,25 +14,24 @@ function getMaxExhibitorId(data) {
   return maxId;
 }
 
+const EMPTY_OBJECT = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  phoneNumber: "",
+};
+
 const AddAndUpdateExhibitorForm = ({
   setIsOpen,
   exhibitors,
   setExhibitors,
   selectedObject,
 }) => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [inputs, setInputs] = useState(EMPTY_OBJECT);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const exhibitor = {
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      phoneNumber: phoneNumber,
-    };
+    const exhibitor = inputs;
     let path = "http://localhost:8000/exhibitors";
     let method = "POST";
     if (selectedObject) {
@@ -60,19 +59,18 @@ const AddAndUpdateExhibitorForm = ({
         setExhibitors((prev) => [...prev, exhibitor]);
       }
     });
-    setFirstName("");
-    setLastName("");
-    setEmail("");
-    setPhoneNumber("");
+    setInputs(EMPTY_OBJECT);
     setIsOpen(false);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setInputs({ ...inputs, [name]: value });
   };
 
   useEffect(() => {
     if (selectedObject) {
-      setFirstName(selectedObject.firstName);
-      setLastName(selectedObject.lastName);
-      setEmail(selectedObject.email);
-      setPhoneNumber(selectedObject.phoneNumber);
+      setInputs(selectedObject);
     }
   }, [selectedObject]);
 
@@ -82,9 +80,10 @@ const AddAndUpdateExhibitorForm = ({
         <TextField
           className="form-control mt-4 "
           label="First Name"
+          name="firstName"
           variant="outlined"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
+          value={inputs.firstName}
+          onChange={handleChange}
           required
         />
       </div>
@@ -93,8 +92,9 @@ const AddAndUpdateExhibitorForm = ({
           className="form-control mt-4 "
           label="Last Name"
           variant="outlined"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
+          name="lastName"
+          value={inputs.lastName}
+          onChange={handleChange}
           required
         />
       </div>
@@ -103,9 +103,10 @@ const AddAndUpdateExhibitorForm = ({
           className="form-control mt-4 "
           label="Email"
           type="email"
+          name="email"
           variant="outlined"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={inputs.email}
+          onChange={handleChange}
           required
         />
       </div>
@@ -114,9 +115,10 @@ const AddAndUpdateExhibitorForm = ({
           className="form-control mt-4"
           label="Phone Number"
           type="phone"
+          name="phoneNumber"
           variant="outlined"
-          value={phoneNumber}
-          onChange={(e) => setPhoneNumber(e.target.value)}
+          value={inputs.phoneNumber}
+          onChange={handleChange}
           required
         />
       </div>
