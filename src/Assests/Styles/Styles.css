@@ -1,38 +1,41 @@
-/* index css */
-
-
-*{
+* {
   margin: 0;
   box-sizing: border-box;
 }
+
 #root {
   --theme-primary-color: #5792c9;
-
   --theme-secondary-color: #3c668c;
 }
 
-.custom-btn {
+.theme-button {
   background-color: #5792c9;
   color: #fff;
-  padding: 10px;
+  padding: 8px 20px;
+  outline: none;
+  border: none;
+  border-radius: 3px;
 }
 
-.del-btn {
-  padding: 10px;
-}
-
-.custom-btn:hover{
+.theme-button:hover {
   background-color: #3c668c;
   color: #fff;
 }
 
-.custom-btn:active{
+.theme-button:active {
   background-color: #3c668c !important;
   color: #fff !important;
 }
 
-.active {
-  background-color: #5792c9 !important; 
+.delete-btn {
+  padding: 8px 20px;
+  outline: none;
+  border: none;
+  border-radius: 3px;
+}
+
+.active-tab {
+  background-color: #5792c9 !important;
   color: white !important;
 }
 
@@ -40,31 +43,27 @@
   color: white !important;
 }
 
-
 /* App header */
 
 .App-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: #333 !important;
-    background-color: white !important;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    /* z-index: 100; */
-    flex-direction: row !important;
-    position:fixed;
-  }
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #333 !important;
+  background-color: white !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  flex-direction: row !important;
+  position: fixed;
+}
 
 .App-header-title {
-    text-wrap: nowrap;
+  text-wrap: nowrap;
 }
 
 .App-header-icon-menu {
-    margin-right: 120px;
-    margin-left: 20px;
-    /* display: none !important; */
-    visibility: hidden;
-
+  margin-right: 120px;
+  margin-left: 20px;
+  visibility: hidden;
 }
 
 .profile-icon {
@@ -81,332 +80,337 @@
   margin-right: 16px;
 }
 
+.profile-icon-option:hover {
+  background-color: #5792c9 !important;
+  color: white;
+}
+
+.profile-icon-i {
+  color: #5792c9 !important;
+}
+
+.profile-icon-i:hover {
+  color: white !important;
+}
+
 /* create a media query for sm screen */
 @media (max-width: 767.98px) {
-    .App-header-icon-menu {
-        display: block !important;
-        visibility: visible;
-    }
+  .App-header-icon-menu {
+    display: block !important;
+    visibility: visible;
+  }
 }
 
 /* App sidebar */
 
 /* Styles for the container div */
 .drawer-container {
-    width: var(--drawer-width);
-    flex-shrink: 0;
+  width: var(--drawer-width);
+  flex-shrink: 0;
+}
+
+/* Styles for the Drawer paper */
+.drawer-paper {
+  box-sizing: border-box;
+  width: var(--drawer-width);
+}
+
+/* ------------------------------------------------------------- */
+
+/* Hide drawer on mobile by default */
+@media (max-width: 767.98px) {
+  .drawer-container {
+    display: none;
   }
-  
-  /* Styles for the Drawer paper */
-  .drawer-paper {
-    box-sizing: border-box;
-    width: var(--drawer-width);
+
+  .drawer-temmporary {
+    display: none;
+  }
+  .drawer-permanent {
+    display: none;
+  }
+}
+
+/* Show drawer on larger screens */
+@media (min-width: 768px) {
+  .drawer-container {
+    display: block; /* Ensure it's visible on larger screens */
   }
 
-  /* ------------------------------------------------------------- */
-  
-  
-  /* Hide drawer on mobile by default */
-  @media (max-width: 767.98px) {
-    .drawer-container {
-      display: none;
-    }
-
-    .drawer-temmporary {
-        display: none;
-      }
-      .drawer-permanent {
-        display: none;
-      }
-    
+  .drawer-temmporary {
+    display: block;
   }
-  
-  /* Show drawer on larger screens */
-  @media (min-width: 768px) {
-    .drawer-container {
-      display: block; /* Ensure it's visible on larger screens */
-    }
 
-    .drawer-temmporary {
-        display: block;
-      }
-
-      .drawer-permanent {
-        display: block;
-      }
+  .drawer-permanent {
+    display: block;
   }
-  
-
-
+}
 
 /* Dashboard layout */
 
 .Dashboard-layout-container {
-    display: flex;
+  display: flex;
 }
 
 .Dashboard-layout-main {
-    flex-grow: 1;
-    padding: 16px;
+  flex-grow: 1;
+  padding: 16px;
 }
-
 
 /* Forgot password */
 
-
 /* Reset margin and padding for the root */
-html, body, #root {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-  }
-  
-  /* Container for the entire layout */
-  .forgot-password-container {
-    display: flex;
-    height: 100vh;
-    overflow: hidden;
-  }
-  
-  /* Styling for the form section */
-  .forgot-password-form-container {
-    flex: 4; /* 40% of the width */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
-    height: 100%;
-    background-color: #f5f5f5;
-  }
-  
-  /* Styling for the form itself */
-  .forgot-password-form {
-    width: 100%;
-    max-width: 500px;
-    padding: 3rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
 
-  .forgot-password-form form {
-    width: 100%;
-  }
+/* Container for the entire layout */
+.forgot-password-container {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
 
-  .forgot-password-form .input-field {
-    width: 100%;
-  }
-  
-  /* Logo styling */
-  .forgot-password-logo {
-    width: 100px;
-    height: auto;
-    margin-bottom: 1rem;
-  }
-  
-  /* Title styling */
-  .forgot-password-title {
-    margin-bottom: 1rem;
-    font-size: 24px;
-  }
-  
-  /* Description styling */
-  .forgot-password-description {
-    margin-bottom: 1.5rem;
-    text-align: center;
-  }
-  
-  /* Image section styling */
+/* Styling for the form section */
+.forgot-password-form-container {
+  flex: 4; /* 40% of the width */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  height: 100%;
+  background-color: #f5f5f5;
+}
+
+/* Styling for the form itself */
+.forgot-password-form {
+  width: 100%;
+  max-width: 500px;
+  padding: 3rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.forgot-password-form form {
+  width: 100%;
+}
+
+.forgot-password-form .input-field {
+  width: 100%;
+}
+
+/* Logo styling */
+.forgot-password-logo {
+  width: 100px;
+  height: auto;
+  margin-bottom: 1rem;
+}
+
+/* Title styling */
+.forgot-password-title {
+  margin-bottom: 1rem;
+  font-size: 24px;
+}
+
+/* Description styling */
+.forgot-password-description {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+/* Image section styling */
+.forgot-password-image {
+  flex: 6; /* 60% of the width */
+  background-size: cover;
+  background-position: center;
+  height: 100%;
+  display: none; /* Hide by default */
+
+  /* Add a background image via inline styles in React component */
+}
+
+@media (min-width: 768px) {
   .forgot-password-image {
-    flex: 6; /* 60% of the width */
-    background-size: cover;
-    background-position: center;
-    height: 100%;
-    display: none; /* Hide by default */
-  
-    /* Add a background image via inline styles in React component */
+    display: block; /* Show on medium screens and up */
   }
-  
-  @media (min-width: 768px) {
-    .forgot-password-image {
-      display: block; /* Show on medium screens and up */
-    }
-  }
-  
-
+}
 
 /* Login */
 
 /* Reset margin and padding for the root */
-html, body, #root {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-  }
-  
-  /* Container for the entire layout */
-  .login-container {
-    display: flex;
-    height: 100vh;
-    overflow: hidden;
-  }
-  
-  /* Styling for the form section */
-  .login-form-container {
-    flex: 4; /* 40% of the width */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
-    height: 100%;
-    background-color: #f5f5f5;
-  }
-  
-  /* Styling for the form itself */
-  .login-form {
-    width: 100%;
-    max-width: 500px;
-    padding: 3rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
 
-  .login-form form {
-    width: 100%;
-  }
+/* Container for the entire layout */
+.login-container {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
 
-  .login-form .input-field {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 1rem;
-  }
+/* Styling for the form section */
+.login-form-container {
+  flex: 4; /* 40% of the width */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  height: 100%;
+  background-color: #f5f5f5;
+}
 
-  .login input {
-    width: 100%;
-    padding: 0.5rem;
-    margin: 0.5rem 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  /* Logo styling */
-  .login-logo {
-    width: 100px;
-    height: auto;
-    margin-bottom: 1rem;
-  }
-  
-  /* Title styling */
-  .login-title {
-    margin-bottom: 1rem;
-    font-size: 24px;
-  }
-  
-  /* Image section styling */
-  .login-image {
-    flex: 6; /* 60% of the width */
-    /* background-image: url('../../Assests/Images/login-img.jpg'); Replace with your image URL */
-    background-size: cover;
-    background-position: center;
-    height: 100%;
-    display: none; /* Hide by default */
-  }
-  
+/* Styling for the form itself */
+.login-form {
+  width: 100%;
+  max-width: 500px;
+  padding: 3rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-form form {
+  width: 100%;
+}
+
+.login-form .input-field {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.login input {
+  width: 100%;
+  padding: 0.5rem;
+  margin: 0.5rem 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Logo styling */
+.login-logo {
+  width: 100px;
+  height: auto;
+  margin-bottom: 1rem;
+}
+
+/* Title styling */
+.login-title {
+  margin-bottom: 1rem;
+  font-size: 24px;
+}
+
+/* Image section styling */
+.login-image {
+  flex: 6; /* 60% of the width */
+  /* background-image: url('../../Assests/Images/login-img.jpg'); Replace with your image URL */
+  background-size: cover;
+  background-position: center;
+  height: 100%;
+  display: none; /* Hide by default */
+}
+
 .up {
   margin-top: -15px;
   color: var(--theme-secondary-color);
 }
 
-  @media (min-width: 768px) {
-    .login-image {
-      display: block; /* Show on medium screens and up */
-    }
+@media (min-width: 768px) {
+  .login-image {
+    display: block; /* Show on medium screens and up */
   }
-  
-
-
+}
 
 /* Verification Screen*/
 
 /* Reset margin and padding for the root */
-html, body, #root {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-  }
-  
-  /* Container for the entire layout */
-  .verify-code-container {
-    display: flex;
-    height: 100vh;
-    overflow: hidden;
-  }
-  
-  /* Styling for the form section */
-  .verify-code-form-container {
-    flex: 4; /* 40% of the width */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
-    height: 100%;
-    background-color: #f5f5f5;
-  }
-  
-  /* Styling for the form itself */
-  .verify-code-form {
-    width: 100%;
-    max-width: 500px;
-    padding: 3rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .verify-code-form form {
-    width: 100%;
-  }
-
-  .verify-code-form .input-field {
-    width: 100%;
-  }
-  /* Logo styling */
-  .verify-code-logo {
-    width: 100px;
-    height: auto;
-    margin-bottom: 1rem;
-  }
-  
-  /* Title styling */
-  .verify-code-title {
-    margin-bottom: 1rem;
-    font-size: 24px;
-  }
-  
-  /* Description styling */
-  .verify-code-description {
-    margin-bottom: 1.5rem;
-  }
-  
-
-.verification-input-field {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center !important;
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
 }
 
+/* Container for the entire layout */
+.verify-code-container {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Styling for the form section */
+.verify-code-form-container {
+  flex: 4; /* 40% of the width */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  height: 100%;
+  background-color: #f5f5f5;
+}
+
+/* Styling for the form itself */
+.verify-code-form {
+  width: 100%;
+  max-width: 500px;
+  padding: 3rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.verify-code-form form {
+  width: 100%;
+}
+
+.verify-code-form .input-field {
+  width: 100%;
+}
+/* Logo styling */
+.verify-code-logo {
+  width: 100px;
+  height: auto;
+  margin-bottom: 1rem;
+}
+
+/* Title styling */
+.verify-code-title {
+  margin-bottom: 1rem;
+  font-size: 24px;
+}
+
+/* Description styling */
+.verify-code-description {
+  margin-bottom: 1.5rem;
+}
+
+.verification-input-field {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center !important;
+}
 
 .otp-input {
   width: 3rem !important;
@@ -417,8 +421,6 @@ html, body, #root {
   border-radius: 4px;
   margin: 0 0.25rem;
 }
-  
-
 
 /*-------------------------- Exhibitor */
 .exhibitor-table {
@@ -439,48 +441,81 @@ html, body, #root {
 }
 
 .exhibitor-form-input {
-  width: 50%;
-  margin: 10px !important;
+  box-shadow: 0px 0px 15px #8080803b;
 }
 
 .exhibitor-form-submit {
   margin: 10px !important;
 }
 
-.exhibitor-form-div-close{
+.exhibitor-form-div-close {
   border-radius: 100% !important;
   height: 30px !important;
   width: 30px !important;
   margin: 0 !important;
   padding: 0 !important;
-
 }
 
 .close-icon {
   font-size: 30px !important;
-  border: 1px solid black ;
+  border: 1px solid black;
   /* border-radius: 100% !important; */
   /* padding: 2px !important; */
-
 }
 
 .cross-icon {
-  font-size: 30px ;
+  font-size: 30px;
   margin-right: 10px;
   cursor: pointer;
 }
 
 .drawer-title {
-  margin-left: 10px;
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 0;
+  color: #5792c9;
 }
 
 .close-button {
-  font-size: 24px;
-  font-weight: bold;
-  margin:4px;
-  color: #333;
-  background-color: #f5f5f5;
-  border: 2px solid #ccc;
+  font-size: 29px;
+  margin: 4px;
+  color: #5792c9;
+  background-color: #fff;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  background-color: #5792c938;
+}
+
+.modal {
+  background-color: rgb(0 0 0 / 21%) important;
+}
+
+.modal-modal-title {
+  color: #5792c9 !important;
+}
+
+.delete-modal {
+  border: none !important;
+  outline: none !important;
+  border-radius: 5px !important;
+  position: relative;
+}
+
+.delete-modal-close {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+
+  font-size: 29px;
+  margin: 4px;
+  color: #5792c9;
+  background-color: #fff;
   border-radius: 50%;
   width: 30px;
   height: 30px;
@@ -489,4 +524,9 @@ html, body, #root {
   justify-content: center;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  background-color: #5792c938;
+}
+
+.divider {
+  background-color: rgb(158, 158, 158);
 }

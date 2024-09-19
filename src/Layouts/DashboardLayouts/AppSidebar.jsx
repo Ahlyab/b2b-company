@@ -53,14 +53,14 @@ const AppSidebar = ({
           style={{ width: "100px", height: "auto" }} // Adjust size as needed
         />
       </div>
-      <Divider />
+      <Divider className="divider" />
       <List>
         {options.map((option, index) => (
           <ListItem key={index} disablePadding>
             <ListItemButton
               LinkComponent={Link}
               to={option.path}
-              className={location.pathname === option.path ? "active" : ""}
+              className={location.pathname === option.path ? "active-tab" : ""}
             >
               <ListItemIcon
                 className={

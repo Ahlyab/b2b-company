@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ExhibitorsTable from "../../Components/Exhibitors/ExhibitorsTable";
 import CustomDrawer from "../../Components/GeneralComponents/CustomDrawer";
-import AddExhibitorForm from "../../Components/Exhibitors/AddExhibitorForm";
+import AddAndUpdateExhibitorForm from "../../Components/Exhibitors/AddAndUpdateExhibitorForm";
 
 const Exhibitors = () => {
   const [updated, setUpdated] = useState(false);
@@ -25,7 +25,7 @@ const Exhibitors = () => {
           updated={updated}
           setUpdated={setUpdated}
           component={
-            <AddExhibitorForm
+            <AddAndUpdateExhibitorForm
               title={"Add Exhibitor"}
               updated={updated}
               setUpdated={setUpdated}

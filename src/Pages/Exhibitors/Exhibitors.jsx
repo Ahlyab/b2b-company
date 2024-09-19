@@ -1,37 +1,40 @@
 import React, { useEffect, useState } from "react";
 import CustomDrawer from "../../Components/GeneralComponents/CustomDrawer";
-import AddExhibitorForm from "../../Components/Exhibitors/AddExhibitorForm";
+import AddAndUpdateExhibitorForm from "../../Components/Exhibitors/AddAndUpdateExhibitorForm";
 import { DataGrid } from "@mui/x-data-grid";
 import DeleteModal from "../../Components/Exhibitors/DeleteModal";
 import { DeleteOutline } from "@mui/icons-material";
 import EditIcon from "@mui/icons-material/Edit";
-import EditExhibitorForm from "../../Components/Exhibitors/EditExhibitorForm";
 
 const Exhibitors = () => {
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const [id, setId] = useState(null);
-  const [updated, setUpdated] = useState(false);
-
-  // for drawer
+  const [open, setOpen] = useState(false); // Delete Modal
   const [isOpen, setIsOpen] = useState(false);
-  const [isOpenEdit, setIsOpenEdit] = useState(false);
+  const [selectedObject, setSelectedObject] = useState(null);
 
-  // edit
-  const [rowData, setRowData] = useState(null);
+  const handleOpen = () => setOpen(true);
+
+  const handleClose = () => {
+    setSelectedObject(null);
+    setOpen(false);
+  };
 
   const handleEdit = (params) => {
     console.log(params);
-    setRowData(params.row);
-    setIsOpenEdit(true);
+    setSelectedObject(params.row);
+    setIsOpen(true);
   };
 
-  const handleDelete = (id) => {
-    handleOpen();
-    console.log(id);
-    setId(id);
+  const closeDrawer = () => {
+    setIsOpen(false);
+    setSelectedObject(null);
   };
+
+  const handleDelete = (row) => {
+    setSelectedObject(row);
+
+    handleOpen();
+  };
+
   const columns = [
     { field: "id", headerName: "ID", width: 90 },
     {
@@ -64,7 +67,7 @@ const Exhibitors = () => {
           className="btn btn-danger"
           style={{ marginLeft: 16 }}
           onClick={() => {
-            handleDelete(params.row.id);
+            handleDelete(params.row);
           }}
         >
           <DeleteOutline />
@@ -100,17 +103,17 @@ const Exhibitors = () => {
         console.log(data);
         setExhibitors(data);
       });
-  }, [updated]);
+  }, []);
 
   return (
     <>
       <div className="container-fluid">
         <div className="row">
           <div className="col-6">
-            <h2>Exhibitors</h2>
+            <h2 className="drawer-title d-inline-block">Exhibitors</h2>
           </div>
           <div className="col-6 text-end">
-            <button className="btn custom-btn" onClick={handleOpenDrawer}>
+            <button className="theme-button" onClick={handleOpenDrawer}>
               Add Exhibitor
             </button>
           </div>
@@ -129,43 +132,30 @@ const Exhibitors = () => {
               }}
               pageSizeOptions={[5]}
             />
-            <DeleteModal
-              setUpdated={setUpdated}
-              open={open}
-              handleOpen={handleOpen}
-              handleClose={handleClose}
-              id={id}
-            />
           </div>
         </div>
       </div>
       <CustomDrawer
-        title={"Add Exhibitor"}
+        title={`${selectedObject ? "Edit" : "Add"} Exhibitor`}
         isOpen={isOpen}
-        setIsOpen={setIsOpen}
+        setIsOpen={closeDrawer}
         component={
-          <AddExhibitorForm
+          <AddAndUpdateExhibitorForm
             setExhibitors={setExhibitors}
-            setIsOpen={setIsOpen}
-            updated={updated}
-            setUpdated={setUpdated}
+            setIsOpen={closeDrawer}
+            exhibitors={exhibitors}
+            selectedObject={selectedObject}
           />
         }
       />
 
-      <CustomDrawer
-        title={"Edit Exhibitor"}
-        isOpen={isOpenEdit}
-        setIsOpen={setIsOpenEdit}
-        component={
-          <EditExhibitorForm
-            setExhibitors={setExhibitors}
-            setIsOpen={setIsOpenEdit}
-            updated={updated}
-            setUpdated={setUpdated}
-            data={rowData}
-          />
-        }
+      <DeleteModal
+        open={open}
+        handleOpen={handleOpen}
+        handleClose={handleClose}
+        exhibitors={exhibitors}
+        setExhibitors={setExhibitors}
+        selectedObject={selectedObject}
       />
     </>
   );

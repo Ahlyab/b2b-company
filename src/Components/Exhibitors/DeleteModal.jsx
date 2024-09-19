@@ -1,5 +1,4 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 
 const style = {
@@ -14,13 +13,23 @@ const style = {
   p: 4,
 };
 
-export default function DeleteModal({ setUpdated, open, handleClose, id }) {
+export default function DeleteModal({
+  open,
+  handleClose,
+  selectedObject,
+  exhibitors,
+  setExhibitors,
+}) {
   const handleDelete = () => {
-    fetch(`http://localhost:8000/exhibitors/${id}`, {
+    console.log(selectedObject.id);
+    fetch(`http://localhost:8000/exhibitors/${selectedObject.id}`, {
       method: "DELETE",
     }).then(() => {
       console.log("exhibitor deleted");
-      setUpdated((prev) => !prev);
+      const updatedExhibitors = exhibitors.filter(
+        (item) => item.id !== selectedObject.id
+      );
+      setExhibitors(updatedExhibitors);
       handleClose();
     });
   };
@@ -32,20 +41,24 @@ export default function DeleteModal({ setUpdated, open, handleClose, id }) {
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+        sx={{ backgroundColor: "rgba(0, 0, 0, 5%)" }}
       >
-        <div style={style} className="bg-white text-center p-md-5">
-          <h2 id="modal-modal-title" className="text-danger">
+        <div style={style} className="bg-white text-center p-md-5 delete-modal">
+          <div class=" delete-modal-close" onClick={handleClose}>
+            &times;
+          </div>
+          <h2 id="modal-modal-title" className="modal-modal-title">
             Are you sure?
           </h2>
           <p id="modal-modal-description">
             This data will be deteled permanently.
           </p>
           <div>
-            <button className="btn custom-btn m-1" onClick={handleClose}>
+            <button className="btn theme-button m-1" onClick={handleClose}>
               Cancel
             </button>
             <button
-              className="btn btn-danger m-1 del-btn"
+              className="btn btn-danger m-1 delete-btn"
               onClick={handleDelete}
             >
               Delete

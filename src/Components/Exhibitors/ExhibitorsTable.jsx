@@ -17,10 +17,8 @@ export default function ExhibitorsTable({ updated, setUpdated }) {
   // for drawer
   const [isopen, setisopen] = useState(false);
 
-  const handleDelete = (id) => {
+  const handleDelete = () => {
     handleOpen();
-    console.log(id);
-    setId(id);
   };
   const columns = [
     { field: "id", headerName: "ID", width: 90 },
@@ -115,13 +113,6 @@ export default function ExhibitorsTable({ updated, setUpdated }) {
           },
         }}
         pageSizeOptions={[5]}
-      />
-      <DeleteModal
-        setUpdated={setUpdated}
-        open={open}
-        handleOpen={handleOpen}
-        handleClose={handleClose}
-        id={id}
       />
     </div>
   );

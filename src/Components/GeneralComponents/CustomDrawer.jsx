@@ -5,38 +5,23 @@ import { Divider } from "@mui/material";
 import { CloseOutlined } from "@mui/icons-material";
 
 const CustomDrawer = ({ isOpen, setIsOpen, title, component }) => {
-  const toggleDrawer = (open) => (event) => {
-    if (
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
-    ) {
-      return;
-    }
-
-    setIsOpen(open);
-  };
-
   return (
     <>
       <Drawer
         anchor={"right"}
         open={isOpen}
-        onClose={toggleDrawer(false)}
+        onClose={() => setIsOpen(false)}
         className="m-0"
         PaperProps={{ className: "exhibitor-form-div" }}
       >
-        <div
-          onClick={toggleDrawer(false)}
-          className="d-flex justify-content-between mt-2 mb-2"
-        >
+        <div className="d-flex justify-content-between align-items-center my-2 px-4">
           <h2 className="drawer-title">{title}</h2>
-          {/* <div className="cross-icon">X</div> */}
-          <div class="close-button" onClick={toggleDrawer(false)}>
+          <div class="close-button" onClick={() => setIsOpen(false)}>
             &times;
           </div>
         </div>
-        <Divider />
-        {component}
+        <Divider className="divider" />
+        <div className="px-4">{component}</div>
       </Drawer>
     </>
   );

@@ -7,7 +7,8 @@ import Divider from "@mui/material/Divider";
 import Tooltip from "@mui/material/Tooltip";
 import KeyIcon from "@mui/icons-material/Key";
 import Logout from "@mui/icons-material/Logout";
-import { logo } from "../../Assests/index";
+import { profile } from "../../Assests/index";
+import SettingsIcon from "@mui/icons-material/Settings";
 
 export default function ProfileIcon() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -32,7 +33,7 @@ export default function ProfileIcon() {
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
           >
-            <Avatar sx={{ width: 40, height: 40 }} src={logo}>
+            <Avatar sx={{ width: 40, height: 40 }} src={profile}>
               A
             </Avatar>
           </div>
@@ -77,16 +78,22 @@ export default function ProfileIcon() {
       >
         <MenuItem onClick={handleClose}>Ahlyab</MenuItem>
         <MenuItem onClick={handleClose}>Ahlyabasad@gmail.com</MenuItem>
-        <Divider />
+        <Divider className="divider" />
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
-            <KeyIcon fontSize="small" />
+            <SettingsIcon fontSize="small" color="primary" />
           </ListItemIcon>
-          Change Password
+          Settings
         </MenuItem>
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
-            <Logout fontSize="small" />
+            <KeyIcon fontSize="small" color="primary" />
+          </ListItemIcon>
+          Change Password
+        </MenuItem>
+        <MenuItem onClick={handleClose} className="profile-icon-option">
+          <ListItemIcon>
+            <Logout fontSize="small" className="profile-icon-i" />
           </ListItemIcon>
           Logout
         </MenuItem>
