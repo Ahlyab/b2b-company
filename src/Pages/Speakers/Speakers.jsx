@@ -4,7 +4,6 @@ import EditIcon from "@mui/icons-material/Edit";
 import ReactTable from "@meta-dev-zone/react-table";
 import DeleteModal from "../../Components/Exhibitors/DeleteModal";
 import { useNavigate } from "react-router-dom";
-import { render } from "@testing-library/react";
 
 function getMaxSpeakerId(data) {
   if (data.length === 0) {

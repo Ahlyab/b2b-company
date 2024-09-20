@@ -1,4 +1,4 @@
-import { TextField } from "@mui/material";
+import { Button, InputBase, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import ReactEditor from "react-text-editor-kit";
@@ -8,6 +8,7 @@ const EMPTY_OBJ = {
   email: "",
   bio: "",
   profileImg: "https://via.placeholder.com/150",
+  phoneNumber: "",
 };
 
 const AddAndUpdateSpeaker = () => {
@@ -79,7 +80,7 @@ const AddAndUpdateSpeaker = () => {
     <div className="container-fluid">
       <div className="row">
         <div className="col-12 ">
-          <h2 className="drawer-title mb-2">{`${
+          <h2 className="drawer-title mb-4">{`${
             typeof state === "object" ? "Edit" : "Add"
           } Speaker`}</h2>
         </div>
@@ -118,6 +119,48 @@ const AddAndUpdateSpeaker = () => {
             </div>
 
             <div className="row">
+              <div className="col-6 mb-3">
+                <TextField
+                  className="form-control speaker-form-input"
+                  id="outlined-basic"
+                  label="Phone Number"
+                  variant="outlined"
+                  name="phoneNumber"
+                  type="tel"
+                  value={inputs.phoneNumber}
+                  onChange={handleChange}
+                  required={true}
+                />
+              </div>
+              <div className="col-6 ">
+                <div class="mb-3">
+                  {/* <input
+                    class="form-control"
+                    type="file"
+                    id="formFile"
+                    placeholder="Upload Image"
+                    style={{ outline: "none", padding: 14 }}
+                  /> */}
+                  {/* <TextField
+                    className="form-control speaker-form-input"
+                    type="file"
+                    label="Profile Image"
+                    focused
+                  /> */}
+                  <button className="theme-button p-3 " component="label">
+                    Upload Image
+                    <input
+                      className="theme-button"
+                      type="file"
+                      accept="image/*"
+                      hidden
+                    />
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div className="row">
               <div className="col-12 mb-3">
                 <TextField
                   className="form-control speaker-form-input"
@@ -135,7 +178,7 @@ const AddAndUpdateSpeaker = () => {
               </div>
             </div>
 
-            <div className="row">
+            {/* <div className="row">
               <div className="col-12">
                 <ReactEditor
                   value={value}
@@ -144,7 +187,7 @@ const AddAndUpdateSpeaker = () => {
                   placeholder="Write your detailed Bio here"
                 />
               </div>
-            </div>
+            </div> */}
 
             <div className="row">
               <div className="col-12 text-end">

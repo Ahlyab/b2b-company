@@ -19,6 +19,11 @@ const EMPTY_OBJECT = {
   lastName: "",
   email: "",
   phoneNumber: "",
+  companyName: "",
+  businessNature: "",
+  address: "",
+  exhibitorInfo: "",
+  additionalDetails: "",
 };
 
 const AddAndUpdateExhibitor = ({
@@ -56,6 +61,7 @@ const AddAndUpdateExhibitor = ({
 
         setExhibitors(updatedExhibitors);
       } else {
+        exhibitor.name = exhibitor.firstName + " " + exhibitor.lastName;
         setExhibitors((prev) => [...prev, exhibitor]);
       }
     });
@@ -120,6 +126,71 @@ const AddAndUpdateExhibitor = ({
           value={inputs.phoneNumber}
           onChange={handleChange}
           required
+        />
+      </div>
+      <div className="col-12 col-md-6">
+        <TextField
+          className="form-control mt-4"
+          label="Company Name"
+          type="text"
+          name="companyName"
+          variant="outlined"
+          value={inputs.companyName}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <div className="col-12 col-md-6">
+        <TextField
+          className="form-control mt-4"
+          label="Business Nature"
+          type="text"
+          name="businessNature"
+          variant="outlined"
+          value={inputs.businessNature}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <div className="col-12">
+        <TextField
+          className="form-control mt-4"
+          label="Address"
+          type="text"
+          name="address"
+          variant="outlined"
+          minRows={2}
+          multiline
+          value={inputs.address}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <div className="col-12">
+        <TextField
+          className="form-control mt-4"
+          label="Exhibitor Info"
+          type="text"
+          name="exhibitorInfo"
+          variant="outlined"
+          minRows={2}
+          multiline
+          value={inputs.exhibitorInfo}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <div className="col-12 ">
+        <TextField
+          className="form-control mt-4"
+          label="Additional Info"
+          type="text"
+          name="additionalDetails"
+          variant="outlined"
+          minRows={2}
+          multiline
+          value={inputs.additionalDetails}
+          onChange={handleChange}
         />
       </div>
       <div className="d-flex justify-content-end">

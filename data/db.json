@@ -147,6 +147,30 @@
       "email": "testing@testing.com",
       "phoneNumber": "6792793921",
       "name": "testing testing"
+    },
+    {
+      "id": 22,
+      "firstName": "2",
+      "lastName": "2",
+      "email": "2@2.com",
+      "phoneNumber": "2",
+      "companyName": "2",
+      "businessNature": "2",
+      "address": "2",
+      "exhibitorInfo": "2",
+      "additionalDetails": "2"
+    },
+    {
+      "id": 23,
+      "firstName": "3",
+      "lastName": "3",
+      "email": "3@3.com",
+      "phoneNumber": "3",
+      "companyName": "3",
+      "businessNature": "3",
+      "address": "3",
+      "exhibitorInfo": "3",
+      "additionalDetails": "3"
     }
   ],
   "speakers": [
@@ -259,6 +283,48 @@
       "bio": "zzzzz",
       "profileImg": "https://via.placeholder.com/150",
       "detailedBio": "zzzzz"
+    }
+  ],
+  "events": [
+    {
+      "id": "1",
+      "title": "Tech Conference 2024",
+      "startDate": "2024-10-15T09:00:00",
+      "endDate": "2024-10-15T17:00:00",
+      "description": "Annual tech conference focusing on AI and machine learning innovations.",
+      "venue": "Convention Center, San Francisco, CA"
+    },
+    {
+      "id": "2",
+      "title": "Startup Pitch Day",
+      "startDate": "2024-11-05T10:00:00",
+      "endDate": "2024-11-05T16:00:00",
+      "description": "An event for startups to pitch their ideas to investors.",
+      "venue": "Tech Hub, New York, NY"
+    },
+    {
+      "id": "3",
+      "title": "JavaScript Workshop",
+      "startDate": "2024-12-01T13:00:00",
+      "endDate": "2024-12-01T15:00:00",
+      "description": "A hands-on workshop covering advanced JavaScript concepts.",
+      "venue": "Online"
+    },
+    {
+      "id": "4",
+      "title": "Cybersecurity Summit",
+      "startDate": "2024-09-25T08:00:00",
+      "endDate": "2024-09-25T18:00:00",
+      "description": "Summit focusing on the latest trends in cybersecurity and protection strategies.",
+      "venue": "Hilton Hotel, London, UK"
+    },
+    {
+      "id": "5",
+      "title": "React Developers Meetup",
+      "startDate": "2024-10-08T18:00:00",
+      "endDate": "2024-10-08T20:00:00",
+      "description": "A meetup for React developers to network and discuss new technologies.",
+      "venue": "Tech Park, Berlin, Germany"
     }
   ]
 }
