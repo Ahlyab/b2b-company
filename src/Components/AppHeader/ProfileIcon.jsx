@@ -9,10 +9,12 @@ import KeyIcon from "@mui/icons-material/Key";
 import Logout from "@mui/icons-material/Logout";
 import { profile } from "../../Assests/index";
 import SettingsIcon from "@mui/icons-material/Settings";
+import { useNavigate } from "react-router-dom";
 
 export default function ProfileIcon() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  const navigate = useNavigate();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -20,6 +22,11 @@ export default function ProfileIcon() {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleSignOut = () => {
+    localStorage.removeItem("token");
+    navigate("/");
   };
 
   return (
@@ -76,8 +83,16 @@ export default function ProfileIcon() {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem onClick={handleClose}>Ahlyab</MenuItem>
-        <MenuItem onClick={handleClose}>Ahlyabasad@gmail.com</MenuItem>
+        <MenuItem onClick={handleClose} sx={{ fontWeight: "600" }}>
+          Ahlyab
+        </MenuItem>
+
+        <MenuItem
+          onClick={handleClose}
+          sx={{ fontStyle: "italic", fontWeight: "200", color: "#a3a3a3" }}
+        >
+          Ahlyabasad@gmail.com
+        </MenuItem>
         <Divider className="divider" />
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
@@ -91,9 +106,9 @@ export default function ProfileIcon() {
           </ListItemIcon>
           Change Password
         </MenuItem>
-        <MenuItem onClick={handleClose} className="profile-icon-option">
+        <MenuItem onClick={handleSignOut}>
           <ListItemIcon>
-            <Logout fontSize="small" className="profile-icon-i" />
+            <Logout fontSize="small" color="primary" />
           </ListItemIcon>
           Logout
         </MenuItem>

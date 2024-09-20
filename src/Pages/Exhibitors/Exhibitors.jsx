@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import CustomDrawer from "../../Components/GeneralComponents/CustomDrawer";
-import AddAndUpdateExhibitorForm from "../../Components/Exhibitors/AddAndUpdateExhibitorForm";
+import AddAndUpdateExhibitor from "../../Components/Exhibitors/AddAndUpdateExhibitor";
 import DeleteModal from "../../Components/Exhibitors/DeleteModal";
 import { DeleteOutline } from "@mui/icons-material";
 import EditIcon from "@mui/icons-material/Edit";
@@ -122,7 +122,7 @@ const Exhibitors = () => {
         isOpen={isOpen}
         setIsOpen={closeDrawer}
         component={
-          <AddAndUpdateExhibitorForm
+          <AddAndUpdateExhibitor
             setExhibitors={setExhibitors}
             setIsOpen={closeDrawer}
             exhibitors={exhibitors}

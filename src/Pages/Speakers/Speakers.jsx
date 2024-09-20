@@ -3,11 +3,29 @@ import { DeleteOutline } from "@mui/icons-material";
 import EditIcon from "@mui/icons-material/Edit";
 import ReactTable from "@meta-dev-zone/react-table";
 import DeleteModal from "../../Components/Exhibitors/DeleteModal";
+import { useNavigate } from "react-router-dom";
+import { render } from "@testing-library/react";
+
+function getMaxSpeakerId(data) {
+  if (data.length === 0) {
+    return null;
+  }
+
+  const maxId = data.reduce((max, item) => {
+    const id = parseInt(item.id, 10);
+    return id > max ? id : max;
+  }, -Infinity);
+
+  console.log("type of maxId", typeof maxId);
+
+  return maxId;
+}
 
 const Speakers = () => {
   const [speakers, setSpeakers] = useState([]);
   const [open, setOpen] = useState(false); // Delete Modal
   const [selectedObject, setSelectedObject] = useState(null);
+  const navigate = useNavigate();
 
   const handleOpen = () => setOpen(true);
 
@@ -21,27 +39,40 @@ const Speakers = () => {
     handleOpen();
   };
 
+  const handleAddSpeaker = () => {
+    const id = getMaxSpeakerId(speakers);
+    navigate("/speakers/add-speaker", { state: id + 1 });
+  };
+
+  const handleEditSpeaker = (row) => {
+    console.log(row);
+    console.log("type of row", typeof row);
+    navigate(`/speakers/edit-speaker/${row.id}`, { state: row });
+  };
+
   const columns = [
     { id: "id", label: "ID", type: "text" },
     {
-      id: "profileImg",
-      label: "Profile Image",
-      type: "image",
+      id: "speaker",
+      label: "Speaker",
+      type: "text",
       renderData: (row) => {
         return (
-          <img
-            src={row.profileImg}
-            alt="profile"
-            style={{ width: 50, height: 50, borderRadius: 50 }}
-          />
+          <>
+            <img
+              src={row.profileImg}
+              alt="profile"
+              style={{
+                width: 50,
+                height: 50,
+                borderRadius: 50,
+                marginRight: 10,
+              }}
+            />
+            <span>{row.name}</span>
+          </>
         );
       },
-    },
-    {
-      id: "name",
-      label: "Name",
-
-      type: "text",
     },
     {
       id: "email",
@@ -63,9 +94,10 @@ const Speakers = () => {
         return (
           <div>
             <>
-              <button className="btn">
+              <button className="btn" onClick={() => handleEditSpeaker(row)}>
                 <EditIcon />
               </button>
+
               <button
                 className="btn btn-danger"
                 style={{ marginLeft: 16 }}
@@ -92,6 +124,7 @@ const Speakers = () => {
       .then((data) => {
         console.log(data);
         const arr = data.map((item) => {
+          item.bioFull = item.bio;
           item.bio = item.bio.substring(0, 30) + "...";
           return item;
         });
@@ -106,7 +139,9 @@ const Speakers = () => {
             <h2 className="drawer-title d-inline-block">Speaker</h2>
           </div>
           <div className="col-6 text-end">
-            <button className="theme-button">Add Speaker</button>
+            <button className="theme-button" onClick={handleAddSpeaker}>
+              Add Speaker
+            </button>
           </div>
         </div>
         <div className="row">

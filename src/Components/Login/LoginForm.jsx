@@ -8,7 +8,7 @@ import {
   TextField,
 } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
@@ -27,8 +27,16 @@ const LoginForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    localStorage.setItem("token", "12345678");
     navigate("/dashboard");
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/dashboard");
+    }
+  }, []);
   return (
     <form onSubmit={handleSubmit}>
       <div className="mb-3">

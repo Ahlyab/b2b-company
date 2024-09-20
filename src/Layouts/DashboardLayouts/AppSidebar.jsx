@@ -56,19 +56,15 @@ const AppSidebar = ({
       <Divider className="divider" />
       <List>
         {options.map((option, index) => (
-          <ListItem key={index} disablePadding>
-            <ListItemButton
-              LinkComponent={Link}
-              to={option.path}
-              className={location.pathname === option.path ? "active-tab" : ""}
-            >
-              <ListItemIcon
-                className={
-                  location.pathname === option.path ? "active-icon" : ""
-                }
-              >
-                {option.icon}
-              </ListItemIcon>
+          <ListItem
+            key={index}
+            disablePadding
+            className={
+              location.pathname.includes(option.path) ? "active-tab" : ""
+            }
+          >
+            <ListItemButton LinkComponent={Link} to={option.path}>
+              <ListItemIcon>{option.icon}</ListItemIcon>
               <ListItemText primary={option.title} />
             </ListItemButton>
           </ListItem>

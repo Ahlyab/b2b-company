@@ -34,14 +34,23 @@
   border-radius: 3px;
 }
 
+.active-tab svg {
+  color: white !important;
+}
+
 .active-tab {
+  background-color: #5792c9 !important;
+  color: white !important;
+}
+
+/* .active-tab {
   background-color: #5792c9 !important;
   color: white !important;
 }
 
 .active-icon {
   color: white !important;
-}
+} */
 
 /* App header */
 
@@ -155,9 +164,7 @@
 .Dashboard-layout-main {
   flex-grow: 1;
   padding: 16px;
-  /* overflow-y: scroll; */
-  /* overflow: hidden;
-  height: calc(100 vh- 50px) !important; */
+  padding-bottom: 50px;
 }
 
 /* Forgot password */
@@ -427,7 +434,6 @@ body,
 
 /*-------------------------- Exhibitor */
 .exhibitor-table {
-  height: 400px;
   width: 100%;
 }
 /* create form where each line has 2 fields */
@@ -536,11 +542,12 @@ body,
 
 /* Add update Speaker form */
 .main-speaker-div {
-  background-color: #3c668c;
+  flex: 4; /* 40% of the width */
   display: flex;
-  justify-content: center;
   align-items: center;
-  height: 100vh;
+  justify-content: center;
+  padding: 1rem;
+  height: 100%;
 }
 
 .speaker-form-div {
@@ -551,6 +558,12 @@ body,
   border: 1px solid #ccc;
   border-radius: 10px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.speaker-form-div h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #5792c9;
 }
 
 .speaker-form-input {

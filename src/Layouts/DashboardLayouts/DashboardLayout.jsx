@@ -1,15 +1,16 @@
 import { Box, Toolbar } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import AppHeader from "./AppHeader";
 import Sidebar from "./AppSidebar";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
 const drawerWidth = 280;
 
 const DashboardLayout = () => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isClosing, setIsClosing] = React.useState(false);
+  const navigate = useNavigate();
 
   const handleDrawerClose = () => {
     setIsClosing(true);
@@ -17,11 +18,15 @@ const DashboardLayout = () => {
   };
 
   const handleDrawerToggle = () => {
-    // if (!isClosing) {
-    //   setMobileOpen(!mobileOpen);
-    // }
     setMobileOpen(!mobileOpen);
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/");
+    }
+  }, []);
 
   return (
     <div className={"Dashboard-layout-container"}>
