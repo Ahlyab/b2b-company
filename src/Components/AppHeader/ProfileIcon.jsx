@@ -10,11 +10,20 @@ import Logout from "@mui/icons-material/Logout";
 import { profile } from "../../Assests/index";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { useNavigate } from "react-router-dom";
+import ChangePassword from "./ChangePassword";
+import CustomModal from "../GeneralComponents/CustomModal";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 
 export default function ProfileIcon() {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [showChangePassword, setShowChangePassword] = React.useState(false);
   const open = Boolean(anchorEl);
+
   const navigate = useNavigate();
+
+  const handleCloseChangePassword = () => {
+    setShowChangePassword(false);
+  };
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -83,13 +92,26 @@ export default function ProfileIcon() {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem onClick={handleClose} sx={{ fontWeight: "600" }}>
+        <MenuItem
+          onClick={handleClose}
+          sx={{
+            fontWeight: "600",
+            "&:hover": { backgroundColor: "transparent" },
+          }}
+        >
           Ahlyab
         </MenuItem>
 
         <MenuItem
           onClick={handleClose}
-          sx={{ fontStyle: "italic", fontWeight: "200", color: "#a3a3a3" }}
+          sx={{
+            fontStyle: "italic",
+            fontWeight: "200",
+            color: "#a3a3a3",
+            marginTop: "-16px",
+            fontSize: "14px",
+            "&:hover": { backgroundColor: "transparent" },
+          }}
         >
           Ahlyabasad@gmail.com
         </MenuItem>
@@ -102,6 +124,17 @@ export default function ProfileIcon() {
         </MenuItem>
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
+            <ManageAccountsIcon fontSize="small" color="primary" />
+          </ListItemIcon>
+          Update Profile
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            handleClose();
+            setShowChangePassword(true);
+          }}
+        >
+          <ListItemIcon>
             <KeyIcon fontSize="small" color="primary" />
           </ListItemIcon>
           Change Password
@@ -113,6 +146,12 @@ export default function ProfileIcon() {
           Logout
         </MenuItem>
       </Menu>
+
+      <CustomModal
+        open={showChangePassword}
+        handleClose={handleCloseChangePassword}
+        component={<ChangePassword handleClose={handleCloseChangePassword} />}
+      />
     </>
   );
 }

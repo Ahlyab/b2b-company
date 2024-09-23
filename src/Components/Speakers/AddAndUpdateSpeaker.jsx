@@ -1,7 +1,8 @@
-import { Button, InputBase, TextField } from "@mui/material";
+import { Avatar, Button, InputBase, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import ReactEditor from "react-text-editor-kit";
+import { fetchAndFindMaxId } from "../../Utils/Common";
 
 const EMPTY_OBJ = {
   name: "",
@@ -53,16 +54,20 @@ const AddAndUpdateSpeaker = () => {
   let path = "http://localhost:8000/speakers";
   let method = "POST";
 
-  if (typeof state === "object") {
+  if (speaker_id) {
     path += `/${speaker_id}`;
     method = "PUT";
-  } else {
-    inputs.id = state.toString();
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     inputs.detailedBio = value;
     e.preventDefault();
+
+    if (method === "POST") {
+      const id = await fetchAndFindMaxId("http://localhost:8000/speakers");
+      inputs.id = id + 1;
+    }
+
     fetch(path, {
       method: method,
       headers: {
@@ -81,7 +86,7 @@ const AddAndUpdateSpeaker = () => {
       <div className="row">
         <div className="col-12 ">
           <h2 className="drawer-title mb-4">{`${
-            typeof state === "object" ? "Edit" : "Add"
+            speaker_id ? "Edit" : "Add"
           } Speaker`}</h2>
         </div>
       </div>
@@ -134,28 +139,13 @@ const AddAndUpdateSpeaker = () => {
               </div>
               <div className="col-6 ">
                 <div class="mb-3">
-                  {/* <input
-                    class="form-control"
-                    type="file"
-                    id="formFile"
-                    placeholder="Upload Image"
-                    style={{ outline: "none", padding: 14 }}
-                  /> */}
-                  {/* <TextField
-                    className="form-control speaker-form-input"
-                    type="file"
-                    label="Profile Image"
-                    focused
-                  /> */}
-                  <button className="theme-button p-3 " component="label">
-                    Upload Image
-                    <input
-                      className="theme-button"
-                      type="file"
-                      accept="image/*"
-                      hidden
+                  <div className="col-md-6 d-flex align-items-center">
+                    <Avatar
+                      src={inputs.profileImg}
+                      className="d-inline-block m-2"
                     />
-                  </button>
+                    <input type="file" className="theme-button" />
+                  </div>
                 </div>
               </div>
             </div>
@@ -192,7 +182,7 @@ const AddAndUpdateSpeaker = () => {
             <div className="row">
               <div className="col-12 text-end">
                 <button type="submit" className="theme-button mt-2">
-                  {typeof state === "number" ? "Submit" : "Update"}
+                  {speaker_id ? "Update" : "Submit"}
                 </button>
               </div>
             </div>

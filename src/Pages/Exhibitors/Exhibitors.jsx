@@ -5,12 +5,26 @@ import DeleteModal from "../../Components/Exhibitors/DeleteModal";
 import { DeleteOutline } from "@mui/icons-material";
 import EditIcon from "@mui/icons-material/Edit";
 import ReactTable from "@meta-dev-zone/react-table";
+import ExhibitorDetailsModal from "../../Components/Exhibitors/ExhibitorDetailsModal";
+import InfoIcon from "@mui/icons-material/Info";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import CustomModal from "../../Components/GeneralComponents/CustomModal";
 
 const Exhibitors = () => {
   const [open, setOpen] = useState(false); // Delete Modal
+  const [showDetails, setShowDetails] = useState(false); // Details Modal
   const [isOpen, setIsOpen] = useState(false);
   const [selectedObject, setSelectedObject] = useState(null);
   const [exhibitors, setExhibitors] = useState([]);
+
+  const showExhibitorDetailsModal = (e) => {
+    setShowDetails(true);
+  };
+
+  const hideExhibitorDetailsModal = (e) => {
+    setShowDetails(false);
+    setSelectedObject(null);
+  };
 
   const handleOpenDrawer = () => {
     setIsOpen(true);
@@ -38,37 +52,39 @@ const Exhibitors = () => {
     handleOpen();
   };
 
+  const handleDetails = (row) => {
+    const selectedObj = exhibitors.find((item) => item.id === row.id);
+
+    setSelectedObject(selectedObj);
+
+    console.log(row);
+    setShowDetails(true);
+  };
+
   const columns = [
+    { id: "actions", label: "Actions", type: "action" },
     { id: "id", label: "ID" },
-    { id: "firstName", label: "First name" },
-    { id: "lastName", label: "Last name" },
-    { id: "email", label: "Email" },
-    { id: "phoneNumber", label: "phoneNumber" },
     {
-      id: "actions",
-      label: "Actions",
-      type: "actions",
-      actions: ["edit", "delete"],
-      renderData: (row) => {
-        return (
-          <div>
-            <>
-              <button className="btn" onClick={() => handleEdit(row)}>
-                <EditIcon />
-              </button>
-              <button
-                className="btn btn-danger"
-                style={{ marginLeft: 16 }}
-                onClick={() => {
-                  handleDelete(row);
-                }}
-              >
-                <DeleteOutline />
-              </button>
-            </>
-          </div>
-        );
-      },
+      id: "firstName",
+      label: "First Name",
+      handleClick: handleDetails,
+      className: "cursor-pointer",
+    },
+    { id: "lastName", label: "Last Name" },
+    { id: "email", label: "Email" },
+    { id: "phoneNumber", label: "Phone Number" },
+  ];
+
+  const MENU_OPTIONS = [
+    {
+      label: "Edit",
+      icon: <EditIcon />,
+      handleClick: handleEdit,
+    },
+    {
+      label: "Delete",
+      icon: <DeleteOutlineIcon />,
+      handleClick: handleDelete,
     },
   ];
 
@@ -107,12 +123,14 @@ const Exhibitors = () => {
         <div className="row">
           <div className="col-12 exhibitor-table mt-4 mb-2">
             <ReactTable
+              onClick={(e) => console.log(e)}
               data={exhibitors}
               TABLE_HEAD={columns}
               is_sticky_header={false}
               is_hide_footer_pagination={false}
               is_hide_header_pagination={false}
               is_hide_search={true}
+              MENU_OPTIONS={MENU_OPTIONS}
             />
           </div>
         </div>
@@ -126,6 +144,18 @@ const Exhibitors = () => {
             setExhibitors={setExhibitors}
             setIsOpen={closeDrawer}
             exhibitors={exhibitors}
+            selectedObject={selectedObject}
+          />
+        }
+      />
+
+      <CustomModal
+        open={showDetails}
+        handleClose={hideExhibitorDetailsModal}
+        component={
+          <ExhibitorDetailsModal
+            handleOpen={showExhibitorDetailsModal}
+            handleClose={hideExhibitorDetailsModal}
             selectedObject={selectedObject}
           />
         }

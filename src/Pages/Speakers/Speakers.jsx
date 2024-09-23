@@ -1,32 +1,29 @@
 import React, { useEffect, useState } from "react";
-import { DeleteOutline } from "@mui/icons-material";
 import EditIcon from "@mui/icons-material/Edit";
 import ReactTable from "@meta-dev-zone/react-table";
 import DeleteModal from "../../Components/Exhibitors/DeleteModal";
 import { useNavigate } from "react-router-dom";
-
-function getMaxSpeakerId(data) {
-  if (data.length === 0) {
-    return null;
-  }
-
-  const maxId = data.reduce((max, item) => {
-    const id = parseInt(item.id, 10);
-    return id > max ? id : max;
-  }, -Infinity);
-
-  console.log("type of maxId", typeof maxId);
-
-  return maxId;
-}
+import SpeakerDetailsModal from "../../Components/Speakers/SpeakerDetailsModal";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import CustomModal from "../../Components/GeneralComponents/CustomModal";
 
 const Speakers = () => {
   const [speakers, setSpeakers] = useState([]);
   const [open, setOpen] = useState(false); // Delete Modal
+  const [showDetails, setShowDetails] = useState(false); // Details Modal
   const [selectedObject, setSelectedObject] = useState(null);
   const navigate = useNavigate();
 
   const handleOpen = () => setOpen(true);
+
+  const showDetailsModal = () => {
+    setShowDetails(true);
+  };
+
+  const hideDetailsModal = () => {
+    setSelectedObject(null);
+    setShowDetails(false);
+  };
 
   const handleClose = () => {
     setSelectedObject(null);
@@ -39,8 +36,7 @@ const Speakers = () => {
   };
 
   const handleAddSpeaker = () => {
-    const id = getMaxSpeakerId(speakers);
-    navigate("/speakers/add-speaker", { state: id + 1 });
+    navigate("/speakers/add-speaker");
   };
 
   const handleEditSpeaker = (row) => {
@@ -49,15 +45,22 @@ const Speakers = () => {
     navigate(`/speakers/edit-speaker/${row.id}`, { state: row });
   };
 
+  const handleDetails = (row) => {
+    const selectedObj = speakers.find((item) => item.id === row.id);
+    setSelectedObject(selectedObj);
+    showDetailsModal();
+  };
+
   const columns = [
-    { id: "id", label: "ID", type: "text" },
+    { id: "actions", label: "Actions", type: "action" },
+    { id: "id", label: "ID" },
     {
       id: "speaker",
       label: "Speaker",
-      type: "text",
+      className: "cursor-pointer",
       renderData: (row) => {
         return (
-          <>
+          <div onClick={(e) => handleDetails(row)}>
             <img
               src={row.profileImg}
               alt="profile"
@@ -69,47 +72,24 @@ const Speakers = () => {
               }}
             />
             <span>{row.name}</span>
-          </>
-        );
-      },
-    },
-    {
-      id: "email",
-      label: "Email",
-      type: "email",
-    },
-
-    {
-      id: "bio",
-      label: "Bio",
-      type: "text",
-    },
-    {
-      id: "actions",
-      label: "Actions",
-      type: "actions",
-      actions: ["edit", "delete"],
-      renderData: (row) => {
-        return (
-          <div>
-            <>
-              <button className="btn" onClick={() => handleEditSpeaker(row)}>
-                <EditIcon />
-              </button>
-
-              <button
-                className="btn btn-danger"
-                style={{ marginLeft: 16 }}
-                onClick={() => {
-                  handleDelete(row);
-                }}
-              >
-                <DeleteOutline />
-              </button>
-            </>
           </div>
         );
       },
+    },
+    { id: "email", label: "Email" },
+    { id: "phoneNumber", label: "Phone Number" },
+  ];
+
+  const MENU_OPTIONS = [
+    {
+      label: "Edit",
+      icon: <EditIcon />,
+      handleClick: handleEditSpeaker,
+    },
+    {
+      label: "Delete",
+      icon: <DeleteOutlineIcon />,
+      handleClick: handleDelete,
     },
   ];
 
@@ -121,13 +101,7 @@ const Speakers = () => {
         return res.json();
       })
       .then((data) => {
-        console.log(data);
-        const arr = data.map((item) => {
-          item.bioFull = item.bio;
-          item.bio = item.bio.substring(0, 30) + "...";
-          return item;
-        });
-        setSpeakers(arr);
+        setSpeakers(data);
       });
   }, []);
   return (
@@ -152,6 +126,7 @@ const Speakers = () => {
               is_hide_footer_pagination={false}
               is_hide_header_pagination={false}
               is_hide_search={true}
+              MENU_OPTIONS={MENU_OPTIONS}
             />
           </div>
         </div>
@@ -165,6 +140,18 @@ const Speakers = () => {
         setData={setSpeakers}
         selectedObject={selectedObject}
         url={"http://localhost:8000/speakers/"}
+      />
+
+      <CustomModal
+        open={showDetails}
+        handleClose={hideDetailsModal}
+        component={
+          <SpeakerDetailsModal
+            handleOpen={showDetailsModal}
+            handleClose={hideDetailsModal}
+            selectedObject={selectedObject}
+          />
+        }
       />
     </>
   );

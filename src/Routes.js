@@ -7,6 +7,7 @@ import Speakers from "./Pages/Speakers/Speakers";
 import Events from "./Pages/Events/Events";
 import Exhibitors from "./Pages/Exhibitors/Exhibitors";
 import AddAndUpdateSpeaker from "./Components/Speakers/AddAndUpdateSpeaker";
+import AddAndUpdateEvents from "./Components/Events/AddAndUpdateEvents";
 
 const routes = () => {
   return (
@@ -21,6 +22,11 @@ const routes = () => {
         <Route
           path="/speakers/edit-speaker/:speaker_id"
           element={<AddAndUpdateSpeaker />}
+        />
+        <Route path="/events/add-event" element={<AddAndUpdateEvents />} />
+        <Route
+          path="/events/edit-event/:event_id"
+          element={<AddAndUpdateEvents />}
         />
       </Route>
       <Route path="/forgot-password" element={<ForgotPassword />} />

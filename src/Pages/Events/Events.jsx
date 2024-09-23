@@ -1,25 +1,11 @@
-import { Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import ReactTable from "@meta-dev-zone/react-table";
-import { DeleteOutline } from "@mui/icons-material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteModal from "../../Components/Exhibitors/DeleteModal";
 import { useNavigate } from "react-router-dom";
-
-function getMaxSpeakerId(data) {
-  if (data.length === 0) {
-    return null;
-  }
-
-  const maxId = data.reduce((max, item) => {
-    const id = parseInt(item.id, 10);
-    return id > max ? id : max;
-  }, -Infinity);
-
-  console.log("type of maxId", typeof maxId);
-
-  return maxId;
-}
+import EventDetailModal from "../../Components/Events/EventDetailModal";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import CustomModal from "../../Components/GeneralComponents/CustomModal";
 
 function formatDateTime(dateString) {
   const date = new Date(dateString);
@@ -51,10 +37,26 @@ function formatDateTime(dateString) {
 const Events = () => {
   const [events, setEvents] = useState([]);
   const [open, setOpen] = useState(false); // Delete Modal
+  const [showDetails, setShowDetails] = useState(false); // Details Modal
   const [selectedObject, setSelectedObject] = useState(null);
   const navigate = useNavigate();
 
   const handleOpen = () => setOpen(true);
+
+  const showDetailsModal = () => {
+    setShowDetails(true);
+  };
+
+  const hideDetailsModal = () => {
+    setSelectedObject(null);
+    setShowDetails(false);
+  };
+
+  const handleDetails = (row) => {
+    const selectedObj = events.find((item) => item.id === row.id);
+    setSelectedObject(selectedObj);
+    showDetailsModal();
+  };
 
   const handleClose = () => {
     setSelectedObject(null);
@@ -66,71 +68,39 @@ const Events = () => {
     handleOpen();
   };
 
-  const handleAddSpeaker = () => {
-    const id = getMaxSpeakerId(events);
-    navigate("/events/add-speaker", { state: id + 1 });
+  const handleAddEvent = () => {
+    navigate("/events/add-event");
   };
 
-  const handleEditSpeaker = (row) => {
-    console.log(row);
-    console.log("type of row", typeof row);
-    navigate(`/events/edit-speaker/${row.id}`, { state: row });
+  const handleEditEvent = (row) => {
+    navigate(`/events/edit-event/${row.id}`, { state: row });
   };
 
   const columns = [
-    { id: "id", label: "ID", type: "text" },
+    { label: "Actions", type: "action" },
+    { id: "id", label: "ID" },
     {
       id: "title",
       label: "Title",
-      type: "text",
+      handleClick: handleDetails,
+      className: "cursor-pointer",
     },
-    {
-      id: "startDate",
-      label: "Start Date",
-      type: "date",
-      renderData: (row) => {
-        return <>{formatDateTime(row.startDate)}</>;
-      },
-    },
-    {
-      id: "endDate",
-      label: "End Date",
-      type: "date",
-      renderData: (row) => {
-        return <>{formatDateTime(row.endDate)}</>;
-      },
-    },
-    {
-      id: "venue",
-      label: "Venue",
-      type: "text",
-    },
-    {
-      id: "actions",
-      label: "Actions",
-      type: "actions",
-      actions: ["edit", "delete"],
-      renderData: (row) => {
-        return (
-          <div>
-            <>
-              <button className="btn" onClick={() => handleEditSpeaker(row)}>
-                <EditIcon />
-              </button>
+    { id: "hostname", label: "Event Host" },
+    { id: "start_date", label: "Start Date" },
+    { id: "end_date", label: "End Date" },
+    { id: "venue", label: "Venue" },
+  ];
 
-              <button
-                className="btn btn-danger"
-                style={{ marginLeft: 16 }}
-                onClick={() => {
-                  handleDelete(row);
-                }}
-              >
-                <DeleteOutline />
-              </button>
-            </>
-          </div>
-        );
-      },
+  const MENU_OPTIONS = [
+    {
+      label: "Edit",
+      icon: <EditIcon />,
+      handleClick: handleEditEvent,
+    },
+    {
+      label: "Delete",
+      icon: <DeleteOutlineIcon />,
+      handleClick: handleDelete,
     },
   ];
 
@@ -143,16 +113,17 @@ const Events = () => {
       })
       .then((data) => {
         console.log(data);
-        const arr = data.map((item) => {
-          item.name = item.title;
-          item.descriptionFull = item.description;
-          item.description = item.description.substring(0, 30) + "...";
-          return item;
+        const eventArr = data.map((event) => {
+          event.name = event.title;
+          event.end_date = formatDateTime(event.endDate);
+          event.start_date = formatDateTime(event.startDate);
+          return event;
         });
-        console.log(arr);
-        setEvents(arr);
+        console.log(eventArr);
+        setEvents(eventArr);
       });
   }, []);
+
   return (
     <>
       <div className="container-fluid">
@@ -161,7 +132,9 @@ const Events = () => {
             <h2 className="drawer-title d-inline-block">Events</h2>
           </div>
           <div className="col-6 text-end">
-            <button className="theme-button">Add Events</button>
+            <button className="theme-button" onClick={handleAddEvent}>
+              Add Events
+            </button>
           </div>
         </div>
         <div className="row">
@@ -173,6 +146,7 @@ const Events = () => {
               is_hide_footer_pagination={false}
               is_hide_header_pagination={false}
               is_hide_search={true}
+              MENU_OPTIONS={MENU_OPTIONS}
             />
           </div>
         </div>
@@ -185,6 +159,18 @@ const Events = () => {
         setData={setEvents}
         selectedObject={selectedObject}
         url={"http://localhost:8000/events/"}
+      />
+
+      <CustomModal
+        open={showDetails}
+        handleClose={hideDetailsModal}
+        component={
+          <EventDetailModal
+            handleOpen={showDetailsModal}
+            handleClose={hideDetailsModal}
+            selectedObject={selectedObject}
+          />
+        }
       />
     </>
   );

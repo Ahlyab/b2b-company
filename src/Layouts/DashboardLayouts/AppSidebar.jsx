@@ -6,12 +6,11 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import Toolbar from "@mui/material/Toolbar";
 import { DashboardCustomizeOutlined } from "@mui/icons-material";
 import InterpreterModeOutlinedIcon from "@mui/icons-material/InterpreterModeOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { logo } from "../../Assests";
 
 const AppSidebar = ({
