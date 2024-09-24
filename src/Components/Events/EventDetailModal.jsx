@@ -34,9 +34,9 @@ const EventDetailModal = ({ handleClose, selectedObject }) => {
             className="form-control mt-4 "
             label="Host Name"
             type="text"
-            name="hostname"
+            name="hostName"
             variant="outlined"
-            value={selectedObject.hostname}
+            value={selectedObject.hostName}
             aria-readonly="true"
           />
         </div>

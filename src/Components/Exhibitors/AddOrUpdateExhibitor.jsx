@@ -26,7 +26,7 @@ const EMPTY_OBJECT = {
   additionalDetails: "",
 };
 
-const AddAndUpdateExhibitor = ({
+const AddOrUpdateExhibitor = ({
   setIsOpen,
   exhibitors,
   setExhibitors,
@@ -202,4 +202,4 @@ const AddAndUpdateExhibitor = ({
   );
 };
 
-export default AddAndUpdateExhibitor;
+export default AddOrUpdateExhibitor;

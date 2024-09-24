@@ -274,7 +274,7 @@
       "detailedBio": "zzzzz"
     },
     {
-      "id": 18,
+      "id": "18",
       "name": "5",
       "email": "5@5.com",
       "bio": "5555",
@@ -292,7 +292,7 @@
       "description": "Annual tech conference focusing on AI and machine learning innovations.",
       "venue": "Convention Center, San Francisco, CA",
       "name": "Tech Conference 2024",
-      "hostname": "Alice",
+      "hostName": "Alice",
       "contactNumber": "140232479322"
     },
     {
@@ -330,7 +330,7 @@
     {
       "id": "6",
       "title": "Meta Conference",
-      "hostname": "Ali",
+      "hostName": "Ali",
       "contactNumber": "92343235432",
       "description": "It's about meta company",
       "venue": "Sahiwal",
@@ -340,7 +340,7 @@
     {
       "id": "9",
       "title": "testing",
-      "hostname": "testing",
+      "hostName": "testing",
       "contactNumber": "023000",
       "description": "testing",
       "venue": "asdisn",
@@ -348,14 +348,24 @@
       "endDate": "2024-09-28T11:18:56.518Z"
     },
     {
-      "id": 10,
+      "id": "10",
       "title": "2",
-      "hostname": "2",
+      "hostName": "2",
       "contactNumber": "2",
       "description": "2",
       "venue": "2",
       "startDate": "2024-09-23T11:46:59.115Z",
       "endDate": "2024-09-23T11:46:59.115Z"
+    },
+    {
+      "id": 11,
+      "title": "new",
+      "hostName": "new ",
+      "contactNumber": "0000000",
+      "description": "new",
+      "venue": "new",
+      "startDate": "2024-09-24T04:33:26.039Z",
+      "endDate": "2024-09-24T04:33:26.039Z"
     }
   ]
 }

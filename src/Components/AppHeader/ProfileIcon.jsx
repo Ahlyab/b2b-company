@@ -33,6 +33,10 @@ export default function ProfileIcon() {
     setAnchorEl(null);
   };
 
+  const handleProfileUpdate = () => {
+    navigate("dashboard/update-profile");
+  };
+
   const handleSignOut = () => {
     localStorage.removeItem("token");
     navigate("/");
@@ -122,7 +126,7 @@ export default function ProfileIcon() {
           </ListItemIcon>
           Settings
         </MenuItem>
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={handleProfileUpdate}>
           <ListItemIcon>
             <ManageAccountsIcon fontSize="small" color="primary" />
           </ListItemIcon>

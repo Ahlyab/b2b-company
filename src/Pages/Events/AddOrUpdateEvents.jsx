@@ -5,15 +5,11 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
-import {
-  fetchAndFindMaxId,
-  fetchAndGetMaxId,
-  getMaxId,
-} from "../../Utils/Common";
+import { fetchAndFindMaxId } from "../../Utils/Common";
 
 const EMPTY_OBJ = {
   title: "",
-  hostname: "",
+  hostName: "",
   contactNumber: "",
   description: "",
   venue: "",
@@ -21,7 +17,7 @@ const EMPTY_OBJ = {
   endDate: dayjs(new Date()),
 };
 
-const AddAndUpdateEvents = () => {
+const AddOrUpdateEvents = () => {
   const [inputs, setInputs] = useState(EMPTY_OBJ);
   const navigate = useNavigate();
   const { state } = useLocation();
@@ -84,10 +80,10 @@ const AddAndUpdateEvents = () => {
   };
 
   return (
-    <div className="container bg-white p-md-5">
+    <div className="container">
       <div className="row">
         <div className="col-12">
-          <h2 className="drawer-title">Add Event</h2>
+          <h2 className="drawer-title">{event_id ? "Update" : "Add"} Event</h2>
         </div>
       </div>
       <form className="row" onSubmit={handleSubmit}>
@@ -106,9 +102,9 @@ const AddAndUpdateEvents = () => {
             className="form-control mt-4"
             label="Host Name"
             type="text"
-            name="hostname"
+            name="hostName"
             variant="outlined"
-            value={inputs.hostname}
+            value={inputs.hostName}
             onChange={handleChange}
           />
         </div>
@@ -168,11 +164,13 @@ const AddAndUpdateEvents = () => {
           </LocalizationProvider>
         </div>
         <div className="d-flex justify-content-end">
-          <button className="theme-button mt-3">Submit</button>
+          <button className="theme-button mt-3">
+            {event_id ? "Update" : "Submit"}
+          </button>
         </div>
       </form>
     </div>
   );
 };
 
-export default AddAndUpdateEvents;
+export default AddOrUpdateEvents;

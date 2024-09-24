@@ -1,8 +1,16 @@
-import { Avatar, Button, InputBase, TextField } from "@mui/material";
+import {
+  Avatar,
+  Button,
+  IconButton,
+  InputBase,
+  TextField,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import ReactEditor from "react-text-editor-kit";
 import { fetchAndFindMaxId } from "../../Utils/Common";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import { PhotoCamera } from "@mui/icons-material";
 
 const EMPTY_OBJ = {
   name: "",
@@ -12,7 +20,7 @@ const EMPTY_OBJ = {
   phoneNumber: "",
 };
 
-const AddAndUpdateSpeaker = () => {
+const AddOrUpdateSpeaker = () => {
   const [inputs, setInputs] = useState(EMPTY_OBJ);
   const navigate = useNavigate();
   const { state } = useLocation();
@@ -90,10 +98,45 @@ const AddAndUpdateSpeaker = () => {
           } Speaker`}</h2>
         </div>
       </div>
+      <div className="row">
+        <div className="col-12 d-flex justify-content-center">
+          <Avatar style={{ width: "90px", height: "90px" }} />
+        </div>
+      </div>
 
       <div className="row">
         <div className col-12 col-md-6>
           <form onSubmit={handleSubmit}>
+            <div className="row mt-4">
+              <div className="col-6">
+                <label className="fw-bold" htmlFor="profile-upload">
+                  Upload Profile Picture
+                </label>
+                <p className="text-muted">
+                  Please upload an image in JPG, JPEG, or PNG format with
+                  dimensions 300x300 pixels.
+                </p>
+              </div>
+              <div className="col-6 text-end">
+                <input
+                  accept="image/*"
+                  style={{ display: "none" }}
+                  id="profile-image-input"
+                  type="file"
+                />
+                <label htmlFor="profile-image-input">
+                  <button
+                    type="button"
+                    className="theme-button"
+                    onClick={() =>
+                      document.getElementById("profile-image-input").click()
+                    }
+                  >
+                    Upload Image
+                  </button>
+                </label>
+              </div>
+            </div>
             <div className="row">
               <div className="col-6 mb-3">
                 <TextField
@@ -124,7 +167,7 @@ const AddAndUpdateSpeaker = () => {
             </div>
 
             <div className="row">
-              <div className="col-6 mb-3">
+              <div className="col-12 mb-3">
                 <TextField
                   className="form-control speaker-form-input"
                   id="outlined-basic"
@@ -136,17 +179,6 @@ const AddAndUpdateSpeaker = () => {
                   onChange={handleChange}
                   required={true}
                 />
-              </div>
-              <div className="col-6 ">
-                <div class="mb-3">
-                  <div className="col-md-6 d-flex align-items-center">
-                    <Avatar
-                      src={inputs.profileImg}
-                      className="d-inline-block m-2"
-                    />
-                    <input type="file" className="theme-button" />
-                  </div>
-                </div>
               </div>
             </div>
 
@@ -193,4 +225,4 @@ const AddAndUpdateSpeaker = () => {
   );
 };
 
-export default AddAndUpdateSpeaker;
+export default AddOrUpdateSpeaker;

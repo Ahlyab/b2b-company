@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import CustomDrawer from "../../Components/GeneralComponents/CustomDrawer";
-import AddAndUpdateExhibitor from "../../Components/Exhibitors/AddAndUpdateExhibitor";
-import DeleteModal from "../../Components/Exhibitors/DeleteModal";
-import { DeleteOutline } from "@mui/icons-material";
+import AddOrUpdateExhibitor from "../../Components/Exhibitors/AddOrUpdateExhibitor";
+import DeleteModal from "../../Components/GeneralComponents/DeleteModal";
 import EditIcon from "@mui/icons-material/Edit";
 import ReactTable from "@meta-dev-zone/react-table";
 import ExhibitorDetailsModal from "../../Components/Exhibitors/ExhibitorDetailsModal";
-import InfoIcon from "@mui/icons-material/Info";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import CustomModal from "../../Components/GeneralComponents/CustomModal";
+import { CircularProgress } from "@mui/material";
+import { fetchData } from "../../Utils/Common";
 
 const Exhibitors = () => {
   const [open, setOpen] = useState(false); // Delete Modal
@@ -16,6 +16,7 @@ const Exhibitors = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedObject, setSelectedObject] = useState(null);
   const [exhibitors, setExhibitors] = useState([]);
+  const [isloading, setIsLoading] = useState(true);
 
   const showExhibitorDetailsModal = (e) => {
     setShowDetails(true);
@@ -89,22 +90,19 @@ const Exhibitors = () => {
   ];
 
   useEffect(() => {
-    fetch("http://localhost:8000/exhibitors", {
-      method: "GET",
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        console.log(data);
-        const arr = data.map((item) => {
-          return {
-            ...item,
-            name: item.name + " " + item.lastName,
-          };
-        });
-        setExhibitors(arr);
-      });
+    const manipulateExhibitors = (data) => {
+      return data.map((item) => ({
+        ...item,
+        name: `${item.name} ${item.lastName}`,
+      }));
+    };
+
+    fetchData(
+      "http://localhost:8000/exhibitors",
+      setExhibitors,
+      setIsLoading,
+      manipulateExhibitors
+    );
   }, []);
 
   return (
@@ -121,18 +119,24 @@ const Exhibitors = () => {
           </div>
         </div>
         <div className="row">
-          <div className="col-12 exhibitor-table mt-4 mb-2">
-            <ReactTable
-              onClick={(e) => console.log(e)}
-              data={exhibitors}
-              TABLE_HEAD={columns}
-              is_sticky_header={false}
-              is_hide_footer_pagination={false}
-              is_hide_header_pagination={false}
-              is_hide_search={true}
-              MENU_OPTIONS={MENU_OPTIONS}
-            />
-          </div>
+          {isloading ? (
+            <div className="d-flex justify-content-center align-items-center mt-5">
+              <CircularProgress />
+            </div>
+          ) : (
+            <div className="col-12 exhibitor-table mt-4 mb-2">
+              <ReactTable
+                onClick={(e) => console.log(e)}
+                data={exhibitors}
+                TABLE_HEAD={columns}
+                is_sticky_header={false}
+                is_hide_footer_pagination={false}
+                is_hide_header_pagination={false}
+                is_hide_search={true}
+                MENU_OPTIONS={MENU_OPTIONS}
+              />
+            </div>
+          )}
         </div>
       </div>
       <CustomDrawer
@@ -140,7 +144,7 @@ const Exhibitors = () => {
         isOpen={isOpen}
         setIsOpen={closeDrawer}
         component={
-          <AddAndUpdateExhibitor
+          <AddOrUpdateExhibitor
             setExhibitors={setExhibitors}
             setIsOpen={closeDrawer}
             exhibitors={exhibitors}

@@ -1,3 +1,5 @@
+import moment from "moment";
+
 function getMaxId(data) {
   if (data.length === 0) {
     return null;
@@ -24,4 +26,26 @@ async function fetchAndFindMaxId(url) {
   }
 }
 
-export { getMaxId, fetchAndFindMaxId };
+function formatDateTime(dateString) {
+  const date = moment(dateString);
+  const formattedDate = date.format("DD-MM-YYYY, h:mm:ss A");
+
+  return formattedDate;
+}
+
+const fetchData = async (url, setData, setLoading, manipulateData) => {
+  try {
+    const response = await fetch(url, { method: "GET" });
+    let data = await response.json();
+    if (manipulateData) {
+      data = manipulateData(data);
+    }
+    setData(data);
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  } finally {
+    setLoading(false);
+  }
+};
+
+export { getMaxId, fetchAndFindMaxId, formatDateTime, fetchData };
