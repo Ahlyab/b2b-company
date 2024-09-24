@@ -2,6 +2,7 @@ import { Avatar, Badge, Button, IconButton, TextField } from "@mui/material";
 import React, { useState } from "react";
 import PhoneInput from "react-phone-number-validation";
 import AddIcon from "@mui/icons-material/Add";
+import CameraAltIcon from "@mui/icons-material/CameraAlt";
 
 const UpdateProfile = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -31,11 +32,13 @@ const UpdateProfile = () => {
         </div>
       </div>
       <div className="row">
-        <div className="col-12 d-flex justify-content-center">
+        <div className="col-12 d-flex justify-content-center mb-3">
           <Badge
             overlap="circular"
             anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-            badgeContent={<AddIcon sx={{ color: "#444" }} />}
+            badgeContent={
+              <CameraAltIcon sx={{ color: "#5792c9", cursor: "pointer" }} />
+            }
             onClick={() =>
               document.getElementById("profile-image-input").click()
             }
@@ -86,13 +89,6 @@ const UpdateProfile = () => {
           <div className="col-6 ">
             <PhoneInput
               inputClass="form-control input-phone custom-input"
-              // style={{
-              //   outlineColor: "#dadada",
-              //   width: "100%",
-              //   height: "56px",
-              //   borderRadius: "4px",
-              //   border: "1px solid #dadada",
-              // }}
               value={phoneNumber} // Current value of the phone number input (required)
               setValue={setPhoneNumber} // Function to set the value of the phone number input (required)
               onChange={handleChange} // Function called when the phone number changes (required)
@@ -101,13 +97,13 @@ const UpdateProfile = () => {
         </div>
         <div className="row mt-3">
           <div className="col-12">
-            <TextField
+            <textarea
               id="outlined-basic"
-              label="Address"
+              placeholder="Address"
               type="text"
-              minRows={2}
+              rows="4"
               multiline
-              className="form-control"
+              className="form-control custom-textarea"
             />
           </div>
         </div>

@@ -84,7 +84,6 @@
 .profile-icon-button {
   display: "inline-flex";
   align-items: "center";
-  cursor: "pointer";
   margin-left: 16px;
   margin-right: 16px;
 }
@@ -605,11 +604,11 @@ body,
   width: 100%;
   padding: 15px;
   font-size: 16px;
-  border: 1px solid #dadada; /* Default border color */
+  border: 1px solid #c8c8c8; /* Default border color */
   /* border: 1px solid #ced4da; Default border color */
   border-radius: 4px;
   outline: none;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  /* transition: border-color 0.3s ease, box-shadow 0.3s ease; */
 }
 
 /* MUI-like focused state with primary color */
@@ -630,6 +629,37 @@ body,
 }
 
 /* Hover effect similar to MUI */
-.custom-input:hover {
-  border-color: #999;
+.custom-input:not(:focus):hover {
+  border-color: #000;
+}
+
+.custom-textarea {
+  border: 1px solid #c8c8c8;
+  outline: none;
+}
+
+.custom-textarea:focus {
+  border-color: #5792c9; /* MUI primary color */
+  border-width: 2px;
+  /* box-shadow: 0px 0px 0px 2px rgba(63, 81, 181, 0.2); Mimics MUI focus shadow */
+  box-shadow: none;
+}
+
+.custom-textarea:active {
+  border-color: #5792c9; /* MUI primary color */
+}
+
+.custom-textarea::placeholder {
+  color: #6c757d;
+}
+
+.custom-textarea:not(:focus):hover {
+  border-color: #000;
+}
+
+.test {
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }

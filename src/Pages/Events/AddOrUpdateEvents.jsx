@@ -130,19 +130,6 @@ const AddOrUpdateEvents = () => {
             onChange={handleChange}
           />
         </div>
-        <div className="col-12">
-          <textarea
-            className="form-control mt-4"
-            placeholder="Description"
-            type="text"
-            name="description"
-            variant="outlined"
-            minRows={2}
-            multiline
-            value={inputs.description}
-            onChange={handleChange}
-          />
-        </div>
 
         <div className="col-12 col-md-6">
           <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -163,6 +150,19 @@ const AddOrUpdateEvents = () => {
               onChange={(newValue) => handleDateChange("endDate", newValue)}
             />
           </LocalizationProvider>
+        </div>
+        <div className="col-12">
+          <textarea
+            className="form-control mt-4"
+            placeholder="Description"
+            type="text"
+            name="description"
+            variant="outlined"
+            rows="4"
+            multiline
+            value={inputs.description}
+            onChange={handleChange}
+          />
         </div>
         <div className="d-flex justify-content-end">
           <button className="theme-button mt-3">

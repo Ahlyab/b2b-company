@@ -53,7 +53,10 @@ export default function ProfileIcon() {
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
           >
-            <Avatar sx={{ width: 40, height: 40 }} src={profile}>
+            <Avatar
+              sx={{ width: 40, height: 40, cursor: "pointer" }}
+              src={profile}
+            >
               A
             </Avatar>
           </div>
@@ -101,6 +104,7 @@ export default function ProfileIcon() {
           sx={{
             fontWeight: "600",
             "&:hover": { backgroundColor: "transparent" },
+            "&:focus": { backgroundColor: "transparent" },
           }}
         >
           Ahlyab

@@ -7,12 +7,13 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import { profile } from "../../Assests";
 
 const EMPTY_OBJ = {
   name: "",
   email: "",
   bio: "",
-  profileImg: "https://via.placeholder.com/150",
+  profileImg: profile,
   phoneNumber: "",
 };
 
@@ -116,7 +117,7 @@ const AddOrUpdateSpeaker = () => {
       </div>
 
       <div className="row">
-        <div className col-12 col-md-6>
+        <div className="col-12">
           <form onSubmit={handleSubmit}>
             <div className="row">
               <div className="col-6 mb-3">
@@ -163,14 +164,8 @@ const AddOrUpdateSpeaker = () => {
               </div>
               <div className="col-6 mb-3">
                 <PhoneInput
-                  className="form-control phone-input"
-                  style={{
-                    outlineColor: "#dadada",
-                    width: "100%",
-                    height: "56px",
-                    borderRadius: "4px",
-                    border: "1px solid #dadada",
-                  }}
+                  inputClass="form-control input-phone custom-input"
+                  country="pk"
                   value={phoneNumber} // Current value of the phone number input (required)
                   setValue={setPhoneNumber} // Function to set the value of the phone number input (required)
                   onChange={handleChangePhoneNumber} // Function called when the phone number changes (required)
@@ -178,7 +173,13 @@ const AddOrUpdateSpeaker = () => {
               </div>
             </div>
 
-            <div className="row my-3">
+            <div
+              className="row my-3 align-items-center"
+              style={{
+                borderBottom: "1px solid #e0e0e0",
+                paddingBottom: "10px",
+              }}
+            >
               <div className="col-4">
                 <label className="fw-bold d-block" htmlFor="profile-upload">
                   Upload Profile Picture
@@ -189,11 +190,7 @@ const AddOrUpdateSpeaker = () => {
               </div>
               <div className="col-4 d-flex justify-content-center">
                 <Avatar
-                  sx={{
-                    height: "60px",
-                    width: "60px",
-                    visibility: speaker_id ? "visible" : "hidden",
-                  }}
+                  sx={{ height: "60px", width: "60px" }}
                   variant="square"
                   src={inputs.profileImg}
                 />
@@ -222,25 +219,25 @@ const AddOrUpdateSpeaker = () => {
 
             <div className="row">
               <div className="col-12 mb-3">
-                <TextField
-                  className="form-control speaker-form-input"
+                <textarea
+                  className="form-control speaker-form-input custom-textarea"
                   id="outlined-basic"
-                  label="Bio"
+                  placeholder="Bio"
                   variant="outlined"
                   name="bio"
+                  rows="4"
                   type="text"
                   multiline
                   value={inputs.bio}
                   onChange={handleChange}
-                  minRows={4}
                   required={true}
                 />
               </div>
             </div>
 
             <div className="row">
-              <div className="col-12 mb-2">
-                <h5 className="profile-update-heading">Social Links</h5>
+              <div className="col-12 mb-3">
+                <h5 className="drawer-title my-3">Social Links</h5>
               </div>
             </div>
 
@@ -249,6 +246,7 @@ const AddOrUpdateSpeaker = () => {
                 <TextField
                   label="Facebook"
                   variant="outlined"
+                  placeholder="Facebook Username"
                   fullWidth
                   InputProps={{
                     startAdornment: (
@@ -263,6 +261,7 @@ const AddOrUpdateSpeaker = () => {
                 <TextField
                   label="Twitter"
                   variant="outlined"
+                  placeholder="Twitter Username"
                   fullWidth
                   InputProps={{
                     startAdornment: (
@@ -279,6 +278,7 @@ const AddOrUpdateSpeaker = () => {
                 <TextField
                   label="Instagram"
                   variant="outlined"
+                  placeholder="Instragram Username"
                   fullWidth
                   InputProps={{
                     startAdornment: (
@@ -293,6 +293,7 @@ const AddOrUpdateSpeaker = () => {
                 <TextField
                   label="LinkedIn"
                   variant="outlined"
+                  placeholder="LinkedIn Username"
                   fullWidth
                   InputProps={{
                     startAdornment: (
