@@ -87,7 +87,7 @@ const AddOrUpdateEvents = () => {
         </div>
       </div>
       <form className="row" onSubmit={handleSubmit}>
-        <div className="col-12">
+        <div className="col-6">
           <TextField
             className="form-control mt-4 fw-bold"
             label="Title"
@@ -119,20 +119,7 @@ const AddOrUpdateEvents = () => {
             onChange={handleChange}
           />
         </div>
-        <div className="col-12">
-          <TextField
-            className="form-control mt-4"
-            label="Description"
-            type="text"
-            name="description"
-            variant="outlined"
-            minRows={2}
-            multiline
-            value={inputs.description}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="col-12">
+        <div className="col-6">
           <TextField
             className="form-control mt-4"
             label="Venue"
@@ -143,6 +130,20 @@ const AddOrUpdateEvents = () => {
             onChange={handleChange}
           />
         </div>
+        <div className="col-12">
+          <textarea
+            className="form-control mt-4"
+            placeholder="Description"
+            type="text"
+            name="description"
+            variant="outlined"
+            minRows={2}
+            multiline
+            value={inputs.description}
+            onChange={handleChange}
+          />
+        </div>
+
         <div className="col-12 col-md-6">
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker

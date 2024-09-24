@@ -34,7 +34,7 @@ export default function ProfileIcon() {
   };
 
   const handleProfileUpdate = () => {
-    navigate("dashboard/update-profile");
+    navigate("/update-profile");
   };
 
   const handleSignOut = () => {

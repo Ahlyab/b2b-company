@@ -571,3 +571,65 @@ body,
   padding: 10px;
   margin-top: 5px;
 }
+
+/* table  */
+
+.menu-icon {
+  transition: all 0.3s ease-in-out;
+  padding: 2px 10px;
+  border-radius: 50%;
+  margin-top: 5px;
+  cursor: pointer;
+}
+
+.menu-icon:hover {
+  background-color: #dae7f3;
+}
+
+/* update profile */
+.phone-input {
+  width: 100% !important;
+  height: 56px;
+  border-radius: 4px;
+  /* outline:  ;
+  border: ; */
+}
+
+.profile-update-heading {
+  font-size: 30px;
+  margin: 20px 0;
+  color: #5792c9;
+}
+
+.custom-input {
+  width: 100%;
+  padding: 15px;
+  font-size: 16px;
+  border: 1px solid #dadada; /* Default border color */
+  /* border: 1px solid #ced4da; Default border color */
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* MUI-like focused state with primary color */
+.custom-input:focus {
+  border-color: #5792c9; /* MUI primary color */
+  border-width: 2px;
+  /* box-shadow: 0px 0px 0px 2px rgba(63, 81, 181, 0.2); Mimics MUI focus shadow */
+  box-shadow: none;
+}
+
+.custom-input:active {
+  border-color: #5792c9; /* MUI primary color */
+}
+
+/* Placeholder color */
+.custom-input::placeholder {
+  color: #6c757d;
+}
+
+/* Hover effect similar to MUI */
+.custom-input:hover {
+  border-color: #999;
+}

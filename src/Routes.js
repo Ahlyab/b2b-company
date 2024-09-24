@@ -29,7 +29,7 @@ const routes = () => {
           path="/events/edit-event/:event_id"
           element={<AddOrUpdateEvents />}
         />
-        <Route path="dashboard/update-profile" element={<UpdateProfile />} />
+        <Route path="/update-profile" element={<UpdateProfile />} />
       </Route>
       <Route path="/forgot-password" element={<ForgotPassword />} />
     </Routes>
