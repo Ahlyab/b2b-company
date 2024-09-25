@@ -1,5 +1,6 @@
 import * as React from "react";
 import Modal from "@mui/material/Modal";
+import { _deleteExhibitor } from "../../DAL/Exhibitors/ExhibitorUtils";
 
 const style = {
   position: "absolute",
@@ -31,6 +32,16 @@ export default function DeleteModal({
       setData(updatedData);
       handleClose();
     });
+    // _deleteExhibitor(selectedObject.id).then((res) => {
+    //   console.log(res);
+    //   if (res.code === 200) {
+    //     const updatedData = data.filter(
+    //       (item) => item.id !== selectedObject.id
+    //     );
+    //     setData(updatedData);
+    //     handleClose();
+    //   }
+    // });
   };
 
   return (

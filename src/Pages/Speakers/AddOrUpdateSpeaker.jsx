@@ -11,10 +11,16 @@ import { profile } from "../../Assests";
 
 const EMPTY_OBJ = {
   name: "",
+  firstName: "",
+  lastName: "",
   email: "",
   bio: "",
   profileImg: profile,
   phoneNumber: "",
+  facebookURL: "",
+  twitterURL: "",
+  instagramURL: "",
+  linkedInURL: "",
 };
 
 const AddOrUpdateSpeaker = () => {
@@ -53,7 +59,8 @@ const AddOrUpdateSpeaker = () => {
       console.log("Speaker ID", speaker_id);
       if (state) {
         setInputs(state);
-        setValue(state.detailedBio); // Correctly updating the form data
+        setValue(state.detailedBio);
+        setPhoneNumber(state.phoneNumber);
       } else {
         fetch(`http://localhost:8000/speakers/${speaker_id}`, {
           method: "GET",
@@ -63,6 +70,7 @@ const AddOrUpdateSpeaker = () => {
             console.log("Data", data);
             setInputs(data);
             setValue(data?.detailedBio);
+            setPhoneNumber(data.phoneNumber);
           });
       }
     }
@@ -85,12 +93,19 @@ const AddOrUpdateSpeaker = () => {
   }
 
   const handleSubmit = async (e) => {
-    inputs.detailedBio = value;
     e.preventDefault();
+    console.log("Inputs", inputs);
+    console.log(phoneNumber);
+    inputs.phoneNumber = phoneNumber;
+    inputs.name = `${inputs.firstName} ${inputs.lastName}`;
+
+    console.log("Inputs", inputs);
+    console.log(phoneNumber);
 
     if (method === "POST") {
       const id = await fetchAndFindMaxId("http://localhost:8000/speakers");
       inputs.id = id + 1;
+      inputs.id = inputs.id.toString();
     }
 
     fetch(path, {
@@ -126,7 +141,7 @@ const AddOrUpdateSpeaker = () => {
                   id="outlined-basic"
                   label="First Name"
                   variant="outlined"
-                  name="name"
+                  name="firstName"
                   type="text"
                   value={inputs.firstName}
                   onChange={handleChange}
@@ -246,6 +261,9 @@ const AddOrUpdateSpeaker = () => {
                 <TextField
                   label="Facebook"
                   variant="outlined"
+                  name="facebookURL"
+                  value={inputs.facebookURL}
+                  onChange={handleChange}
                   placeholder="Facebook Username"
                   fullWidth
                   InputProps={{
@@ -261,6 +279,9 @@ const AddOrUpdateSpeaker = () => {
                 <TextField
                   label="Twitter"
                   variant="outlined"
+                  name="twitterURL"
+                  value={inputs.twitterURL}
+                  onChange={handleChange}
                   placeholder="Twitter Username"
                   fullWidth
                   InputProps={{
@@ -278,6 +299,9 @@ const AddOrUpdateSpeaker = () => {
                 <TextField
                   label="Instagram"
                   variant="outlined"
+                  name="instagramURL"
+                  value={inputs.instagramURL}
+                  onChange={handleChange}
                   placeholder="Instragram Username"
                   fullWidth
                   InputProps={{
@@ -293,6 +317,9 @@ const AddOrUpdateSpeaker = () => {
                 <TextField
                   label="LinkedIn"
                   variant="outlined"
+                  name="linkedInURL"
+                  value={inputs.linkedInURL}
+                  onChange={handleChange}
                   placeholder="LinkedIn Username"
                   fullWidth
                   InputProps={{

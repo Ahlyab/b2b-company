@@ -1,5 +1,4 @@
 import React from "react";
-import Modal from "@mui/material/Modal";
 import { Avatar, TextField } from "@mui/material";
 
 const SpeakerDetailsModal = ({ handleClose, selectedObject }) => {
@@ -24,10 +23,20 @@ const SpeakerDetailsModal = ({ handleClose, selectedObject }) => {
         <div className="col-12 col-md-6">
           <TextField
             className="form-control mt-4 fw-bold "
-            label="Name"
-            name="name"
+            label="First Name"
+            name="firstName"
             variant="outlined"
-            value={selectedObject.name}
+            value={selectedObject.firstName}
+            aria-readonly="true"
+          />
+        </div>
+        <div className="col-12 col-md-6">
+          <TextField
+            className="form-control mt-4 fw-bold "
+            label="Last Name"
+            name="lastName"
+            variant="outlined"
+            value={selectedObject.lastName}
             aria-readonly="true"
           />
         </div>
@@ -42,14 +51,58 @@ const SpeakerDetailsModal = ({ handleClose, selectedObject }) => {
             aria-readonly="true"
           />
         </div>
-        <div className="col-12">
+        <div className="col-6">
           <TextField
             className="form-control mt-4 "
             label="Email"
-            type="tel"
+            type="email"
             name="email"
             variant="outlined"
             value={selectedObject.email}
+            aria-readonly="true"
+          />
+        </div>
+        <div className="col-6">
+          <TextField
+            className="form-control mt-4 "
+            label="Facebook"
+            type="text"
+            name="facebookURL"
+            variant="outlined"
+            value={selectedObject.facebookURL}
+            aria-readonly="true"
+          />
+        </div>
+        <div className="col-6">
+          <TextField
+            className="form-control mt-4 "
+            label="Twitter"
+            type="text"
+            name="twitterURL"
+            variant="outlined"
+            value={selectedObject.twitterURL}
+            aria-readonly="true"
+          />
+        </div>
+        <div className="col-6">
+          <TextField
+            className="form-control mt-4 "
+            label="Instagram"
+            type="text"
+            name="instagramURL"
+            variant="outlined"
+            value={selectedObject.instagramURL}
+            aria-readonly="true"
+          />
+        </div>
+        <div className="col-6">
+          <TextField
+            className="form-control mt-4 "
+            label="LinkedIn"
+            type="text"
+            name="linkedinURL"
+            variant="outlined"
+            value={selectedObject.linkedInURL}
             aria-readonly="true"
           />
         </div>

@@ -9,6 +9,7 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import CustomModal from "../../Components/GeneralComponents/CustomModal";
 import { CircularProgress } from "@mui/material";
 import { fetchData } from "../../Utils/Common";
+import { _getExhibitors } from "../../DAL/Exhibitors/ExhibitorUtils";
 
 const Exhibitors = () => {
   const [open, setOpen] = useState(false); // Delete Modal
@@ -89,20 +90,25 @@ const Exhibitors = () => {
     },
   ];
 
-  useEffect(() => {
-    const manipulateExhibitors = (data) => {
-      return data.map((item) => ({
-        ...item,
-        name: `${item.name} ${item.lastName}`,
-      }));
-    };
+  const manipulateExhibitors = (data) => {
+    return data.map((item) => ({
+      ...item,
+      name: `${item.name} ${item.lastName}`,
+    }));
+  };
 
+  useEffect(() => {
     fetchData(
       "http://localhost:8000/exhibitors",
       setExhibitors,
       setIsLoading,
       manipulateExhibitors
     );
+    // _getExhibitors().then((res) => {
+    //   console.log(res);
+    //   setExhibitors(manipulateExhibitors(res));
+    //   setIsLoading(false);
+    // });
   }, []);
 
   return (

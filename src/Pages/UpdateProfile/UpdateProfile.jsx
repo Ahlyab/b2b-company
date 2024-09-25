@@ -89,6 +89,7 @@ const UpdateProfile = () => {
           <div className="col-6 ">
             <PhoneInput
               inputClass="form-control input-phone custom-input"
+              country="pk"
               value={phoneNumber} // Current value of the phone number input (required)
               setValue={setPhoneNumber} // Function to set the value of the phone number input (required)
               onChange={handleChange} // Function called when the phone number changes (required)
