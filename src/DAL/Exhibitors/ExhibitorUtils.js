@@ -37,11 +37,3 @@ export const _editExhibitor = async (data) => {
   };
   return invokeApi(requestObj);
 };
-
-export const _deleteExhibitor = async (id) => {
-  let requestObj = {
-    path: `/exhibitors/${id}`,
-    method: "DELETE",
-  };
-  return invokeApi(requestObj);
-};

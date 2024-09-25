@@ -6,6 +6,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import { fetchAndFindMaxId } from "../../Utils/Common";
+import { _addOrUpdateData, _getData } from "../../DAL/General/Common";
 
 const EMPTY_OBJ = {
   title: "",
@@ -34,39 +35,40 @@ const AddOrUpdateEvents = () => {
           endDate: dayjs(state.endDate),
         });
       } else {
-        fetch(`http://localhost:8000/events/${event_id}`, {
-          method: "GET",
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            console.log("Data", data);
-            setInputs({
-              ...data,
-              startDate: dayjs(data.startDate, "DD-MM-YYYY, HH:mm:ss"),
-              endDate: dayjs(data.endDate, "DD-MM-YYYY, HH:mm:ss"),
-            });
+        _getData(`/events/${event_id}`).then((data) => {
+          console.log("Data", data);
+          setInputs({
+            ...data,
+            startDate: dayjs(data.startDate, "DD-MM-YYYY, HH:mm:ss"),
+            endDate: dayjs(data.endDate, "DD-MM-YYYY, HH:mm:ss"),
           });
+        });
       }
     }
   }, [event_id]);
 
+  let path = "/events";
+  let method = "POST";
+
+  if (event_id) {
+    path += `/${event_id}`;
+    method = "PUT";
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const id = await fetchAndFindMaxId("http://localhost:8000/events");
-    inputs.id = id + 1;
 
-    fetch(`http://localhost:8000/events/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(inputs),
-    }).then((response) => {
-      console.log("Speaker Added Successfully", response);
+    if (method === "POST") {
+      const id = await fetchAndFindMaxId("http://localhost:8000/events");
+      inputs.id = id + 1;
+      inputs.id = inputs.id.toString();
+    }
+
+    _addOrUpdateData(path, method, JSON.stringify(inputs)).then((res) => {
+      console.log("Event Added Successfully", res);
       setInputs(EMPTY_OBJ);
+      navigate("/events");
     });
-
-    navigate("/events");
   };
 
   const handleChange = (e) => {

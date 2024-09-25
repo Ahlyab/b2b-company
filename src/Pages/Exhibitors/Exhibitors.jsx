@@ -98,17 +98,11 @@ const Exhibitors = () => {
   };
 
   useEffect(() => {
-    fetchData(
-      "http://localhost:8000/exhibitors",
-      setExhibitors,
-      setIsLoading,
-      manipulateExhibitors
-    );
-    // _getExhibitors().then((res) => {
-    //   console.log(res);
-    //   setExhibitors(manipulateExhibitors(res));
-    //   setIsLoading(false);
-    // });
+    _getExhibitors().then((res) => {
+      console.log(res);
+      setExhibitors(manipulateExhibitors(res));
+      setIsLoading(false);
+    });
   }, []);
 
   return (
@@ -178,7 +172,7 @@ const Exhibitors = () => {
         data={exhibitors}
         setData={setExhibitors}
         selectedObject={selectedObject}
-        url="http://localhost:8000/exhibitors/"
+        url="exhibitors/"
       />
     </>
   );

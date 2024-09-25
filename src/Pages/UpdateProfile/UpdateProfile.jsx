@@ -1,7 +1,6 @@
 import { Avatar, Badge, Button, IconButton, TextField } from "@mui/material";
 import React, { useState } from "react";
 import PhoneInput from "react-phone-number-validation";
-import AddIcon from "@mui/icons-material/Add";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 
 const UpdateProfile = () => {

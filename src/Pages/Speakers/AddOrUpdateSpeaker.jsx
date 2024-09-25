@@ -8,6 +8,7 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import { profile } from "../../Assests";
+import { _addOrUpdateData } from "../../DAL/General/Common";
 
 const EMPTY_OBJ = {
   name: "",
@@ -84,7 +85,7 @@ const AddOrUpdateSpeaker = () => {
     console.log(inputs);
   };
 
-  let path = "http://localhost:8000/speakers";
+  let path = "/speakers";
   let method = "POST";
 
   if (speaker_id) {
@@ -94,13 +95,9 @@ const AddOrUpdateSpeaker = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Inputs", inputs);
-    console.log(phoneNumber);
+
     inputs.phoneNumber = phoneNumber;
     inputs.name = `${inputs.firstName} ${inputs.lastName}`;
-
-    console.log("Inputs", inputs);
-    console.log(phoneNumber);
 
     if (method === "POST") {
       const id = await fetchAndFindMaxId("http://localhost:8000/speakers");
@@ -108,13 +105,7 @@ const AddOrUpdateSpeaker = () => {
       inputs.id = inputs.id.toString();
     }
 
-    fetch(path, {
-      method: method,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(inputs),
-    }).then((response) => {
+    _addOrUpdateData(path, method, JSON.stringify(inputs)).then((response) => {
       console.log("Speaker Added Successfully", response);
       setInputs(EMPTY_OBJ);
     });

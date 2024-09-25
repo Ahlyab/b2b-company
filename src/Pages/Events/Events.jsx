@@ -8,6 +8,7 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import CustomModal from "../../Components/GeneralComponents/CustomModal";
 import { CircularProgress } from "@mui/material";
 import { fetchData, formatDateTime } from "../../Utils/Common";
+import { _getData } from "../../DAL/General/Common";
 
 const Events = () => {
   const [events, setEvents] = useState([]);
@@ -80,22 +81,20 @@ const Events = () => {
     },
   ];
 
-  useEffect(() => {
-    const manipulateDate = (data) => {
-      return data.map((event) => {
-        event.name = event.title;
-        event.end_date = formatDateTime(event.endDate);
-        event.start_date = formatDateTime(event.startDate);
-        return event;
-      });
-    };
+  const manipulateDate = (data) => {
+    return data.map((event) => {
+      event.name = event.title;
+      event.end_date = formatDateTime(event.endDate);
+      event.start_date = formatDateTime(event.startDate);
+      return event;
+    });
+  };
 
-    fetchData(
-      "http://localhost:8000/events",
-      setEvents,
-      setIsLoading,
-      manipulateDate
-    );
+  useEffect(() => {
+    _getData("events").then((res) => {
+      setEvents(manipulateDate(res));
+      setIsLoading(false);
+    });
   }, []);
 
   return (
@@ -138,7 +137,7 @@ const Events = () => {
         data={events}
         setData={setEvents}
         selectedObject={selectedObject}
-        url={"http://localhost:8000/events/"}
+        url={"events/"}
       />
 
       <CustomModal

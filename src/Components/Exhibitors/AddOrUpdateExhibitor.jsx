@@ -1,18 +1,8 @@
 import { TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
-
-function getMaxExhibitorId(data) {
-  if (data.length === 0) {
-    return null;
-  }
-
-  const maxId = data.reduce((max, item) => {
-    const id = parseInt(item.id, 10);
-    return id > max ? id : max;
-  }, -Infinity);
-
-  return maxId;
-}
+import { getMaxId } from "../../Utils/Common";
+import { _addOrUpdateData } from "../../DAL/General/Common";
+import PhoneInput from "react-phone-number-validation";
 
 const EMPTY_OBJECT = {
   firstName: "",
@@ -33,23 +23,29 @@ const AddOrUpdateExhibitor = ({
   selectedObject,
 }) => {
   const [inputs, setInputs] = useState(EMPTY_OBJECT);
+  const [phoneNumber, setPhoneNumber] = useState("");
+
+  const handleChangePhoneNumber = (value, country) => {
+    // Handle phone number change
+    console.log("Phone Number:", value);
+    console.log("Selected Country:", country);
+    setPhoneNumber(value);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    inputs.phoneNumber = phoneNumber;
     const exhibitor = inputs;
-    let path = "http://localhost:8000/exhibitors";
+    let path = "/exhibitors";
     let method = "POST";
     if (selectedObject) {
       path += `/${selectedObject.id}`;
       method = "PUT";
     } else {
-      exhibitor.id = getMaxExhibitorId(exhibitors) + 1;
+      exhibitor.id = getMaxId(exhibitors) + 1;
     }
-    fetch(path, {
-      method: method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(exhibitor),
-    }).then(() => {
+
+    _addOrUpdateData(path, method, exhibitor).then(() => {
       if (selectedObject) {
         const index = exhibitors.findIndex(
           (item) => item.id === selectedObject.id
@@ -117,7 +113,7 @@ const AddOrUpdateExhibitor = ({
         />
       </div>
       <div className="col-12 col-md-6">
-        <TextField
+        {/* <TextField
           className="form-control mt-4"
           label="Phone Number"
           type="phone"
@@ -126,6 +122,14 @@ const AddOrUpdateExhibitor = ({
           value={inputs.phoneNumber}
           onChange={handleChange}
           required
+        /> */}
+        <PhoneInput
+          inputClass="form-control input-phone custom-input mt-4"
+          country="pk"
+          value={phoneNumber} // Current value of the phone number input (required)
+          setValue={setPhoneNumber} // Function to set the value of the phone number input (required)
+          onChange={handleChangePhoneNumber} // Function called when the phone number changes (required)
+          required={true}
         />
       </div>
       <div className="col-12 col-md-6">

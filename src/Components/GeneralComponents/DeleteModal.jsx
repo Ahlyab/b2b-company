@@ -1,6 +1,7 @@
 import * as React from "react";
 import Modal from "@mui/material/Modal";
 import { _deleteExhibitor } from "../../DAL/Exhibitors/ExhibitorUtils";
+import { _deleteRow } from "../../DAL/General/Common";
 
 const style = {
   position: "absolute",
@@ -23,25 +24,21 @@ export default function DeleteModal({
   url,
 }) {
   const handleDelete = () => {
-    console.log(selectedObject.id);
-    fetch(`${url}${selectedObject.id}`, {
-      method: "DELETE",
-    }).then(() => {
+    // console.log(selectedObject.id);
+    // fetch(`${url}${selectedObject.id}`, {
+    //   method: "DELETE",
+    // }).then(() => {
+    //   console.log("exhibitor deleted");
+    //   const updatedData = data.filter((item) => item.id !== selectedObject.id);
+    //   setData(updatedData);
+    //   handleClose();
+    // });
+    _deleteRow(url, selectedObject.id).then(() => {
       console.log("exhibitor deleted");
       const updatedData = data.filter((item) => item.id !== selectedObject.id);
       setData(updatedData);
       handleClose();
     });
-    // _deleteExhibitor(selectedObject.id).then((res) => {
-    //   console.log(res);
-    //   if (res.code === 200) {
-    //     const updatedData = data.filter(
-    //       (item) => item.id !== selectedObject.id
-    //     );
-    //     setData(updatedData);
-    //     handleClose();
-    //   }
-    // });
   };
 
   return (
