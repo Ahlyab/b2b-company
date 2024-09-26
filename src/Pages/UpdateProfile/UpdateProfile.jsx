@@ -1,7 +1,6 @@
 import { Avatar, Badge, Button, IconButton, TextField } from "@mui/material";
 import React, { useState } from "react";
 import PhoneInput from "react-phone-number-validation";
-import AddIcon from "@mui/icons-material/Add";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 
 const UpdateProfile = () => {
@@ -25,7 +24,7 @@ const UpdateProfile = () => {
   };
 
   return (
-    <div className="container">
+    <div className="container-fluid">
       <div className="row">
         <div className="col-12">
           <h2 className="drawer-title">Update Profile</h2>

@@ -7,7 +7,7 @@ import SpeakerDetailsModal from "../../Components/Speakers/SpeakerDetailsModal";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import CustomModal from "../../Components/GeneralComponents/CustomModal";
 import { CircularProgress } from "@mui/material";
-import { fetchData } from "../../Utils/Common";
+import { _getSpeakers } from "../../DAL/Speakers";
 
 const Speakers = () => {
   const [speakers, setSpeakers] = useState([]);
@@ -97,12 +97,15 @@ const Speakers = () => {
   ];
 
   useEffect(() => {
-    fetchData("http://localhost:8000/speakers", setSpeakers, setIsLoading);
+    _getSpeakers().then((res) => {
+      setSpeakers(res);
+      setIsLoading(false);
+    });
   }, []);
   return (
     <>
       <div className="container-fluid">
-        <div className="row">
+        <div className="row mt-3 align-items-center">
           <div className="col-6">
             <h2 className="drawer-title d-inline-block">Speaker</h2>
           </div>
@@ -140,7 +143,7 @@ const Speakers = () => {
         data={speakers}
         setData={setSpeakers}
         selectedObject={selectedObject}
-        url={"http://localhost:8000/speakers/"}
+        url="speakers"
       />
 
       <CustomModal

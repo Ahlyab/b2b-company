@@ -7,7 +7,8 @@ import EventDetailModal from "../../Components/Events/EventDetailModal";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import CustomModal from "../../Components/GeneralComponents/CustomModal";
 import { CircularProgress } from "@mui/material";
-import { fetchData, formatDateTime } from "../../Utils/Common";
+import { formatDateTime } from "../../Utils/Common";
+import { _getEvents } from "../../DAL/Events";
 
 const Events = () => {
   const [events, setEvents] = useState([]);
@@ -80,28 +81,26 @@ const Events = () => {
     },
   ];
 
-  useEffect(() => {
-    const manipulateDate = (data) => {
-      return data.map((event) => {
-        event.name = event.title;
-        event.end_date = formatDateTime(event.endDate);
-        event.start_date = formatDateTime(event.startDate);
-        return event;
-      });
-    };
+  const manipulateDate = (data) => {
+    return data.map((event) => {
+      event.name = event.title;
+      event.end_date = formatDateTime(event.endDate);
+      event.start_date = formatDateTime(event.startDate);
+      return event;
+    });
+  };
 
-    fetchData(
-      "http://localhost:8000/events",
-      setEvents,
-      setIsLoading,
-      manipulateDate
-    );
+  useEffect(() => {
+    _getEvents().then((res) => {
+      setEvents(manipulateDate(res));
+      setIsLoading(false);
+    });
   }, []);
 
   return (
     <>
       <div className="container-fluid">
-        <div className="row">
+        <div className="row mt-3 align-items-center">
           <div className="col-6">
             <h2 className="drawer-title d-inline-block">Events</h2>
           </div>
@@ -138,7 +137,7 @@ const Events = () => {
         data={events}
         setData={setEvents}
         selectedObject={selectedObject}
-        url={"http://localhost:8000/events/"}
+        url="events"
       />
 
       <CustomModal

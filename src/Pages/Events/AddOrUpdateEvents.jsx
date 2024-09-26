@@ -6,6 +6,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import { fetchAndFindMaxId } from "../../Utils/Common";
+import PhoneInput from "react-phone-number-validation";
+import { _addEvent, _getEvent, _updateEvent } from "../../DAL/Events";
 
 const EMPTY_OBJ = {
   title: "",
@@ -17,11 +19,59 @@ const EMPTY_OBJ = {
   endDate: dayjs(new Date()),
 };
 
+const FIELD_LABELS = {
+  title: "Title",
+  hostName: "Host Name",
+  contactNumber: "Contact Number",
+  description: "Description",
+  venue: "Venue",
+  startDate: "Start Date",
+  endDate: "End Date",
+};
+
 const AddOrUpdateEvents = () => {
   const [inputs, setInputs] = useState(EMPTY_OBJ);
   const navigate = useNavigate();
   const { state } = useLocation();
   const { event_id } = useParams();
+  const [errorMessage, setErrorMessage] = useState("");
+  const [error, setError] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState("");
+
+  const handleChangePhoneNumber = (value, country) => {
+    // Handle phone number change
+    console.log("Phone Number:", value);
+    console.log("Selected Country:", country);
+    setPhoneNumber(value);
+  };
+
+  const validateEvent = (inputs) => {
+    // Check for missing or null fields
+    const missingFields = Object.keys(inputs).filter(
+      (key) =>
+        inputs[key] === null || inputs[key] === "" || inputs[key] === undefined
+    );
+
+    console.log(missingFields);
+
+    if (missingFields.length > 0) {
+      const missingFieldNames = missingFields
+        .map((field) => FIELD_LABELS[field])
+        .join(", ");
+      setErrorMessage(
+        `Please fill in the following fields: ${missingFieldNames}`
+      );
+      setError(true);
+      return false;
+    }
+
+    if (inputs.contactNumber.length < 15) {
+      setErrorMessage("Please enter a valid phone number");
+      setError(true);
+      return false;
+    }
+    return true;
+  };
 
   useEffect(() => {
     if (event_id) {
@@ -33,40 +83,49 @@ const AddOrUpdateEvents = () => {
           startDate: dayjs(state.startDate),
           endDate: dayjs(state.endDate),
         });
+        setPhoneNumber(state.contactNumber);
       } else {
-        fetch(`http://localhost:8000/events/${event_id}`, {
-          method: "GET",
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            console.log("Data", data);
-            setInputs({
-              ...data,
-              startDate: dayjs(data.startDate, "DD-MM-YYYY, HH:mm:ss"),
-              endDate: dayjs(data.endDate, "DD-MM-YYYY, HH:mm:ss"),
-            });
+        _getEvent(event_id).then((data) => {
+          console.log("Data", data);
+          setInputs({
+            ...data,
+            startDate: dayjs(data.startDate),
+            endDate: dayjs(data.endDate),
           });
+        });
+        setPhoneNumber(state.contactNumber);
       }
     }
   }, [event_id]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const id = await fetchAndFindMaxId("http://localhost:8000/events");
-    inputs.id = id + 1;
 
-    fetch(`http://localhost:8000/events/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(inputs),
-    }).then((response) => {
-      console.log("Speaker Added Successfully", response);
-      setInputs(EMPTY_OBJ);
-    });
+    inputs.contactNumber = phoneNumber;
+    inputs.name = `${inputs.firstName} ${inputs.lastName}`;
 
-    navigate("/events");
+    // validations
+    if (!validateEvent(inputs)) {
+      return;
+    }
+
+    if (event_id) {
+      _updateEvent(inputs).then(() => {
+        console.log("Event updated");
+        setInputs(EMPTY_OBJ);
+        navigate("/events");
+      });
+    } else {
+      const id = await fetchAndFindMaxId("events");
+      inputs.id = id + 1;
+      inputs.id = inputs.id.toString();
+      console.log(inputs);
+      _addEvent(inputs).then(() => {
+        console.log("Event added");
+        setInputs(EMPTY_OBJ);
+        navigate("/events");
+      });
+    }
   };
 
   const handleChange = (e) => {
@@ -86,6 +145,16 @@ const AddOrUpdateEvents = () => {
           <h2 className="drawer-title">{event_id ? "Update" : "Add"} Event</h2>
         </div>
       </div>
+      {error && (
+        <div className="row">
+          <div className="col-12">
+            <div className="alert alert-danger mt-1" role="alert">
+              {errorMessage}
+            </div>
+          </div>
+        </div>
+      )}
+
       <form className="row" onSubmit={handleSubmit}>
         <div className="col-6">
           <TextField
@@ -95,6 +164,7 @@ const AddOrUpdateEvents = () => {
             variant="outlined"
             value={inputs.title}
             onChange={handleChange}
+            required={true}
           />
         </div>
         <div className="col-6">
@@ -106,17 +176,17 @@ const AddOrUpdateEvents = () => {
             variant="outlined"
             value={inputs.hostName}
             onChange={handleChange}
+            required={true}
           />
         </div>
-        <div className="col-6">
-          <TextField
-            className="form-control mt-4"
-            label="Contact Number"
-            type="tel"
-            name="contactNumber"
-            variant="outlined"
-            value={inputs.contactNumber}
-            onChange={handleChange}
+        <div className="col-6 mt-4">
+          <PhoneInput
+            inputClass="form-control input-phone custom-input"
+            country="pk"
+            required={true}
+            value={phoneNumber} // Current value of the phone number input (required)
+            setValue={setPhoneNumber} // Function to set the value of the phone number input (required)
+            onChange={handleChangePhoneNumber} // Function called when the phone number changes (required)
           />
         </div>
         <div className="col-6">
@@ -126,6 +196,7 @@ const AddOrUpdateEvents = () => {
             type="text"
             name="venue"
             variant="outlined"
+            required={true}
             value={inputs.venue}
             onChange={handleChange}
           />
@@ -153,12 +224,13 @@ const AddOrUpdateEvents = () => {
         </div>
         <div className="col-12">
           <textarea
-            className="form-control mt-4"
+            className="form-control mt-4 custom-textarea"
             placeholder="Description"
             type="text"
             name="description"
             variant="outlined"
             rows="4"
+            required
             multiline
             value={inputs.description}
             onChange={handleChange}

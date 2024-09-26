@@ -16,7 +16,7 @@ const CustomDrawer = ({ isOpen, setIsOpen, title, component }) => {
       >
         <div className="d-flex justify-content-between align-items-center my-2 px-4">
           <h2 className="drawer-title">{title}</h2>
-          <div class="close-button" onClick={() => setIsOpen(false)}>
+          <div className="close-button" onClick={() => setIsOpen(false)}>
             &times;
           </div>
         </div>

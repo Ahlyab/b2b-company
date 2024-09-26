@@ -27,7 +27,7 @@ const CustomModal = ({ open, handleClose, component }) => {
         style={style}
         className="container bg-white text-center p-md-4 border-0 rounded-4"
       >
-        <div className=" delete-modal-close" onClick={handleClose}>
+        <div className="delete-modal-close" onClick={handleClose}>
           &times;
         </div>
         {component}

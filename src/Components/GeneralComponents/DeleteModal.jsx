@@ -1,6 +1,8 @@
 import * as React from "react";
 import Modal from "@mui/material/Modal";
-import { _deleteExhibitor } from "../../DAL/Exhibitors/ExhibitorUtils";
+import { _deleteExhibitor } from "../../DAL/Exhibitors";
+import { _deleteEvent } from "../../DAL/Events";
+import { _deleteSpeaker } from "../../DAL/Speakers";
 
 const style = {
   position: "absolute",
@@ -22,26 +24,28 @@ export default function DeleteModal({
   setData,
   url,
 }) {
+  const updateData = (id) => {
+    const updatedData = data.filter((item) => item.id !== id);
+    setData(updatedData);
+  };
   const handleDelete = () => {
-    console.log(selectedObject.id);
-    fetch(`${url}${selectedObject.id}`, {
-      method: "DELETE",
-    }).then(() => {
-      console.log("exhibitor deleted");
-      const updatedData = data.filter((item) => item.id !== selectedObject.id);
-      setData(updatedData);
-      handleClose();
-    });
-    // _deleteExhibitor(selectedObject.id).then((res) => {
-    //   console.log(res);
-    //   if (res.code === 200) {
-    //     const updatedData = data.filter(
-    //       (item) => item.id !== selectedObject.id
-    //     );
-    //     setData(updatedData);
-    //     handleClose();
-    //   }
-    // });
+    if (url === "events") {
+      _deleteEvent(selectedObject.id).then(() => {
+        console.log("event deleted");
+        updateData(selectedObject.id);
+      });
+    } else if (url === "exhibitors") {
+      _deleteExhibitor(selectedObject.id).then(() => {
+        console.log("exhibitor deleted");
+        updateData(selectedObject.id);
+      });
+    } else if (url === "speakers") {
+      _deleteSpeaker(selectedObject.id).then(() => {
+        console.log("speaker deleted");
+        updateData(selectedObject.id);
+      });
+    }
+    handleClose();
   };
 
   return (

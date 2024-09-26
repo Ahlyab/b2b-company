@@ -1,20 +1,8 @@
-import { invokeApi } from "../../Hooks/InvokeAPI";
-
-// Sample API call
-export const _admin_logout = async () => {
-  let requestObj = {
-    path: "api/app_api/logout",
-    method: "GET",
-    headers: {
-      "x-sh-auth": localStorage.getItem("token"),
-    },
-  };
-  return invokeApi(requestObj);
-};
+import { invokeApi } from "../Hooks/InvokeAPI";
 
 export const _getExhibitors = async () => {
   let requestObj = {
-    path: "/exhibitors",
+    path: "exhibitors",
     method: "GET",
   };
   return invokeApi(requestObj);
@@ -22,16 +10,16 @@ export const _getExhibitors = async () => {
 
 export const _addExhibitor = async (data) => {
   let requestObj = {
-    path: "/exhibitors",
+    path: "exhibitors",
     method: "POST",
     postData: data,
   };
   return invokeApi(requestObj);
 };
 
-export const _editExhibitor = async (data) => {
+export const _updateExhibitor = async (data) => {
   let requestObj = {
-    path: `/exhibitors/${data.id}`,
+    path: `exhibitors/${data.id}`,
     method: "PUT",
     postData: data,
   };
@@ -40,7 +28,7 @@ export const _editExhibitor = async (data) => {
 
 export const _deleteExhibitor = async (id) => {
   let requestObj = {
-    path: `/exhibitors/${id}`,
+    path: `exhibitors/${id}`,
     method: "DELETE",
   };
   return invokeApi(requestObj);

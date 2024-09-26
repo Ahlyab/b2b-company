@@ -1,18 +1,8 @@
 import { TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
-
-function getMaxExhibitorId(data) {
-  if (data.length === 0) {
-    return null;
-  }
-
-  const maxId = data.reduce((max, item) => {
-    const id = parseInt(item.id, 10);
-    return id > max ? id : max;
-  }, -Infinity);
-
-  return maxId;
-}
+import { getMaxId } from "../../Utils/Common";
+import PhoneInput from "react-phone-number-validation";
+import { _addExhibitor, _updateExhibitor } from "../../DAL/Exhibitors";
 
 const EMPTY_OBJECT = {
   firstName: "",
@@ -26,6 +16,18 @@ const EMPTY_OBJECT = {
   additionalDetails: "",
 };
 
+const FIELD_LABELS = {
+  firstName: "First Name",
+  lastName: "Last Name",
+  email: "Email",
+  phoneNumber: "Phone Number",
+  companyName: "Company Name",
+  businessNature: "Business Nature",
+  address: "Address",
+  exhibitorInfo: "Exhibitor Info",
+  additionalDetails: "Additional Info",
+};
+
 const AddOrUpdateExhibitor = ({
   setIsOpen,
   exhibitors,
@@ -33,38 +35,75 @@ const AddOrUpdateExhibitor = ({
   selectedObject,
 }) => {
   const [inputs, setInputs] = useState(EMPTY_OBJECT);
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [error, setError] = useState(false);
+
+  const handleChangePhoneNumber = (value, country) => {
+    // Handle phone number change
+    console.log("Phone Number:", value);
+    console.log("Selected Country:", country);
+    setPhoneNumber(value);
+  };
+
+  const validateExhibitor = (inputs) => {
+    // Check for missing or null fields
+    const missingFields = Object.keys(inputs).filter(
+      (key) =>
+        key !== "additionalDetails" &&
+        (inputs[key] === null ||
+          inputs[key] === "" ||
+          inputs[key] === undefined)
+    );
+
+    console.log(missingFields);
+
+    if (missingFields.length > 0) {
+      // Set error message and error flag
+      const missingFieldNames = missingFields
+        .map((field) => FIELD_LABELS[field])
+        .join(", ");
+      setErrorMessage(
+        `Please fill in the following fields: ${missingFieldNames}`
+      );
+      setError(true);
+      return false; // Exit the function if there are missing fields
+    }
+
+    if (inputs.phoneNumber.length < 15) {
+      setErrorMessage("Please enter a valid phone number");
+      setError(true);
+      return false;
+    }
+
+    return true;
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    inputs.phoneNumber = phoneNumber;
     const exhibitor = inputs;
-    let path = "http://localhost:8000/exhibitors";
-    let method = "POST";
-    if (selectedObject) {
-      path += `/${selectedObject.id}`;
-      method = "PUT";
-    } else {
-      exhibitor.id = getMaxExhibitorId(exhibitors) + 1;
-    }
-    fetch(path, {
-      method: method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(exhibitor),
-    }).then(() => {
-      if (selectedObject) {
-        const index = exhibitors.findIndex(
-          (item) => item.id === selectedObject.id
-        );
-        const updatedExhibitors = [...exhibitors];
-        updatedExhibitors[index] = exhibitor;
-        exhibitor.id = selectedObject.id;
-        console.log(exhibitors, updatedExhibitors);
 
+    // validations
+    if (!validateExhibitor(exhibitor)) {
+      return;
+    }
+
+    if (selectedObject) {
+      _updateExhibitor(exhibitor).then(() => {
+        console.log("exhibitor updated");
+        const updatedExhibitors = exhibitors.map((item) =>
+          item.id === selectedObject.id ? exhibitor : item
+        );
         setExhibitors(updatedExhibitors);
-      } else {
-        exhibitor.name = exhibitor.firstName + " " + exhibitor.lastName;
-        setExhibitors((prev) => [...prev, exhibitor]);
-      }
-    });
+      });
+    } else {
+      exhibitor.id = getMaxId(exhibitors) + 1;
+      _addExhibitor(exhibitor).then(() => {
+        console.log("exhibitor added");
+        setExhibitors([...exhibitors, exhibitor]);
+      });
+    }
     setInputs(EMPTY_OBJECT);
     setIsOpen(false);
   };
@@ -77,11 +116,17 @@ const AddOrUpdateExhibitor = ({
   useEffect(() => {
     if (selectedObject) {
       setInputs(selectedObject);
+      setPhoneNumber(selectedObject.phoneNumber);
     }
   }, [selectedObject]);
 
   return (
     <form className="row" onSubmit={handleSubmit}>
+      {error && (
+        <div className="alert alert-danger mt-1" role="alert">
+          {errorMessage}
+        </div>
+      )}
       <div className="col-12 col-md-6">
         <TextField
           className="form-control mt-4 "
@@ -90,7 +135,7 @@ const AddOrUpdateExhibitor = ({
           variant="outlined"
           value={inputs.firstName}
           onChange={handleChange}
-          required
+          required={true}
         />
       </div>
       <div className="col-12 col-md-6">
@@ -101,7 +146,7 @@ const AddOrUpdateExhibitor = ({
           name="lastName"
           value={inputs.lastName}
           onChange={handleChange}
-          required
+          required={true}
         />
       </div>
       <div className="col-12 col-md-6">
@@ -113,19 +158,17 @@ const AddOrUpdateExhibitor = ({
           variant="outlined"
           value={inputs.email}
           onChange={handleChange}
-          required
+          required={true}
         />
       </div>
       <div className="col-12 col-md-6">
-        <TextField
-          className="form-control mt-4"
-          label="Phone Number"
-          type="phone"
-          name="phoneNumber"
-          variant="outlined"
-          value={inputs.phoneNumber}
-          onChange={handleChange}
-          required
+        <PhoneInput
+          inputClass="form-control input-phone custom-input mt-4"
+          country="pk"
+          value={phoneNumber} // Current value of the phone number input (required)
+          setValue={setPhoneNumber} // Function to set the value of the phone number input (required)
+          onChange={handleChangePhoneNumber} // Function called when the phone number changes (required)
+          required={true}
         />
       </div>
       <div className="col-12 col-md-6">
@@ -137,7 +180,7 @@ const AddOrUpdateExhibitor = ({
           variant="outlined"
           value={inputs.companyName}
           onChange={handleChange}
-          required
+          required={true}
         />
       </div>
       <div className="col-12 col-md-6">
@@ -149,7 +192,7 @@ const AddOrUpdateExhibitor = ({
           variant="outlined"
           value={inputs.businessNature}
           onChange={handleChange}
-          required
+          required={true}
         />
       </div>
       <div className="col-12">
@@ -163,7 +206,7 @@ const AddOrUpdateExhibitor = ({
           multiline
           value={inputs.address}
           onChange={handleChange}
-          required
+          required={true}
         />
       </div>
       <div className="col-12">
@@ -177,7 +220,7 @@ const AddOrUpdateExhibitor = ({
           multiline
           value={inputs.exhibitorInfo}
           onChange={handleChange}
-          required
+          required={true}
         />
       </div>
       <div className="col-12 ">
