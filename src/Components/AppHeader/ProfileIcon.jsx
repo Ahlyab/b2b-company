@@ -13,11 +13,13 @@ import { useNavigate } from "react-router-dom";
 import ChangePassword from "./ChangePassword";
 import CustomModal from "../GeneralComponents/CustomModal";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import { AuthContext } from "../../Context/AuthContext";
 
 export default function ProfileIcon() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [showChangePassword, setShowChangePassword] = React.useState(false);
   const open = Boolean(anchorEl);
+  const { logout } = React.useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -38,7 +40,7 @@ export default function ProfileIcon() {
   };
 
   const handleSignOut = () => {
-    localStorage.removeItem("token");
+    logout();
     navigate("/");
   };
 

@@ -9,12 +9,19 @@ import Exhibitors from "./Pages/Exhibitors/Exhibitors";
 import AddOrUpdateEvents from "./Pages/Events/AddOrUpdateEvents";
 import AddOrUpdateSpeaker from "./Pages/Speakers/AddOrUpdateSpeaker";
 import UpdateProfile from "./Pages/UpdateProfile/UpdateProfile";
+import ProtectedRoute from "./Utils/ProtectedRoute";
 
 const routes = () => {
   return (
     <Routes>
       <Route path="/" element={<Login />} />
-      <Route element={<DashboardLayout />}>
+      <Route
+        element={
+          <ProtectedRoute>
+            <DashboardLayout />
+          </ProtectedRoute>
+        }
+      >
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/speakers" element={<Speakers />} />
         <Route path="/events" element={<Events />} />

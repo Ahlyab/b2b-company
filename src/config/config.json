@@ -1,6 +1,6 @@
 {
   "dev": {
-    "API_BASE_URL": "http://localhost:8000/"
+    "API_BASE_URL": "http://67.207.70.240:5001/"
   },
   "prod": {
     "API_BASE_URL": "http://localhost:8001/"
