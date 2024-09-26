@@ -1,4 +1,5 @@
 import moment from "moment";
+import { baseUrl } from "../config/config";
 
 function getMaxId(data) {
   if (data.length === 0) {
@@ -13,9 +14,9 @@ function getMaxId(data) {
   return maxId;
 }
 
-async function fetchAndFindMaxId(url) {
+async function fetchAndFindMaxId(path) {
   try {
-    const response = await fetch(url);
+    const response = await fetch(baseUrl + path);
     const data = await response.json(); // Assuming the data is in JSON format
     console.log("Data: ", data);
     const maxId = getMaxId(data);

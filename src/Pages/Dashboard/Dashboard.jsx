@@ -1,6 +1,8 @@
 import * as React from "react";
+import { baseUrl } from "../../config/config";
 
 function Dashboard() {
+  console.log(baseUrl, "baseUrlbaseUrlbaseUrl");
   return (
     <>
       <div style={{ marginBottom: 2 }}>

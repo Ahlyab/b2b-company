@@ -1,7 +1,6 @@
 // common business logic related util methods
 import axios from "axios";
-
-const apiBaseUrl = "http://localhost:8000";
+import { baseUrl } from "../config/config";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
@@ -14,7 +13,7 @@ export async function invokeApi({
 }) {
   const reqObj = {
     method,
-    url: apiBaseUrl + path,
+    url: baseUrl + path,
     headers,
   };
 

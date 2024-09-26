@@ -8,7 +8,7 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import { profile } from "../../Assests";
-import { _addOrUpdateData } from "../../DAL/General/Common";
+import { _addSpeaker, _getSpeaker, _updateSpeaker } from "../../DAL/Speakers";
 
 const EMPTY_OBJ = {
   name: "",
@@ -24,12 +24,28 @@ const EMPTY_OBJ = {
   linkedInURL: "",
 };
 
+const FIELD_LABELS = {
+  name: "Name",
+  firstName: "First Name",
+  lastName: "Last Name",
+  email: "Email",
+  bio: "Bio",
+  profileImg: "Profile Image",
+  phoneNumber: "Phone Number",
+  facebookURL: "Facebook",
+  twitterURL: "Twitter",
+  instagramURL: "Instagram",
+  linkedInURL: "LinkedIn",
+};
+
 const AddOrUpdateSpeaker = () => {
   const [inputs, setInputs] = useState(EMPTY_OBJ);
   const navigate = useNavigate();
   const { state } = useLocation();
   const { speaker_id } = useParams();
   const [value, setValue] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [error, setError] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
 
   const handleChangePhoneNumber = (value, country) => {
@@ -37,6 +53,42 @@ const AddOrUpdateSpeaker = () => {
     console.log("Phone Number:", value);
     console.log("Selected Country:", country);
     setPhoneNumber(value);
+  };
+
+  const validateSpeaker = (inputs) => {
+    // Check for missing or null fields
+    const missingFields = Object.keys(inputs).filter(
+      (key) =>
+        // Check for non-social URLs and ensure their values are not null, empty, or undefined
+        !["facebookURL", "twitterURL", "instagramURL", "linkedInURL"].includes(
+          key
+        ) &&
+        (inputs[key] === null ||
+          inputs[key] === "" ||
+          inputs[key] === undefined)
+    );
+
+    console.log(missingFields);
+
+    if (missingFields.length > 0) {
+      // Set error message and error flag
+      const missingFieldNames = missingFields
+        .map((field) => FIELD_LABELS[field])
+        .join(", ");
+      setErrorMessage(
+        `Please fill in the following fields: ${missingFieldNames}`
+      );
+      setError(true);
+      return false; // Exit the function if there are missing fields
+    }
+
+    if (inputs.phoneNumber.length < 15) {
+      setErrorMessage("Please enter a valid phone number");
+      setError(true);
+      return false;
+    }
+
+    return true;
   };
 
   const handleChangeImg = (e) => {
@@ -63,16 +115,12 @@ const AddOrUpdateSpeaker = () => {
         setValue(state.detailedBio);
         setPhoneNumber(state.phoneNumber);
       } else {
-        fetch(`http://localhost:8000/speakers/${speaker_id}`, {
-          method: "GET",
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            console.log("Data", data);
-            setInputs(data);
-            setValue(data?.detailedBio);
-            setPhoneNumber(data.phoneNumber);
-          });
+        _getSpeaker(speaker_id).then((data) => {
+          console.log("Data", data);
+          setInputs(data);
+          setValue(data?.detailedBio);
+          setPhoneNumber(data.phoneNumber);
+        });
       }
     }
   }, [speaker_id]);
@@ -85,31 +133,34 @@ const AddOrUpdateSpeaker = () => {
     console.log(inputs);
   };
 
-  let path = "/speakers";
-  let method = "POST";
-
-  if (speaker_id) {
-    path += `/${speaker_id}`;
-    method = "PUT";
-  }
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     inputs.phoneNumber = phoneNumber;
     inputs.name = `${inputs.firstName} ${inputs.lastName}`;
 
-    if (method === "POST") {
-      const id = await fetchAndFindMaxId("http://localhost:8000/speakers");
-      inputs.id = id + 1;
-      inputs.id = inputs.id.toString();
+    // Validate the inputs
+    if (!validateSpeaker(inputs)) {
+      return;
     }
 
-    _addOrUpdateData(path, method, JSON.stringify(inputs)).then((response) => {
-      console.log("Speaker Added Successfully", response);
-      setInputs(EMPTY_OBJ);
-    });
-    navigate("/speakers");
+    if (speaker_id) {
+      _updateSpeaker(inputs).then(() => {
+        console.log("Speaker Updated Successfully");
+        setInputs(EMPTY_OBJ);
+        setError(false);
+        navigate("/speakers");
+      });
+    } else {
+      const id = await fetchAndFindMaxId("speakers");
+      inputs.id = (id + 1).toString();
+      _addSpeaker(inputs).then(() => {
+        console.log("Speaker Added Successfully");
+        setInputs(EMPTY_OBJ);
+        setError(false);
+        navigate("/speakers");
+      });
+    }
   };
 
   return (
@@ -121,6 +172,16 @@ const AddOrUpdateSpeaker = () => {
           } Speaker`}</h2>
         </div>
       </div>
+
+      {error && (
+        <div className="row">
+          <div className="col-12">
+            <div className="alert alert-danger mt-1" role="alert">
+              {errorMessage}
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="row">
         <div className="col-12">

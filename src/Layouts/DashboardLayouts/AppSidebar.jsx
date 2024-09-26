@@ -20,6 +20,11 @@ const AppSidebar = ({
   handleDrawerClose,
 }) => {
   const location = useLocation();
+  const handleMobileViewClick = () => {
+    if (mobileOpen) {
+      handleDrawerClose();
+    }
+  };
 
   const options = [
     {
@@ -62,7 +67,11 @@ const AppSidebar = ({
               location.pathname.includes(option.path) ? "active-tab" : ""
             }
           >
-            <ListItemButton LinkComponent={Link} to={option.path}>
+            <ListItemButton
+              LinkComponent={Link}
+              to={option.path}
+              onClick={handleMobileViewClick}
+            >
               <ListItemIcon>{option.icon}</ListItemIcon>
               <ListItemText primary={option.title} />
             </ListItemButton>

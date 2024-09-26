@@ -7,8 +7,8 @@ import EventDetailModal from "../../Components/Events/EventDetailModal";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import CustomModal from "../../Components/GeneralComponents/CustomModal";
 import { CircularProgress } from "@mui/material";
-import { fetchData, formatDateTime } from "../../Utils/Common";
-import { _getData } from "../../DAL/General/Common";
+import { formatDateTime } from "../../Utils/Common";
+import { _getEvents } from "../../DAL/Events";
 
 const Events = () => {
   const [events, setEvents] = useState([]);
@@ -91,7 +91,7 @@ const Events = () => {
   };
 
   useEffect(() => {
-    _getData("events").then((res) => {
+    _getEvents().then((res) => {
       setEvents(manipulateDate(res));
       setIsLoading(false);
     });
@@ -100,7 +100,7 @@ const Events = () => {
   return (
     <>
       <div className="container-fluid">
-        <div className="row">
+        <div className="row mt-3 align-items-center">
           <div className="col-6">
             <h2 className="drawer-title d-inline-block">Events</h2>
           </div>
@@ -137,7 +137,7 @@ const Events = () => {
         data={events}
         setData={setEvents}
         selectedObject={selectedObject}
-        url={"events/"}
+        url="events"
       />
 
       <CustomModal
