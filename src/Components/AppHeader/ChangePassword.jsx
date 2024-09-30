@@ -1,7 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
-  Divider,
   IconButton,
   InputAdornment,
   InputLabel,
@@ -10,7 +9,7 @@ import {
 import FormControl from "@mui/material/FormControl";
 
 const ChangePassword = ({ handleClose }) => {
-  const [showPassword, setShowPassword] = React.useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const handleMouseDownPassword = (event) => {

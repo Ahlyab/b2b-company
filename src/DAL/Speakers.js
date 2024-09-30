@@ -18,9 +18,12 @@ export const _getSpeaker = async (id) => {
 
 export const _addSpeaker = async (data) => {
   let requestObj = {
-    path: "speakers",
+    path: "api/speaker/add_speaker",
     method: "POST",
     postData: data,
+    headers: {
+      "x-sh-auth": localStorage.getItem("authToken"),
+    },
   };
   return invokeApi(requestObj);
 };

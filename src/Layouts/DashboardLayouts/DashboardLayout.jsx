@@ -1,5 +1,5 @@
-import { Box, Toolbar } from "@mui/material";
-import React, { useContext, useEffect } from "react";
+import { Toolbar } from "@mui/material";
+import React, { useContext, useState } from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import AppHeader from "./AppHeader";
 import Sidebar from "./AppSidebar";
@@ -9,8 +9,8 @@ import { AuthContext } from "../../Context/AuthContext";
 const drawerWidth = 280;
 
 const DashboardLayout = () => {
-  const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [isClosing, setIsClosing] = React.useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { token } = useContext(AuthContext);

@@ -1,14 +1,14 @@
 import { Button, TextField } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { logo } from "../../Assests";
 import { Link } from "react-router-dom";
 import ErrorMessage from "../GeneralComponents/ErrorMessage";
 import { _email_verification } from "../../DAL/Admin";
 
 const EmailConfirm = ({ setComponentState }) => {
-  const [email, setEmail] = React.useState("");
-  const [error, setError] = React.useState(false);
-  const [errorMsg, setErrorMsg] = React.useState("");
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();

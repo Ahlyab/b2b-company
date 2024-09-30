@@ -12,31 +12,34 @@ import { _addSpeaker, _getSpeaker, _updateSpeaker } from "../../DAL/Speakers";
 import ErrorMessage from "../../Components/GeneralComponents/ErrorMessage";
 
 const EMPTY_OBJ = {
-  name: "",
-  firstName: "",
-  lastName: "",
+  first_name: "",
+  last_name: "",
   email: "",
   bio: "",
-  profileImg: profile,
-  phoneNumber: "",
+  image: profile,
+  phone: "",
+  expertise: "testing",
   facebookURL: "",
   twitterURL: "",
   instagramURL: "",
   linkedInURL: "",
+  status: "true",
 };
 
 const FIELD_LABELS = {
   name: "Name",
-  firstName: "First Name",
-  lastName: "Last Name",
+  first_name: "First Name",
+  last_name: "Last Name",
   email: "Email",
   bio: "Bio",
-  profileImg: "Profile Image",
-  phoneNumber: "Phone Number",
+  image: "Profile Image",
+  phone: "Phone Number",
   facebookURL: "Facebook",
   twitterURL: "Twitter",
   instagramURL: "Instagram",
   linkedInURL: "LinkedIn",
+  expertise: "Expertise",
+  status: "status",
 };
 
 const AddOrUpdateSpeaker = () => {
@@ -83,7 +86,7 @@ const AddOrUpdateSpeaker = () => {
       return false; // Exit the function if there are missing fields
     }
 
-    if (inputs.phoneNumber.length < 15) {
+    if (inputs.phone.length < 15) {
       setErrorMessage("Please enter a valid phone number");
       setError(true);
       return false;
@@ -94,14 +97,12 @@ const AddOrUpdateSpeaker = () => {
 
   const handleChangeImg = (e) => {
     const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.onloadend = () => {
+    if (file) {
       setInputs({
         ...inputs,
-        profileImg: reader.result,
+        image: URL.createObjectURL(file), // Set the image to the file, not the base64 string
       });
-    };
-    reader.readAsDataURL(file);
+    }
   };
 
   const handleChangeBio = (value) => {
@@ -137,29 +138,46 @@ const AddOrUpdateSpeaker = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    inputs.phoneNumber = phoneNumber;
-    inputs.name = `${inputs.firstName} ${inputs.lastName}`;
+    inputs.phone = phoneNumber;
+    inputs.name = `${inputs.first_name} ${inputs.last_name}`;
 
     // Validate the inputs
     if (!validateSpeaker(inputs)) {
       return;
     }
 
+    const formData = new FormData();
+
+    // Append all inputs to formData
+    for (const key in inputs) {
+      if (inputs.hasOwnProperty(key)) {
+        if (key === "image" && inputs.image instanceof File) {
+          // formData.append(key, inputs.image); // Append the image file as 'image'
+        } else {
+          formData.append(key, inputs[key]);
+        }
+      }
+    }
+
+    console.log(inputs, formData);
+
     if (speaker_id) {
-      _updateSpeaker(inputs).then(() => {
+      _updateSpeaker(formData).then(() => {
         console.log("Speaker Updated Successfully");
         setInputs(EMPTY_OBJ);
         setError(false);
         navigate("/speakers");
       });
     } else {
-      const id = await fetchAndFindMaxId("speakers");
-      inputs.id = (id + 1).toString();
-      _addSpeaker(inputs).then(() => {
+      // const id = await fetchAndFindMaxId("speakers");
+      // formData.append("id", (id + 1).toString());
+
+      _addSpeaker(formData).then((res) => {
+        console.log(res);
         console.log("Speaker Added Successfully");
-        setInputs(EMPTY_OBJ);
-        setError(false);
-        navigate("/speakers");
+        // setInputs(EMPTY_OBJ);
+        // setError(false);
+        // navigate("/speakers");
       });
     }
   };
@@ -197,9 +215,9 @@ const AddOrUpdateSpeaker = () => {
                   id="outlined-basic"
                   label="First Name"
                   variant="outlined"
-                  name="firstName"
+                  name="first_name"
                   type="text"
-                  value={inputs.firstName}
+                  value={inputs.first_name}
                   onChange={handleChange}
                   required={true}
                 />
@@ -210,9 +228,9 @@ const AddOrUpdateSpeaker = () => {
                   id="outlined-basic"
                   label="Last Name"
                   variant="outlined"
-                  name="lastName"
+                  name="last_name"
                   type="text"
-                  value={inputs.lastName}
+                  value={inputs.last_name}
                   onChange={handleChange}
                   required={true}
                 />
@@ -263,7 +281,7 @@ const AddOrUpdateSpeaker = () => {
                 <Avatar
                   sx={{ height: "60px", width: "60px" }}
                   variant="square"
-                  src={inputs.profileImg}
+                  src={inputs.image}
                 />
               </div>
               <div className="col-4 text-end">

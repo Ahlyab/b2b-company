@@ -62,7 +62,7 @@ const ResetPassword = () => {
     navigate("/");
   };
 
-  const [showPassword, setShowPassword] = React.useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 

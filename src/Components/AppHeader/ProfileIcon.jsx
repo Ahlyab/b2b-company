@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useContext } from "react";
 import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -17,10 +17,10 @@ import { AuthContext } from "../../Context/AuthContext";
 import { _logout } from "../../DAL/Admin";
 
 export default function ProfileIcon() {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [showChangePassword, setShowChangePassword] = React.useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [showChangePassword, setShowChangePassword] = useState(false);
   const open = Boolean(anchorEl);
-  const { logout } = React.useContext(AuthContext);
+  const { logout } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
