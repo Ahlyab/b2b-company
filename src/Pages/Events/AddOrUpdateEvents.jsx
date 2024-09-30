@@ -8,6 +8,7 @@ import dayjs from "dayjs";
 import { fetchAndFindMaxId } from "../../Utils/Common";
 import PhoneInput from "react-phone-number-validation";
 import { _addEvent, _getEvent, _updateEvent } from "../../DAL/Events";
+import ErrorMessage from "../../Components/GeneralComponents/ErrorMessage";
 
 const EMPTY_OBJ = {
   title: "",
@@ -148,9 +149,10 @@ const AddOrUpdateEvents = () => {
       {error && (
         <div className="row">
           <div className="col-12">
-            <div className="alert alert-danger mt-1" role="alert">
+            {/* <div className="alert alert-danger mt-1" role="alert">
               {errorMessage}
-            </div>
+            </div> */}
+            <ErrorMessage message={errorMessage} setError={setError} />
           </div>
         </div>
       )}

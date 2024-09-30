@@ -9,6 +9,7 @@ import InstagramIcon from "@mui/icons-material/Instagram";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import { profile } from "../../Assests";
 import { _addSpeaker, _getSpeaker, _updateSpeaker } from "../../DAL/Speakers";
+import ErrorMessage from "../../Components/GeneralComponents/ErrorMessage";
 
 const EMPTY_OBJ = {
   name: "",
@@ -176,9 +177,12 @@ const AddOrUpdateSpeaker = () => {
       {error && (
         <div className="row">
           <div className="col-12">
-            <div className="alert alert-danger mt-1" role="alert">
+            {/* <div className="alert alert-danger mt-1" role="alert">
               {errorMessage}
-            </div>
+            </div> */}
+            {error && (
+              <ErrorMessage message={errorMessage} setError={setError} />
+            )}
           </div>
         </div>
       )}

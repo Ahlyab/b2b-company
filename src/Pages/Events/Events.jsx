@@ -99,23 +99,23 @@ const Events = () => {
 
   return (
     <>
-      <div className="container-fluid">
-        <div className="row mt-3 align-items-center">
-          <div className="col-6">
-            <h2 className="drawer-title d-inline-block">Events</h2>
-          </div>
-          <div className="col-6 text-end">
-            <button className="theme-button" onClick={handleAddEvent}>
-              Add Events
-            </button>
-          </div>
+      {isloading ? (
+        <div className="d-flex justify-content-center align-items-center mt-5">
+          <CircularProgress />
         </div>
-        <div className="row">
-          {isloading ? (
-            <div className="d-flex justify-content-center align-items-center mt-5">
-              <CircularProgress />
+      ) : (
+        <div className="container-fluid">
+          <div className="row mt-3 align-items-center">
+            <div className="col-6">
+              <h2 className="drawer-title d-inline-block">Events</h2>
             </div>
-          ) : (
+            <div className="col-6 text-end">
+              <button className="theme-button" onClick={handleAddEvent}>
+                Add Events
+              </button>
+            </div>
+          </div>
+          <div className="row">
             <div className="col-12 exhibitor-table mt-4">
               <ReactTable
                 data={events}
@@ -127,9 +127,10 @@ const Events = () => {
                 MENU_OPTIONS={MENU_OPTIONS}
               />
             </div>
-          )}
+          </div>
         </div>
-      </div>
+      )}
+
       <DeleteModal
         open={open}
         handleOpen={handleOpen}

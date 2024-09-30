@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { getMaxId } from "../../Utils/Common";
 import PhoneInput from "react-phone-number-validation";
 import { _addExhibitor, _updateExhibitor } from "../../DAL/Exhibitors";
+import ErrorMessage from "../GeneralComponents/ErrorMessage";
 
 const EMPTY_OBJECT = {
   firstName: "",
@@ -122,11 +123,12 @@ const AddOrUpdateExhibitor = ({
 
   return (
     <form className="row" onSubmit={handleSubmit}>
-      {error && (
+      {/* {error && (
         <div className="alert alert-danger mt-1" role="alert">
           {errorMessage}
         </div>
-      )}
+      )} */}
+      {error && <ErrorMessage message={errorMessage} setError={setError} />}
       <div className="col-12 col-md-6">
         <TextField
           className="form-control mt-4 "
