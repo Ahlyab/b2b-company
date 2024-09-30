@@ -3,9 +3,41 @@ import { logo } from "../../Assests";
 import OtpInput from "react-otp-input";
 import { Link } from "react-router-dom";
 import { Button } from "@mui/material";
+import { _verify_code } from "../../DAL/Admin";
+import ErrorMessage from "../GeneralComponents/ErrorMessage";
 
 const VerificationScreen = ({ setComponentState }) => {
   const [otp, setOtp] = useState("");
+  const [error, setError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const user = JSON.parse(localStorage.getItem("reset_pwd"));
+    if (!user) {
+      setError(true);
+      setErrorMsg("Invalid User");
+      return;
+    }
+    const data = {
+      email: user.email,
+      user_type: "admin",
+      otp: otp,
+    };
+
+    console.log("Data before submission : ", data);
+
+    // _verify_code(data).then((res) => {
+    //   console.log(res);
+    //   if (res.status === 200) {
+    //     setComponentState(3);
+    //   } else {
+    //     setError(true);
+    //     setErrorMsg(res.message);
+    //   }
+    // });
+    setComponentState(3);
+  };
   return (
     <div className="forgot-password-form-container">
       <div className="forgot-password-form">
@@ -15,12 +47,9 @@ const VerificationScreen = ({ setComponentState }) => {
           Enter the verification code sent to your email.
         </p>
 
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            setComponentState(3);
-          }}
-        >
+        <form onSubmit={handleSubmit}>
+          {error && <ErrorMessage message={errorMsg} setError={setError} />}
+
           <div className="mb-3 verification-input-field ">
             <OtpInput
               value={otp}

@@ -39,13 +39,11 @@ const LoginForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(email, password);
-
     const data = {
       email,
       password,
       user_type: "admin",
     };
-
     _login(data).then((res) => {
       console.log(res, res.status, res.token);
       if (res.code === 200) {

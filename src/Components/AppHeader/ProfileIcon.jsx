@@ -14,6 +14,7 @@ import ChangePassword from "./ChangePassword";
 import CustomModal from "../GeneralComponents/CustomModal";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import { AuthContext } from "../../Context/AuthContext";
+import { _logout } from "../../DAL/Admin";
 
 export default function ProfileIcon() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -40,8 +41,11 @@ export default function ProfileIcon() {
   };
 
   const handleSignOut = () => {
-    logout();
-    navigate("/");
+    _logout().then((res) => {
+      console.log(res);
+      logout();
+      navigate("/");
+    });
   };
 
   return (
