@@ -5,13 +5,16 @@ import { Link } from "react-router-dom";
 import { Button } from "@mui/material";
 import { _verify_code } from "../../DAL/Admin";
 import ErrorMessage from "../GeneralComponents/ErrorMessage";
+import { useSnackbar } from "../../Context/SnackbarContext";
 
 const VerificationScreen = ({ setComponentState }) => {
   const [otp, setOtp] = useState("");
   const [error, setError] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const { showSnackbar } = useSnackbar();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const user = JSON.parse(localStorage.getItem("reset_pwd"));
     if (!user) {
@@ -27,15 +30,19 @@ const VerificationScreen = ({ setComponentState }) => {
 
     console.log("Data before submission : ", data);
 
-    // _verify_code(data).then((res) => {
+    // try {
+    //   const res = await _verify_code(data);
     //   console.log(res);
-    //   if (res.status === 200) {
+    //   if (res.code === 200) {
     //     setComponentState(3);
     //   } else {
-    //     setError(true);
-    //     setErrorMsg(res.message);
+    //     showSnackbar(res.message, "error");
     //   }
-    // });
+    // } catch (error) {
+    //   console.log("Error during code verification:", error);
+    //   showSnackbar("An error occurred. Please try again.", "error");
+    // }
+
     setComponentState(3);
   };
   return (
@@ -48,8 +55,6 @@ const VerificationScreen = ({ setComponentState }) => {
         </p>
 
         <form onSubmit={handleSubmit}>
-          {error && <ErrorMessage message={errorMsg} setError={setError} />}
-
           <div className="mb-3 verification-input-field ">
             <OtpInput
               value={otp}

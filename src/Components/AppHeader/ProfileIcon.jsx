@@ -15,12 +15,14 @@ import CustomModal from "../GeneralComponents/CustomModal";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import { AuthContext } from "../../Context/AuthContext";
 import { _logout } from "../../DAL/Admin";
+import { useSnackbar } from "../../Context/SnackbarContext";
 
 export default function ProfileIcon() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [showChangePassword, setShowChangePassword] = useState(false);
   const open = Boolean(anchorEl);
   const { logout } = useContext(AuthContext);
+  const { showSnackbar } = useSnackbar();
 
   const navigate = useNavigate();
 
@@ -40,12 +42,23 @@ export default function ProfileIcon() {
     navigate("/update-profile");
   };
 
-  const handleSignOut = () => {
-    _logout().then((res) => {
+  const handleSignOut = async () => {
+    // _logout().then((res) => {
+    //   console.log(res);
+    //   logout();
+    //   navigate("/");
+    // });
+    try {
+      const res = await _logout();
       console.log(res);
-      logout();
-      navigate("/");
-    });
+      if (res.code === 200) {
+        showSnackbar("Logout successful", "success");
+        logout();
+        navigate("/");
+      }
+    } catch (error) {
+      showSnackbar("An error occurred. Please try again.", "error");
+    }
   };
 
   return (

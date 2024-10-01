@@ -19,13 +19,10 @@ export async function invokeApi({
 
   reqObj.params = queryParams;
 
-  if (method === "POST") {
+  if (postData instanceof FormData) {
     reqObj.data = postData;
-  }
-  if (method === "PUT") {
-    reqObj.data = postData;
-  }
-  if (method === "DELETE") {
+    delete reqObj.headers["Content-Type"]; // Let the browser set this automatically
+  } else if (method === "POST" || method === "PUT" || method === "DELETE") {
     reqObj.data = postData;
   }
 

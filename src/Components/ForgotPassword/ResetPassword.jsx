@@ -1,7 +1,7 @@
-import { Button, TextField } from "@mui/material";
+import { Button } from "@mui/material";
 import React, { useState } from "react";
 import { logo } from "../../Assests";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   IconButton,
@@ -11,34 +11,79 @@ import {
 } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import { _reset_password } from "../../DAL/Admin";
-import ErrorMessage from "../GeneralComponents/ErrorMessage";
+import { useSnackbar } from "../../Context/SnackbarContext";
 
 const ResetPassword = () => {
   const navigate = useNavigate();
-
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("");
+  const { showSnackbar } = useSnackbar();
+  const [isLoading, setIsLoading] = useState(false);
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   console.log("Password : ", password);
+  //   console.log("Confirm Password : ", confirmPassword);
 
-  const handleSubmit = (e) => {
+  //   if (password !== confirmPassword) {
+  //     setError(true);
+  //     setErrorMsg("Passwords do not match");
+  //     return;
+  //   }
+
+  //   const user = JSON.parse(localStorage.getItem("reset_pwd"));
+  //   if (!user) {
+  //     setError(true);
+  //     setErrorMsg("Invalid User");
+  //     return;
+  //   }
+
+  //   const data = {
+  //     email: user.email,
+  //     user_type: "admin",
+  //     password: password,
+  //     confirm_password: confirmPassword,
+  //   };
+
+  //   console.log("Data before submission : ", data);
+
+  //   _reset_password(data).then((res) => {
+  //     console.log(res);
+  //     if (res.status === 200) {
+  //       navigate("/");
+  //     } else {
+  //       setError(true);
+  //       setErrorMsg(res.message);
+  //     }
+  //   });
+
+  //   localStorage.removeItem("reset_pwd");
+  //   navigate("/");
+  // };
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+
+    // Log password and confirm password
     console.log("Password : ", password);
     console.log("Confirm Password : ", confirmPassword);
 
+    // Validate password match
     if (password !== confirmPassword) {
-      setError(true);
-      setErrorMsg("Passwords do not match");
+      showSnackbar("Passwords do not match", "error");
       return;
     }
 
+    // Get user data from localStorage
     const user = JSON.parse(localStorage.getItem("reset_pwd"));
     if (!user) {
-      setError(true);
-      setErrorMsg("Invalid User");
+      showSnackbar("Invalid User", "error");
       return;
     }
 
+    // Create data object for reset password
     const data = {
       email: user.email,
       user_type: "admin",
@@ -48,21 +93,24 @@ const ResetPassword = () => {
 
     console.log("Data before submission : ", data);
 
-    _reset_password(data).then((res) => {
+    try {
+      // Await the reset password function
+      const res = await _reset_password(data);
       console.log(res);
-      if (res.status === 200) {
-        navigate("/");
+
+      // Handle response
+      if (res.code === 200) {
+        localStorage.removeItem("reset_pwd");
+        navigate("/"); // Navigate to home on success
       } else {
-        setError(true);
-        setErrorMsg(res.message);
+        showSnackbar(res.message, "error"); // Show snackbar with error message
       }
-    });
-
-    localStorage.removeItem("reset_pwd");
-    navigate("/");
+    } catch (error) {
+      // Log and handle errors
+      console.error("Error during password reset:", error);
+      showSnackbar("An error occurred. Please try again.", "error"); // Show snackbar with error message
+    }
   };
-
-  const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -85,8 +133,6 @@ const ResetPassword = () => {
 
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
-            {error && <ErrorMessage message={errorMsg} setError={setError} />}
-
             <FormControl className="input-field">
               <InputLabel htmlFor="outlined-adornment-password">
                 Password
@@ -143,8 +189,13 @@ const ResetPassword = () => {
             </FormControl>
           </div>
 
-          <Button variant="contained" type="submit" className=" w-100">
-            Reset Password
+          <Button
+            variant="contained"
+            type="submit"
+            className=" w-100"
+            disabled={isLoading}
+          >
+            {isLoading ? "Please Wait..." : "Reset Password"}
           </Button>
         </form>
       </div>

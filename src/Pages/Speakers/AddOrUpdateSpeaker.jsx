@@ -1,4 +1,12 @@
-import { Avatar, InputAdornment, TextField } from "@mui/material";
+import {
+  Avatar,
+  FormControl,
+  InputAdornment,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { fetchAndFindMaxId } from "../../Utils/Common";
@@ -100,7 +108,7 @@ const AddOrUpdateSpeaker = () => {
     if (file) {
       setInputs({
         ...inputs,
-        image: URL.createObjectURL(file), // Set the image to the file, not the base64 string
+        image: file, // Set the image to the file, not the base64 string
       });
     }
   };
@@ -139,12 +147,32 @@ const AddOrUpdateSpeaker = () => {
     e.preventDefault();
 
     inputs.phone = phoneNumber;
-    inputs.name = `${inputs.first_name} ${inputs.last_name}`;
+    // inputs.name = `${inputs.first_name} ${inputs.last_name}`;
 
     // Validate the inputs
     if (!validateSpeaker(inputs)) {
       return;
     }
+
+    const { facebookURL, twitterURL, instagramURL, linkedInURL } = inputs;
+    // delete from urls
+    delete inputs.facebookURL;
+    delete inputs.twitterURL;
+    delete inputs.instagramURL;
+    delete inputs.linkedInURL;
+
+    // Add social_links array to inputs
+    inputs.social_links = [];
+
+    // check if exists add to array
+    if (facebookURL)
+      inputs.social_links.push({ url: facebookURL, platform: "facebook" });
+    if (twitterURL)
+      inputs.social_links.push({ url: twitterURL, platform: "twitter" });
+    if (instagramURL)
+      inputs.social_links.push({ url: instagramURL, platform: "instagram" });
+    if (linkedInURL)
+      inputs.social_links.push({ url: linkedInURL, platform: "linkedin" });
 
     const formData = new FormData();
 
@@ -259,6 +287,37 @@ const AddOrUpdateSpeaker = () => {
                   setValue={setPhoneNumber} // Function to set the value of the phone number input (required)
                   onChange={handleChangePhoneNumber} // Function called when the phone number changes (required)
                 />
+              </div>
+            </div>
+
+            <div className="row">
+              <div className="col-6 mb-3">
+                <TextField
+                  className="form-control speaker-form-input"
+                  id="outlined-basic"
+                  label="Expertise"
+                  variant="outlined"
+                  name="expertise"
+                  type="text"
+                  value={inputs.expertise}
+                  onChange={handleChange}
+                  required={true}
+                />
+              </div>
+              <div className="col-6 mb-3">
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">Status</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    value={inputs.status}
+                    name="status"
+                    label="Status"
+                    onChange={handleChange}
+                  >
+                    <MenuItem value={true}>Active</MenuItem>
+                    <MenuItem value={false}>Inactive</MenuItem>
+                  </Select>
+                </FormControl>
               </div>
             </div>
 

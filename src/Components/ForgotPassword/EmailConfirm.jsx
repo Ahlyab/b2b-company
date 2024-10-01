@@ -2,33 +2,64 @@ import { Button, TextField } from "@mui/material";
 import React, { useState } from "react";
 import { logo } from "../../Assests";
 import { Link } from "react-router-dom";
-import ErrorMessage from "../GeneralComponents/ErrorMessage";
 import { _email_verification } from "../../DAL/Admin";
+import { useSnackbar } from "../../Context/SnackbarContext";
 
 const EmailConfirm = ({ setComponentState }) => {
   const [email, setEmail] = useState("");
-  const [error, setError] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const { showSnackbar } = useSnackbar();
 
-  const handleSubmit = (e) => {
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   const data = {
+  //     email: email,
+  //     user_type: "admin",
+  //   };
+
+  //   localStorage.setItem("reset_pwd", JSON.stringify(data));
+
+  //   _email_verification(data).then((res) => {
+  //     console.log(res);
+  //     if (res.status === 200) {
+  //       setComponentState(2);
+  //     } else {
+  //       setError(true);
+  //       setErrorMsg(res.message);
+  //     }
+  //     setComponentState(2);
+  //   });
+  // };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+
     const data = {
       email: email,
       user_type: "admin",
     };
 
+    // Store the data in localStorage
     localStorage.setItem("reset_pwd", JSON.stringify(data));
 
-    _email_verification(data).then((res) => {
+    try {
+      // Await the email verification function
+      const res = await _email_verification(data);
       console.log(res);
-      // if (res.status === 200) {
-      //   setComponentState(2);
-      // } else {
-      //   setError(true);
-      //   setErrorMsg(res.message);
-      // }
-      setComponentState(2);
-    });
+
+      // Handle response code
+      if (res.code === 200) {
+        setComponentState(2); // Success: Move to next step
+      } else {
+        showSnackbar(res.message, "error"); // Show snackbar with error message
+      }
+    } catch (error) {
+      console.error("Error during email verification:", error);
+      showSnackbar("An error occurred. Please try again.", "error"); // Show snackbar with error message
+    }
+
+    setIsLoading(false);
   };
 
   return (
@@ -43,14 +74,6 @@ const EmailConfirm = ({ setComponentState }) => {
           </p>
 
           <form onSubmit={handleSubmit}>
-            {error && (
-              <ErrorMessage
-                className={"input-field"}
-                message={errorMsg}
-                setError={setError}
-              />
-            )}
-
             <div className="mb-3">
               <TextField
                 className="input-field"
@@ -69,8 +92,13 @@ const EmailConfirm = ({ setComponentState }) => {
               </Link>
             </div>
 
-            <Button variant="contained" type="submit" className=" w-100">
-              Submit
+            <Button
+              variant="contained"
+              type="submit"
+              className=" w-100"
+              disabled={isLoading}
+            >
+              {isLoading ? "Please Wait..." : "Submit"}
             </Button>
           </form>
         </div>

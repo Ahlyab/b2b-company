@@ -13,6 +13,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Context/AuthContext";
 import { _login } from "../../DAL/Admin";
 import ErrorMessage from "../GeneralComponents/ErrorMessage";
+import { useSnackbar } from "../../Context/SnackbarContext";
 
 const LoginForm = () => {
   const { login } = useContext(AuthContext);
@@ -22,9 +23,9 @@ const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { token } = useContext(AuthContext);
   const { state } = useLocation();
-  const [error, setError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
+  const { showSnackbar } = useSnackbar();
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const handleMouseDownPassword = (event) => {
@@ -35,28 +36,35 @@ const LoginForm = () => {
     event.preventDefault();
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(email, password);
+    setIsLoading(true);
+
     const data = {
       email,
       password,
       user_type: "admin",
     };
-    _login(data).then((res) => {
+
+    try {
+      const res = await _login(data);
       console.log(res, res.status, res.token);
+
       if (res.code === 200) {
         console.log("token: ", res.token);
         login(res.token);
         localStorage.setItem("adminInfo", JSON.stringify(res.user));
+        showSnackbar("Login successful", "success");
         navigate("/dashboard");
       } else {
-        setError(true);
-        setErrorMessage(res.message);
+        showSnackbar(res.message, "error");
       }
-    });
+    } catch (error) {
+      showSnackbar("An error occurred. Please try again.", "error");
+      console.error("Login error: ", error);
+    }
 
-    // login("12345678");
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -66,7 +74,6 @@ const LoginForm = () => {
   }, [token]);
   return (
     <>
-      {error && <ErrorMessage message={errorMessage} setError={setError} />}
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <TextField
@@ -116,8 +123,13 @@ const LoginForm = () => {
             Forgot Password?
           </Link>
         </div>
-        <Button variant="contained" type="submit" className=" w-100">
-          Login
+        <Button
+          variant="contained"
+          type="submit"
+          className=" w-100"
+          disabled={isLoading}
+        >
+          {isLoading ? "Please wait.." : "Login"}
         </Button>
       </form>
     </>
