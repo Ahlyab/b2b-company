@@ -99,7 +99,7 @@ const Exhibitors = () => {
 
   useEffect(() => {
     _getExhibitors().then((res) => {
-      setExhibitors(manipulateExhibitors(res));
+      setExhibitors(manipulateExhibitors(res.exhibitors));
       setIsLoading(false);
     });
   }, []);

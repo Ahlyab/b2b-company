@@ -2,8 +2,11 @@ import { invokeApi } from "../Hooks/InvokeAPI";
 
 export const _getExhibitors = async () => {
   let requestObj = {
-    path: "exhibitors",
-    method: "GET",
+    path: "api/exhibitor/list_exhibitor",
+    method: "POST",
+    headers: {
+      "x-sh-auth": localStorage.getItem("authToken"),
+    },
   };
   return invokeApi(requestObj);
 };

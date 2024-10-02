@@ -92,7 +92,8 @@ const Events = () => {
 
   useEffect(() => {
     _getEvents().then((res) => {
-      setEvents(manipulateDate(res));
+      console.log("data : ", res);
+      setEvents(manipulateDate(res.events));
       setIsLoading(false);
     });
   }, []);

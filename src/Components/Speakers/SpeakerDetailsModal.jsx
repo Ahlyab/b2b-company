@@ -4,6 +4,9 @@ import { Avatar, TextField } from "@mui/material";
 const SpeakerDetailsModal = ({ handleClose, selectedObject }) => {
   selectedObject = selectedObject || {};
 
+  const [fb, twitter, insta, linkedIn] = selectedObject.social_links || {};
+  console.log(fb, twitter, insta, linkedIn, selectedObject.social_links);
+
   return (
     <>
       <div className="row">
@@ -13,10 +16,7 @@ const SpeakerDetailsModal = ({ handleClose, selectedObject }) => {
       </div>
       <div className="row">
         <div className="col-12 d-flex justify-content-center">
-          <Avatar
-            sx={{ width: 100, height: 100 }}
-            src={selectedObject.profileImg}
-          />
+          <Avatar sx={{ width: 100, height: 100 }} src={selectedObject.image} />
         </div>
       </div>
       <form className="row">
@@ -26,7 +26,7 @@ const SpeakerDetailsModal = ({ handleClose, selectedObject }) => {
             label="First Name"
             name="firstName"
             variant="outlined"
-            value={selectedObject.firstName}
+            value={selectedObject.first_name}
             aria-readonly="true"
           />
         </div>
@@ -36,7 +36,7 @@ const SpeakerDetailsModal = ({ handleClose, selectedObject }) => {
             label="Last Name"
             name="lastName"
             variant="outlined"
-            value={selectedObject.lastName}
+            value={selectedObject.last_name}
             aria-readonly="true"
           />
         </div>
@@ -47,7 +47,7 @@ const SpeakerDetailsModal = ({ handleClose, selectedObject }) => {
             type="tel"
             name="phoneNumber"
             variant="outlined"
-            value={selectedObject.phoneNumber}
+            value={selectedObject.phone}
             aria-readonly="true"
           />
         </div>
@@ -65,11 +65,34 @@ const SpeakerDetailsModal = ({ handleClose, selectedObject }) => {
         <div className="col-6">
           <TextField
             className="form-control mt-4 "
+            label="Expertise"
+            type="text"
+            name="expertise"
+            variant="outlined"
+            value={selectedObject.expertise}
+            aria-readonly="true"
+          />
+        </div>
+        <div className="col-6">
+          <TextField
+            className="form-control mt-4 "
+            label="Status"
+            type="text"
+            name="Status"
+            variant="outlined"
+            value={selectedObject.status ? "Active" : "Inactive"}
+            aria-readonly="true"
+          />
+        </div>
+
+        <div className="col-6">
+          <TextField
+            className="form-control mt-4 "
             label="Facebook"
             type="text"
             name="facebookURL"
             variant="outlined"
-            value={selectedObject.facebookURL}
+            value={fb?.url}
             aria-readonly="true"
           />
         </div>
@@ -80,7 +103,7 @@ const SpeakerDetailsModal = ({ handleClose, selectedObject }) => {
             type="text"
             name="twitterURL"
             variant="outlined"
-            value={selectedObject.twitterURL}
+            value={twitter?.url}
             aria-readonly="true"
           />
         </div>
@@ -91,7 +114,7 @@ const SpeakerDetailsModal = ({ handleClose, selectedObject }) => {
             type="text"
             name="instagramURL"
             variant="outlined"
-            value={selectedObject.instagramURL}
+            value={insta?.url}
             aria-readonly="true"
           />
         </div>
@@ -102,7 +125,7 @@ const SpeakerDetailsModal = ({ handleClose, selectedObject }) => {
             type="text"
             name="linkedinURL"
             variant="outlined"
-            value={selectedObject.linkedInURL}
+            value={linkedIn?.url}
             aria-readonly="true"
           />
         </div>

@@ -25,24 +25,25 @@ export default function DeleteModal({
   url,
 }) {
   const updateData = (id) => {
-    const updatedData = data.filter((item) => item.id !== id);
+    const updatedData = data.filter((item) => item._id !== id);
     setData(updatedData);
   };
   const handleDelete = () => {
     if (url === "events") {
-      _deleteEvent(selectedObject.id).then(() => {
+      _deleteEvent(selectedObject._id).then(() => {
         console.log("event deleted");
-        updateData(selectedObject.id);
+        updateData(selectedObject._id);
       });
     } else if (url === "exhibitors") {
-      _deleteExhibitor(selectedObject.id).then(() => {
+      _deleteExhibitor(selectedObject._id).then(() => {
         console.log("exhibitor deleted");
-        updateData(selectedObject.id);
+        updateData(selectedObject._id);
       });
     } else if (url === "speakers") {
-      _deleteSpeaker(selectedObject.id).then(() => {
+      _deleteSpeaker(selectedObject._id).then((res) => {
+        console.log(res);
         console.log("speaker deleted");
-        updateData(selectedObject.id);
+        updateData(selectedObject._id);
       });
     }
     handleClose();

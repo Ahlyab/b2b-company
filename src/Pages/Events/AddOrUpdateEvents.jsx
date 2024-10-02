@@ -11,23 +11,31 @@ import { _addEvent, _getEvent, _updateEvent } from "../../DAL/Events";
 import ErrorMessage from "../../Components/GeneralComponents/ErrorMessage";
 
 const EMPTY_OBJ = {
-  title: "",
-  hostName: "",
-  contactNumber: "",
+  name: "",
   description: "",
-  venue: "",
-  startDate: dayjs(new Date()),
-  endDate: dayjs(new Date()),
+  location: "",
+  start_date: dayjs(new Date()),
+  end_date: dayjs(new Date()),
+  start_time: new Date().getTime(),
+  end_time: new Date().getTime(),
+  status: "scheduled",
+  capacity: 500,
+  numeber_of_attendees: 350,
+  event_type: "conference",
 };
 
 const FIELD_LABELS = {
-  title: "Title",
-  hostName: "Host Name",
-  contactNumber: "Contact Number",
+  name: "Event Name",
   description: "Description",
-  venue: "Venue",
-  startDate: "Start Date",
-  endDate: "End Date",
+  location: "Location",
+  start_date: "Start Date",
+  end_date: "End Date",
+  start_time: "Start Time",
+  end_time: "End Time",
+  status: "Event Status",
+  capacity: "Capacity",
+  numeber_of_attendees: "Number of Attendees",
+  event_type: "Event Type",
 };
 
 const AddOrUpdateEvents = () => {
@@ -81,8 +89,8 @@ const AddOrUpdateEvents = () => {
         console.log(state);
         setInputs({
           ...state,
-          startDate: dayjs(state.startDate),
-          endDate: dayjs(state.endDate),
+          start_date: dayjs(state.start_date),
+          end_date: dayjs(state.end_date),
         });
         setPhoneNumber(state.contactNumber);
       } else {
@@ -90,8 +98,8 @@ const AddOrUpdateEvents = () => {
           console.log("Data", data);
           setInputs({
             ...data,
-            startDate: dayjs(data.startDate),
-            endDate: dayjs(data.endDate),
+            start_date: dayjs(data.start_date),
+            end_date: dayjs(data.end_date),
           });
         });
         setPhoneNumber(state.contactNumber);
@@ -208,9 +216,9 @@ const AddOrUpdateEvents = () => {
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               label="Start Date"
-              value={inputs.startDate}
+              value={inputs.start_date}
               className="form-control mt-4"
-              onChange={(newValue) => handleDateChange("startDate", newValue)}
+              onChange={(newValue) => handleDateChange("start_date", newValue)}
             />
           </LocalizationProvider>
         </div>
@@ -218,9 +226,9 @@ const AddOrUpdateEvents = () => {
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               label="End Date"
-              value={inputs.endDate}
+              value={inputs.end_date}
               className="form-control mt-4"
-              onChange={(newValue) => handleDateChange("endDate", newValue)}
+              onChange={(newValue) => handleDateChange("end_date", newValue)}
             />
           </LocalizationProvider>
         </div>

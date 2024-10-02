@@ -8,6 +8,7 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import CustomModal from "../../Components/GeneralComponents/CustomModal";
 import { CircularProgress } from "@mui/material";
 import { _getSpeakers } from "../../DAL/Speakers";
+import { baseUrl } from "../../config/config";
 
 const Speakers = () => {
   const [speakers, setSpeakers] = useState([]);
@@ -45,18 +46,18 @@ const Speakers = () => {
   const handleEditSpeaker = (row) => {
     console.log(row);
     console.log("type of row", typeof row);
-    navigate(`/speakers/edit-speaker/${row.id}`, { state: row });
+    navigate(`/speakers/edit-speaker/${row._id}`, { state: row });
   };
 
   const handleDetails = (row) => {
-    const selectedObj = speakers.find((item) => item.id === row.id);
+    const selectedObj = speakers.find((item) => item._id === row._id);
     setSelectedObject(selectedObj);
     showDetailsModal();
   };
 
   const columns = [
     { id: "actions", label: "Actions", type: "action" },
-    { id: "id", label: "ID" },
+    { id: "id", label: "ID", type: "number" },
     {
       id: "speaker",
       label: "Speaker",
@@ -65,7 +66,7 @@ const Speakers = () => {
         return (
           <div onClick={(e) => handleDetails(row)}>
             <img
-              src={row.profileImg}
+              src={`${baseUrl}${row.image?.thumbnail_1}`}
               alt="profile"
               style={{
                 width: 50,
@@ -80,7 +81,7 @@ const Speakers = () => {
       },
     },
     { id: "email", label: "Email" },
-    { id: "phoneNumber", label: "Phone Number" },
+    { id: "phone", label: "Phone Number" },
   ];
 
   const MENU_OPTIONS = [
@@ -98,7 +99,13 @@ const Speakers = () => {
 
   useEffect(() => {
     _getSpeakers().then((res) => {
-      setSpeakers(res);
+      console.log("data : ", res.speakers);
+      // add name field to the data
+      res.speakers.forEach((element) => {
+        element.name = element.first_name + " " + element.last_name;
+      });
+      setSpeakers(res.speakers);
+
       setIsLoading(false);
     });
   }, []);

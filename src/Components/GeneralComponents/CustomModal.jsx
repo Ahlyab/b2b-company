@@ -1,13 +1,15 @@
 import React from "react";
 import Modal from "@mui/material/Modal";
 import { Avatar, TextField } from "@mui/material";
+import { Height } from "@mui/icons-material";
 
 const style = {
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 600,
+  width: 650,
+  height: 650,
   bgcolor: "background.paper",
   border: "1px solid #000",
   boxShadow: 3,
@@ -25,7 +27,7 @@ const CustomModal = ({ open, handleClose, component }) => {
     >
       <div
         style={style}
-        className="container bg-white text-center p-md-4 border-0 rounded-4"
+        className="container bg-white text-center p-md-4 border-0 rounded-4 overflow-y-scroll"
       >
         <div className="delete-modal-close" onClick={handleClose}>
           &times;
