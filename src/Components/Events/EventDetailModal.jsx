@@ -1,5 +1,6 @@
 import React from "react";
 import { TextField } from "@mui/material";
+import dayjs from "dayjs";
 
 const EventDetailModal = ({ handleClose, selectedObject }) => {
   selectedObject = selectedObject || {};
@@ -19,7 +20,7 @@ const EventDetailModal = ({ handleClose, selectedObject }) => {
       </div>
 
       <form className="row">
-        <div className="col-12">
+        <div className="col-6">
           <TextField
             className="form-control mt-4 fw-bold "
             label="Title"
@@ -32,22 +33,51 @@ const EventDetailModal = ({ handleClose, selectedObject }) => {
         <div className="col-6">
           <TextField
             className="form-control mt-4 "
-            label="Host Name"
+            label="Location"
             type="text"
-            name="hostName"
+            name="location"
             variant="outlined"
-            value={selectedObject.hostName}
+            value={selectedObject.location}
             aria-readonly="true"
           />
         </div>
         <div className="col-6">
           <TextField
             className="form-control mt-4 "
-            label="Contact Number"
-            type="tel"
+            label="Capacity"
             name="contactNumber"
             variant="outlined"
-            value={selectedObject.contactNumber}
+            value={selectedObject.capacity}
+            aria-readonly="true"
+          />
+        </div>
+        <div className="col-6">
+          <TextField
+            className="form-control mt-4 "
+            label="Status"
+            name="status"
+            variant="outlined"
+            value={selectedObject.status}
+            aria-readonly="true"
+          />
+        </div>
+        <div className="col-6">
+          <TextField
+            className="form-control mt-4 "
+            label="Number of Attendees"
+            name="status"
+            variant="outlined"
+            value={selectedObject.numeber_of_attendees}
+            aria-readonly="true"
+          />
+        </div>
+        <div className="col-6">
+          <TextField
+            className="form-control mt-4 "
+            label="Event Type"
+            name="status"
+            variant="outlined"
+            value={selectedObject.event_type}
             aria-readonly="true"
           />
         </div>
@@ -65,17 +95,6 @@ const EventDetailModal = ({ handleClose, selectedObject }) => {
           />
         </div>
 
-        <div className="col-12">
-          <TextField
-            className="form-control mt-4"
-            label="Venue"
-            type="text"
-            name="venue"
-            variant="outlined"
-            value={selectedObject.venue}
-            aria-readonly="true"
-          />
-        </div>
         <div className="col-12 col-md-6">
           <TextField
             className="form-control mt-4 "
@@ -83,19 +102,40 @@ const EventDetailModal = ({ handleClose, selectedObject }) => {
             variant="outlined"
             name="startDate"
             type="date"
-            value={formatDate(selectedObject.startDate)}
+            value={formatDate(selectedObject.start_date)}
             aria-readonly="true"
           />
         </div>
-
         <div className="col-12 col-md-6">
           <TextField
             className="form-control mt-4 "
             label="End Date"
             type="date"
-            name="endDate"
+            name="end_date"
             variant="outlined"
-            value={formatDate(selectedObject.endDate)}
+            value={formatDate(selectedObject.end_date)}
+            aria-readonly="true"
+          />
+        </div>
+        <div className="col-12 col-md-6">
+          <TextField
+            className="form-control mt-4 "
+            label="Start Time"
+            variant="outlined"
+            name="start_time"
+            type="date"
+            value={selectedObject.start_time}
+            aria-readonly="true"
+          />
+        </div>
+        <div className="col-12 col-md-6">
+          <TextField
+            className="form-control mt-4 "
+            label="End Time"
+            type="date"
+            name="end_time"
+            variant="outlined"
+            value={selectedObject.end_time}
             aria-readonly="true"
           />
         </div>

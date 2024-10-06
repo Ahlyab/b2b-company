@@ -55,17 +55,17 @@ const Events = () => {
 
   const columns = [
     { label: "Actions", type: "action" },
-    { id: "id", label: "ID" },
+    { id: "id", label: "ID", type: "number" },
     {
-      id: "title",
-      label: "Title",
+      id: "name",
+      label: "name",
       handleClick: handleDetails,
       className: "cursor-pointer",
     },
-    { id: "hostName", label: "Event Host" },
+    { id: "capacity", label: "Capacity" },
     { id: "start_date", label: "Start Date" },
     { id: "end_date", label: "End Date" },
-    { id: "venue", label: "Venue" },
+    { id: "location", label: "Venue" },
   ];
 
   const MENU_OPTIONS = [
@@ -93,7 +93,8 @@ const Events = () => {
   useEffect(() => {
     _getEvents().then((res) => {
       console.log("data : ", res);
-      setEvents(manipulateDate(res.events));
+      setEvents(res.events);
+      // setEvents(manipulateDate(res.events));
       setIsLoading(false);
     });
   }, []);

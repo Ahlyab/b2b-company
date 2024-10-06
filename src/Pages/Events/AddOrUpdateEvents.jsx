@@ -1,14 +1,15 @@
 import { TextField } from "@mui/material";
-import { DatePicker } from "@mui/x-date-pickers";
+import { DatePicker, TimePicker } from "@mui/x-date-pickers";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import { fetchAndFindMaxId } from "../../Utils/Common";
-import PhoneInput from "react-phone-number-validation";
 import { _addEvent, _getEvent, _updateEvent } from "../../DAL/Events";
 import ErrorMessage from "../../Components/GeneralComponents/ErrorMessage";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import moment from "moment";
 
 const EMPTY_OBJ = {
   name: "",
@@ -16,8 +17,8 @@ const EMPTY_OBJ = {
   location: "",
   start_date: dayjs(new Date()),
   end_date: dayjs(new Date()),
-  start_time: new Date().getTime(),
-  end_time: new Date().getTime(),
+  start_time: dayjs(new Date().getTime()),
+  end_time: dayjs(new Date().getTime()),
   status: "scheduled",
   capacity: 500,
   numeber_of_attendees: 350,
@@ -34,7 +35,7 @@ const FIELD_LABELS = {
   end_time: "End Time",
   status: "Event Status",
   capacity: "Capacity",
-  numeber_of_attendees: "Number of Attendees",
+  number_of_attendees: "Number of Attendees",
   event_type: "Event Type",
 };
 
@@ -74,11 +75,6 @@ const AddOrUpdateEvents = () => {
       return false;
     }
 
-    if (inputs.contactNumber.length < 15) {
-      setErrorMessage("Please enter a valid phone number");
-      setError(true);
-      return false;
-    }
     return true;
   };
 
@@ -107,33 +103,60 @@ const AddOrUpdateEvents = () => {
     }
   }, [event_id]);
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   // validations
+  //   if (!validateEvent(inputs)) {
+  //     return;
+  //   }
+
+  //   if (event_id) {
+  //     _updateEvent(inputs).then(() => {
+  //       console.log("Event updated");
+  //       setInputs(EMPTY_OBJ);
+  //       navigate("/events");
+  //     });
+  //   } else {
+  //     console.log(inputs);
+  //     _addEvent(inputs).then(() => {
+  //       console.log("Event added");
+  //       setInputs(EMPTY_OBJ);
+  //       navigate("/events");
+  //     });
+  //   }
+  // };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    inputs.contactNumber = phoneNumber;
-    inputs.name = `${inputs.firstName} ${inputs.lastName}`;
 
     // validations
     if (!validateEvent(inputs)) {
       return;
     }
 
-    if (event_id) {
-      _updateEvent(inputs).then(() => {
+    inputs.start_date = moment(inputs.start_date).format("YYYY:MM:DD");
+    inputs.end_date = moment(inputs.end_date).format("YYYY:MM:DD");
+
+    try {
+      if (event_id) {
+        await _updateEvent(inputs);
         console.log("Event updated");
-        setInputs(EMPTY_OBJ);
-        navigate("/events");
-      });
-    } else {
-      const id = await fetchAndFindMaxId("events");
-      inputs.id = id + 1;
-      inputs.id = inputs.id.toString();
-      console.log(inputs);
-      _addEvent(inputs).then(() => {
+      } else {
+        console.log(inputs);
+        const res = await _addEvent(inputs);
+        console.log(res);
+        if (res.code === 200) {
+          setInputs(EMPTY_OBJ);
+          navigate("/events");
+        } else {
+          setError(true);
+          setErrorMessage(res.message);
+        }
         console.log("Event added");
-        setInputs(EMPTY_OBJ);
-        navigate("/events");
-      });
+      }
+    } catch (error) {
+      console.error("Error occurred:", error);
     }
   };
 
@@ -148,7 +171,7 @@ const AddOrUpdateEvents = () => {
   };
 
   return (
-    <div className="container">
+    <div className="container-fluid">
       <div className="row">
         <div className="col-12">
           <h2 className="drawer-title">{event_id ? "Update" : "Add"} Event</h2>
@@ -157,9 +180,6 @@ const AddOrUpdateEvents = () => {
       {error && (
         <div className="row">
           <div className="col-12">
-            {/* <div className="alert alert-danger mt-1" role="alert">
-              {errorMessage}
-            </div> */}
             <ErrorMessage message={errorMessage} setError={setError} />
           </div>
         </div>
@@ -169,10 +189,10 @@ const AddOrUpdateEvents = () => {
         <div className="col-6">
           <TextField
             className="form-control mt-4 fw-bold"
-            label="Title"
-            name="title"
+            label="Name"
+            name="name"
             variant="outlined"
-            value={inputs.title}
+            value={inputs.name}
             onChange={handleChange}
             required={true}
           />
@@ -180,34 +200,61 @@ const AddOrUpdateEvents = () => {
         <div className="col-6">
           <TextField
             className="form-control mt-4"
-            label="Host Name"
+            label="Capacity"
             type="text"
-            name="hostName"
+            name="capacity"
             variant="outlined"
-            value={inputs.hostName}
+            value={inputs.capacity}
             onChange={handleChange}
             required={true}
           />
         </div>
-        <div className="col-6 mt-4">
-          <PhoneInput
-            inputClass="form-control input-phone custom-input"
-            country="pk"
+        <div className="col-6 ">
+          <TextField
+            className="form-control mt-4"
+            label="Number of Attendees"
+            type="text"
+            name="numeber_of_attendees"
+            variant="outlined"
             required={true}
-            value={phoneNumber} // Current value of the phone number input (required)
-            setValue={setPhoneNumber} // Function to set the value of the phone number input (required)
-            onChange={handleChangePhoneNumber} // Function called when the phone number changes (required)
+            value={inputs.numeber_of_attendees}
+            onChange={handleChange}
           />
         </div>
         <div className="col-6">
           <TextField
             className="form-control mt-4"
-            label="Venue"
+            label="Location"
             type="text"
-            name="venue"
+            name="location"
             variant="outlined"
             required={true}
-            value={inputs.venue}
+            value={inputs.location}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="col-6 ">
+          <TextField
+            className="form-control mt-4"
+            label="Event Type"
+            type="text"
+            name="event_type"
+            variant="outlined"
+            required={true}
+            value={inputs.event_type}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="col-6">
+          <TextField
+            className="form-control mt-4"
+            label="Status"
+            type="text"
+            name="status"
+            variant="outlined"
+            required={true}
+            value={inputs.status}
             onChange={handleChange}
           />
         </div>
@@ -232,6 +279,26 @@ const AddOrUpdateEvents = () => {
             />
           </LocalizationProvider>
         </div>
+        <div className="col-12 col-md-6">
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <TimePicker
+              label="Start Time"
+              className="form-control mt-4"
+              value={inputs.start_time}
+              onChange={(newValue) => handleDateChange("start_time", newValue)}
+            />
+          </LocalizationProvider>
+        </div>
+        <div className="col-12 col-md-6">
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <TimePicker
+              label="End Time"
+              className="form-control mt-4"
+              value={inputs.end_time}
+              onChange={(newValue) => handleDateChange("end_time", newValue)}
+            />
+          </LocalizationProvider>
+        </div>
         <div className="col-12">
           <textarea
             className="form-control mt-4 custom-textarea"
@@ -241,7 +308,6 @@ const AddOrUpdateEvents = () => {
             variant="outlined"
             rows="4"
             required
-            multiline
             value={inputs.description}
             onChange={handleChange}
           />
