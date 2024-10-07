@@ -1,6 +1,7 @@
 import React from "react";
 import { Avatar, TextField } from "@mui/material";
 import { mediaUrl } from "../../config/config";
+import { profile } from "../../Assests";
 
 const SpeakerDetailsModal = ({ handleClose, selectedObject }) => {
   selectedObject = selectedObject || {};
@@ -19,7 +20,11 @@ const SpeakerDetailsModal = ({ handleClose, selectedObject }) => {
         <div className="col-12 d-flex justify-content-center">
           <Avatar
             sx={{ width: 100, height: 100 }}
-            src={`${mediaUrl}${selectedObject.image.thumbnail_1}`}
+            src={
+              selectedObject.image
+                ? `${mediaUrl}${selectedObject?.image?.thumbnail_1}`
+                : profile
+            }
           />
         </div>
       </div>

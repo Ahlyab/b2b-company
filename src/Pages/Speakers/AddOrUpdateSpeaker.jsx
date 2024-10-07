@@ -9,7 +9,6 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { fetchAndFindMaxId } from "../../Utils/Common";
 import PhoneInput from "react-phone-number-validation";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import TwitterIcon from "@mui/icons-material/Twitter";
@@ -18,8 +17,7 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import { profile } from "../../Assests";
 import { _addSpeaker, _getSpeaker, _updateSpeaker } from "../../DAL/Speakers";
 import ErrorMessage from "../../Components/GeneralComponents/ErrorMessage";
-import axios from "axios";
-import { baseUrl, mediaUrl } from "../../config/config";
+import { mediaUrl } from "../../config/config";
 import { useSnackbar } from "../../Context/SnackbarContext";
 
 const EMPTY_OBJ = {
@@ -131,7 +129,7 @@ const AddOrUpdateSpeaker = () => {
       if (state) {
         setInputs({
           ...state,
-          imgURl: `${mediaUrl}${state.image.thumbnail_1}`,
+          imgURl: `${mediaUrl}${state?.image?.thumbnail_1}`,
         });
         setValue(state.detailedBio);
         setPhoneNumber(state.phone);
@@ -141,7 +139,7 @@ const AddOrUpdateSpeaker = () => {
           const speaker = data.company;
           setInputs({
             ...speaker,
-            imgURl: `${mediaUrl}${speaker.image.thumbnail_1}`,
+            imgURl: `${mediaUrl}${speaker?.image?.thumbnail_1}`,
           });
           setValue(data?.detailedBio);
           setPhoneNumber(data.company.phone);
@@ -368,6 +366,7 @@ const AddOrUpdateSpeaker = () => {
                   sx={{ height: "60px", width: "60px" }}
                   variant="square"
                   src={inputs.imgURl}
+                  style={{ visibility: inputs.image ? "visible" : "hidden" }}
                 />
               </div>
               <div className="col-4 text-end">

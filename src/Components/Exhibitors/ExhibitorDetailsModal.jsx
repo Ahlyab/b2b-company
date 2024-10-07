@@ -1,8 +1,13 @@
 import React from "react";
-import { TextField } from "@mui/material";
+import { Avatar, TextField } from "@mui/material";
+import { mediaUrl } from "../../config/config";
+import { profile } from "../../Assests";
 
 const ExhibitorDetailsModal = ({ open, handleClose, selectedObject }) => {
   selectedObject = selectedObject || {};
+  const [fb, twitter, insta, linkedIn] = selectedObject.social_links || {};
+
+  console.log(selectedObject);
 
   return (
     <>
@@ -14,24 +19,34 @@ const ExhibitorDetailsModal = ({ open, handleClose, selectedObject }) => {
       <div className=" delete-modal-close" onClick={handleClose}>
         &times;
       </div>
+      <div className="col-12 d-flex justify-content-center mt-2">
+        <Avatar
+          sx={{ width: 100, height: 100 }}
+          src={
+            selectedObject.image
+              ? `${mediaUrl}${selectedObject?.image?.thumbnail_1}`
+              : profile
+          }
+        />
+      </div>
       <form className="row">
         <div className="col-12 col-md-6">
           <TextField
             className="form-control mt-4 fw-bold "
-            label="First Name"
-            name="firstName"
+            label="Name"
+            name="name"
             variant="outlined"
-            value={selectedObject.firstName}
+            value={selectedObject.name}
             aria-readonly="true"
           />
         </div>
         <div className="col-12 col-md-6">
           <TextField
             className="form-control mt-4 "
-            label="Last Name"
+            label="Company"
             variant="outlined"
-            name="lastName"
-            value={selectedObject.lastName}
+            name="company"
+            value={selectedObject.company?.name}
             aria-readonly="true"
           />
         </div>
@@ -53,71 +68,88 @@ const ExhibitorDetailsModal = ({ open, handleClose, selectedObject }) => {
             type="phone"
             name="phoneNumber"
             variant="outlined"
-            value={selectedObject.phoneNumber}
+            value={selectedObject.phone}
             aria-readonly="true"
           />
         </div>
         <div className="col-12 col-md-6">
           <TextField
             className="form-control mt-4"
-            label="Company Name"
+            label="Status"
             type="text"
-            name="companyName"
+            name="status"
             variant="outlined"
-            value={selectedObject.companyName}
+            value={selectedObject.status}
             aria-readonly="true"
           />
         </div>
         <div className="col-12 col-md-6">
           <TextField
             className="form-control mt-4"
-            label="Business Nature"
+            label="Booth"
             type="text"
-            name="businessNature"
+            name="booth"
             variant="outlined"
-            value={selectedObject.businessNature}
+            value={selectedObject.booth}
             aria-readonly="true"
           />
         </div>
-        <div className="col-12">
+        <div className="col-6">
           <TextField
             className="form-control mt-4"
-            label="Address"
+            label="Products/Services"
             type="text"
-            name="address"
+            name="products"
             variant="outlined"
-            minRows={1}
-            multiline
-            value={selectedObject.address}
+            value={selectedObject.products_services}
             aria-readonly="true"
           />
         </div>
-        <div className="col-12">
+        <div className="col-6">
           <TextField
-            className="form-control mt-4"
-            label="Exhibitor Info"
+            className="form-control mt-4 "
+            label="Facebook"
             type="text"
-            name="exhibitorInfo"
+            name="facebookURL"
             variant="outlined"
-            minRows={2}
-            multiline
-            value={selectedObject.exhibitorInfo}
+            value={fb?.url}
             aria-readonly="true"
           />
         </div>
-        <div className="col-12 ">
+        <div className="col-6">
           <TextField
-            className="form-control mt-4"
-            label="Additional Info"
+            className="form-control mt-4 "
+            label="Twitter"
             type="text"
-            name="additionalDetails"
+            name="twitterURL"
             variant="outlined"
-            minRows={1}
-            multiline
-            value={selectedObject.additionalDetails}
+            value={twitter?.url}
             aria-readonly="true"
           />
         </div>
+        <div className="col-6">
+          <TextField
+            className="form-control mt-4 "
+            label="Instagram"
+            type="text"
+            name="instagramURL"
+            variant="outlined"
+            value={insta?.url}
+            aria-readonly="true"
+          />
+        </div>
+        <div className="col-6">
+          <TextField
+            className="form-control mt-4 "
+            label="LinkedIn"
+            type="text"
+            name="linkedinURL"
+            variant="outlined"
+            value={linkedIn?.url}
+            aria-readonly="true"
+          />
+        </div>
+
         <div className="d-flex justify-content-end">
           <button className="theme-button mt-3" onClick={handleClose}>
             Close

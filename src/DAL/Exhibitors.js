@@ -13,26 +13,37 @@ export const _getExhibitors = async () => {
 
 export const _addExhibitor = async (data) => {
   let requestObj = {
-    path: "exhibitors",
+    path: "api/exhibitor/add_exhibitor",
     method: "POST",
     postData: data,
+    headers: {
+      "x-sh-auth": localStorage.getItem("authToken"),
+      "content-type": "multipart/form-data",
+    },
   };
   return invokeApi(requestObj);
 };
 
-export const _updateExhibitor = async (data) => {
+export const _updateExhibitor = async (id, data) => {
   let requestObj = {
-    path: `exhibitors/${data.id}`,
+    path: `api/exhibitor/update_exhibitor/${id}`,
     method: "PUT",
     postData: data,
+    headers: {
+      "x-sh-auth": localStorage.getItem("authToken"),
+      "content-type": "multipart/form-data",
+    },
   };
   return invokeApi(requestObj);
 };
 
 export const _deleteExhibitor = async (id) => {
   let requestObj = {
-    path: `exhibitors/${id}`,
+    path: `api/exhibitor/delete_exhibitor/${id}`,
     method: "DELETE",
+    headers: {
+      "x-sh-auth": localStorage.getItem("authToken"),
+    },
   };
   return invokeApi(requestObj);
 };

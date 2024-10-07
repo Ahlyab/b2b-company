@@ -1,32 +1,45 @@
-import { TextField } from "@mui/material";
+import { Avatar, InputAdornment, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { getMaxId } from "../../Utils/Common";
 import PhoneInput from "react-phone-number-validation";
 import { _addExhibitor, _updateExhibitor } from "../../DAL/Exhibitors";
 import ErrorMessage from "../GeneralComponents/ErrorMessage";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import TwitterIcon from "@mui/icons-material/Twitter";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import { mediaUrl } from "../../config/config";
+import { useSnackbar } from "../../Context/SnackbarContext";
+import { useNavigate } from "react-router-dom";
 
 const EMPTY_OBJECT = {
-  firstName: "",
-  lastName: "",
   email: "",
-  phoneNumber: "",
-  companyName: "",
-  businessNature: "",
-  address: "",
-  exhibitorInfo: "",
-  additionalDetails: "",
+  phone: "",
+  social_links: "",
+  products_services: "",
+  status: "",
+  image: "",
+  booth: "",
+  name: "",
+  company: {
+    _id: "6703ad92957ac08c04607764",
+    name: "MetaLogix",
+    website: "https://www.google.com",
+  },
 };
 
 const FIELD_LABELS = {
-  firstName: "First Name",
-  lastName: "Last Name",
   email: "Email",
-  phoneNumber: "Phone Number",
-  companyName: "Company Name",
-  businessNature: "Business Nature",
-  address: "Address",
-  exhibitorInfo: "Exhibitor Info",
-  additionalDetails: "Additional Info",
+  phone: "Phone Number",
+  products_services: "Products/Services",
+  status: "Status",
+  image: "Image",
+  booth: "Booth",
+  name: "Name",
+  company: "Company",
+  facebookURL: "Facebook",
+  twitterURL: "Twitter",
+  instagramURL: "Instagram",
+  linkedInURL: "LinkedIn",
 };
 
 const AddOrUpdateExhibitor = ({
@@ -39,6 +52,9 @@ const AddOrUpdateExhibitor = ({
   const [phoneNumber, setPhoneNumber] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [error, setError] = useState(false);
+  const [imgChanged, setImgChanged] = useState(false);
+  const { showSnackbar } = useSnackbar();
+  const navigate = useNavigate();
 
   const handleChangePhoneNumber = (value, country) => {
     // Handle phone number change
@@ -47,11 +63,31 @@ const AddOrUpdateExhibitor = ({
     setPhoneNumber(value);
   };
 
+  const handleChangeImg = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImgChanged(true);
+      setInputs({
+        ...inputs,
+        image: file,
+        // set img base 64 url to imgURL
+        imgURl: URL.createObjectURL(file),
+      });
+    }
+  };
+
   const validateExhibitor = (inputs) => {
     // Check for missing or null fields
     const missingFields = Object.keys(inputs).filter(
       (key) =>
-        key !== "additionalDetails" &&
+        // Check for non-social URLs and ensure their values are not null, empty, or undefined
+        ![
+          "facebookURL",
+          "twitterURL",
+          "instagramURL",
+          "linkedInURL",
+          "social_links",
+        ].includes(key) &&
         (inputs[key] === null ||
           inputs[key] === "" ||
           inputs[key] === undefined)
@@ -59,7 +95,7 @@ const AddOrUpdateExhibitor = ({
 
     console.log(missingFields);
 
-    if (missingFields.length > 0) {
+    if (missingFields?.length > 0) {
       // Set error message and error flag
       const missingFieldNames = missingFields
         .map((field) => FIELD_LABELS[field])
@@ -71,7 +107,7 @@ const AddOrUpdateExhibitor = ({
       return false; // Exit the function if there are missing fields
     }
 
-    if (inputs.phoneNumber.length < 15) {
+    if (inputs.phone?.length < 15) {
       setErrorMessage("Please enter a valid phone number");
       setError(true);
       return false;
@@ -80,9 +116,9 @@ const AddOrUpdateExhibitor = ({
     return true;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    inputs.phoneNumber = phoneNumber;
+    inputs.phone = phoneNumber;
     const exhibitor = inputs;
 
     // validations
@@ -90,23 +126,97 @@ const AddOrUpdateExhibitor = ({
       return;
     }
 
-    if (selectedObject) {
-      _updateExhibitor(exhibitor).then(() => {
-        console.log("exhibitor updated");
-        const updatedExhibitors = exhibitors.map((item) =>
-          item.id === selectedObject.id ? exhibitor : item
-        );
-        setExhibitors(updatedExhibitors);
-      });
-    } else {
-      exhibitor.id = getMaxId(exhibitors) + 1;
-      _addExhibitor(exhibitor).then(() => {
-        console.log("exhibitor added");
-        setExhibitors([...exhibitors, exhibitor]);
-      });
+    const { facebookURL, twitterURL, instagramURL, linkedInURL } = inputs;
+    // Delete social URLs from the main object
+    delete inputs.facebookURL;
+    delete inputs.twitterURL;
+    delete inputs.instagramURL;
+    delete inputs.linkedInURL;
+
+    // Initialize the social_links array only if there's a valid URL
+    inputs.social_links = [];
+
+    if (facebookURL) {
+      inputs.social_links.push({ url: facebookURL, platform: "facebook" });
     }
-    setInputs(EMPTY_OBJECT);
-    setIsOpen(false);
+    if (twitterURL) {
+      inputs.social_links.push({ url: twitterURL, platform: "twitter" });
+    }
+    if (instagramURL) {
+      inputs.social_links.push({ url: instagramURL, platform: "instagram" });
+    }
+    if (linkedInURL) {
+      inputs.social_links.push({ url: linkedInURL, platform: "linkedin" });
+    }
+
+    const formData = new FormData();
+    formData.append("email", exhibitor.email);
+    formData.append("phone", exhibitor.phone);
+    formData.append(
+      "products_services",
+      JSON.stringify(exhibitor.products_services)
+    );
+    formData.append("status", exhibitor.status);
+    formData.append("booth", exhibitor.booth);
+    formData.append("name", exhibitor.name);
+    console.log(typeof exhibitor.company);
+    formData.append("company", JSON.stringify(exhibitor.company));
+
+    if (inputs.image && inputs.image instanceof File && imgChanged) {
+      formData.append("image", inputs.image);
+    }
+
+    if (inputs.social_links?.length > 0) {
+      formData.append("social_links", JSON.stringify(inputs.social_links));
+    }
+
+    // const req = {};
+    // req.email = exhibitor.email;
+    // req.phone = exhibitor.phoneNumber;
+    // req.social_links = exhibitor.social_links;
+    // req.products_services = exhibitor.products_services;
+    // req.status = exhibitor.status;
+    // req.image = exhibitor.image;
+    // req.booth = exhibitor.booth;
+    // req.name = exhibitor.name;
+    // req.company = exhibitor.company;
+
+    try {
+      if (selectedObject) {
+        console.log(selectedObject._id);
+        const res = await _updateExhibitor(selectedObject._id, formData);
+        if (res.code === 200) {
+          console.log("exhibitor updated");
+          showSnackbar("Exhibitor updated successfully", "success");
+          const updatedExhibitors = exhibitors.map((item) =>
+            item._id === selectedObject._id ? exhibitor : item
+          );
+          setExhibitors(updatedExhibitors);
+          setIsOpen(false);
+        } else {
+          showSnackbar(res.message, "error");
+          return;
+        }
+      } else {
+        const res = await _addExhibitor(formData);
+
+        if (res.code === 200) {
+          console.log("exhibitor added");
+          showSnackbar("Exhibitor added successfully", "success");
+          setExhibitors([...exhibitors, exhibitor]);
+          setIsOpen(false);
+          navigate("/exhibitors");
+        } else {
+          setError(true);
+          showSnackbar(res.message, "error");
+          setErrorMessage(res.message);
+          return;
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      showSnackbar("Something went wrong", "error");
+    }
   };
 
   const handleChange = (e) => {
@@ -116,8 +226,14 @@ const AddOrUpdateExhibitor = ({
 
   useEffect(() => {
     if (selectedObject) {
-      setInputs(selectedObject);
-      setPhoneNumber(selectedObject.phoneNumber);
+      console.log("Selected Object", selectedObject);
+      setInputs({
+        ...selectedObject,
+        imgURl: selectedObject.image.thumbnail_1
+          ? `${mediaUrl}${selectedObject.image.thumbnail_1}`
+          : selectedObject.image,
+      });
+      setPhoneNumber(selectedObject.phone);
     }
   }, [selectedObject]);
 
@@ -132,10 +248,10 @@ const AddOrUpdateExhibitor = ({
       <div className="col-12 col-md-6">
         <TextField
           className="form-control mt-4 "
-          label="First Name"
-          name="firstName"
+          label="Name"
+          name="name"
           variant="outlined"
-          value={inputs.firstName}
+          value={inputs.name}
           onChange={handleChange}
           required={true}
         />
@@ -143,11 +259,11 @@ const AddOrUpdateExhibitor = ({
       <div className="col-12 col-md-6">
         <TextField
           className="form-control mt-4 "
-          label="Last Name"
+          label="Company"
           variant="outlined"
-          name="lastName"
-          value={inputs.lastName}
-          onChange={handleChange}
+          name="company"
+          value={inputs.company.name}
+          // onChange={handleChange}
           required={true}
         />
       </div>
@@ -176,11 +292,11 @@ const AddOrUpdateExhibitor = ({
       <div className="col-12 col-md-6">
         <TextField
           className="form-control mt-4"
-          label="Company Name"
+          label="Status"
           type="text"
-          name="companyName"
+          name="status"
           variant="outlined"
-          value={inputs.companyName}
+          value={inputs.status}
           onChange={handleChange}
           required={true}
         />
@@ -188,56 +304,146 @@ const AddOrUpdateExhibitor = ({
       <div className="col-12 col-md-6">
         <TextField
           className="form-control mt-4"
-          label="Business Nature"
+          label="Booth"
           type="text"
-          name="businessNature"
+          name="booth"
           variant="outlined"
-          value={inputs.businessNature}
+          value={inputs.booth}
           onChange={handleChange}
           required={true}
         />
       </div>
+
+      <div
+        className="row my-3 align-items-center"
+        style={{
+          borderBottom: "1px solid #e0e0e0",
+          paddingBottom: "10px",
+        }}
+      >
+        <div className="col-4">
+          <label className="fw-bold d-block" htmlFor="profile-upload">
+            Upload Profile Picture
+          </label>
+          <p className="text-muted d-inline">
+            Image size(1000 x 670)("JPG", "JPEG", "PNG")
+          </p>
+        </div>
+        <div className="col-4 d-flex justify-content-center">
+          <Avatar
+            sx={{ height: "60px", width: "60px" }}
+            variant="square"
+            src={inputs.imgURl}
+          />
+        </div>
+        <div className="col-4 text-end">
+          <input
+            accept="image/*"
+            style={{ display: "none" }}
+            id="profile-image-input"
+            type="file"
+            onChange={handleChangeImg}
+          />
+          <label htmlFor="profile-image-input">
+            <button
+              type="button"
+              className="theme-button"
+              onClick={() =>
+                document.getElementById("profile-image-input").click()
+              }
+            >
+              Upload Image
+            </button>
+          </label>
+        </div>
+      </div>
+
       <div className="col-12">
         <TextField
           className="form-control mt-4"
-          label="Address"
+          label="Products/Services"
           type="text"
-          name="address"
+          name="products_services"
           variant="outlined"
-          minRows={2}
-          multiline
-          value={inputs.address}
+          value={inputs.products_services}
           onChange={handleChange}
           required={true}
         />
       </div>
-      <div className="col-12">
+      <div className="col-6 mt-4">
         <TextField
-          className="form-control mt-4"
-          label="Exhibitor Info"
-          type="text"
-          name="exhibitorInfo"
+          label="Facebook"
           variant="outlined"
-          minRows={2}
-          multiline
-          value={inputs.exhibitorInfo}
+          name="facebookURL"
+          value={inputs.facebookURL}
           onChange={handleChange}
-          required={true}
+          placeholder="Facebook Profile URL"
+          fullWidth
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <FacebookIcon />
+              </InputAdornment>
+            ),
+          }}
         />
       </div>
-      <div className="col-12 ">
+      <div className="col-6 mt-4">
         <TextField
-          className="form-control mt-4"
-          label="Additional Info"
-          type="text"
-          name="additionalDetails"
+          label="Twitter"
           variant="outlined"
-          minRows={2}
-          multiline
-          value={inputs.additionalDetails}
+          name="twitterURL"
+          value={inputs.twitterURL}
           onChange={handleChange}
+          placeholder="Twitter Profile URL"
+          fullWidth
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <TwitterIcon />
+              </InputAdornment>
+            ),
+          }}
         />
       </div>
+
+      <div className="col-6 mt-4">
+        <TextField
+          label="Instagram"
+          variant="outlined"
+          name="instagramURL"
+          value={inputs.instagramURL}
+          onChange={handleChange}
+          placeholder="Instragram Profile URL"
+          fullWidth
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <InstagramIcon />
+              </InputAdornment>
+            ),
+          }}
+        />
+      </div>
+      <div className="col-6 mt-4">
+        <TextField
+          label="LinkedIn"
+          variant="outlined"
+          name="linkedInURL"
+          value={inputs.linkedInURL}
+          onChange={handleChange}
+          placeholder="LinkedIn Profile URL"
+          fullWidth
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <LinkedInIcon />
+              </InputAdornment>
+            ),
+          }}
+        />
+      </div>
+
       <div className="d-flex justify-content-end">
         <button className="theme-button mt-3">
           {selectedObject ? "Update" : "Submit"}

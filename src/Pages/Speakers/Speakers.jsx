@@ -9,6 +9,7 @@ import CustomModal from "../../Components/GeneralComponents/CustomModal";
 import { CircularProgress } from "@mui/material";
 import { _getSpeakers } from "../../DAL/Speakers";
 import { baseUrl, mediaUrl } from "../../config/config";
+import { profile } from "../../Assests";
 
 const Speakers = () => {
   const [speakers, setSpeakers] = useState([]);
@@ -66,7 +67,7 @@ const Speakers = () => {
         return (
           <div onClick={(e) => handleDetails(row)}>
             <img
-              src={`${mediaUrl}${row.image?.thumbnail_1}`}
+              src={row.image ? `${mediaUrl}${row.image?.thumbnail_1}` : profile}
               alt="profile"
               style={{
                 width: 50,

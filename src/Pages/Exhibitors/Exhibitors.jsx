@@ -55,7 +55,7 @@ const Exhibitors = () => {
   };
 
   const handleDetails = (row) => {
-    const selectedObj = exhibitors.find((item) => item.id === row.id);
+    const selectedObj = exhibitors.find((item) => item._id === row._id);
 
     setSelectedObject(selectedObj);
 
@@ -65,16 +65,17 @@ const Exhibitors = () => {
 
   const columns = [
     { id: "actions", label: "Actions", type: "action" },
-    { id: "id", label: "ID" },
+    { id: "id", label: "ID", type: "number" },
     {
-      id: "firstName",
-      label: "First Name",
+      id: "name",
+      label: "Name",
       handleClick: handleDetails,
       className: "cursor-pointer",
     },
-    { id: "lastName", label: "Last Name" },
+
     { id: "email", label: "Email" },
-    { id: "phoneNumber", label: "Phone Number" },
+    { id: "status", label: "Status" },
+    { id: "phone", label: "Phone Number" },
   ];
 
   const MENU_OPTIONS = [
@@ -90,16 +91,10 @@ const Exhibitors = () => {
     },
   ];
 
-  const manipulateExhibitors = (data) => {
-    return data.map((item) => ({
-      ...item,
-      name: `${item.name} ${item.lastName}`,
-    }));
-  };
-
   useEffect(() => {
     _getExhibitors().then((res) => {
-      setExhibitors(manipulateExhibitors(res.exhibitors));
+      console.log("Data : ", res);
+      setExhibitors(res.exhibitors);
       setIsLoading(false);
     });
   }, []);

@@ -51,7 +51,6 @@ const AddOrUpdateEvents = () => {
   const { event_id } = useParams();
   const [errorMessage, setErrorMessage] = useState("");
   const [error, setError] = useState(false);
-  const [phoneNumber, setPhoneNumber] = useState("");
   const { showSnackbar } = useSnackbar();
 
   const validateEvent = (inputs) => {
@@ -89,7 +88,6 @@ const AddOrUpdateEvents = () => {
           start_time: dayjs(state.start_time),
           end_time: dayjs(state.end_time),
         });
-        setPhoneNumber(state.contactNumber);
       } else {
         _getEvent(event_id).then((data) => {
           console.log("Data from url : ", data);
@@ -200,6 +198,9 @@ const AddOrUpdateEvents = () => {
             label="Capacity"
             type="number"
             name="capacity"
+            inputProps={{
+              min: 0, // Set minimum value
+            }}
             variant="outlined"
             value={inputs.capacity}
             onChange={handleChange}
@@ -214,6 +215,9 @@ const AddOrUpdateEvents = () => {
             name="numeber_of_attendees"
             variant="outlined"
             required={true}
+            inputProps={{
+              min: 0, // Set minimum value
+            }}
             value={inputs.numeber_of_attendees}
             onChange={handleChange}
           />
