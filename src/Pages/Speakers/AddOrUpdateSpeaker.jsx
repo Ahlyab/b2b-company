@@ -19,7 +19,8 @@ import { profile } from "../../Assests";
 import { _addSpeaker, _getSpeaker, _updateSpeaker } from "../../DAL/Speakers";
 import ErrorMessage from "../../Components/GeneralComponents/ErrorMessage";
 import axios from "axios";
-import { baseUrl } from "../../config/config";
+import { baseUrl, mediaUrl } from "../../config/config";
+import { useSnackbar } from "../../Context/SnackbarContext";
 
 const EMPTY_OBJ = {
   first_name: "",
@@ -61,6 +62,8 @@ const AddOrUpdateSpeaker = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [error, setError] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [imgChanged, setImgChanged] = useState(false);
+  const { showSnackbar } = useSnackbar();
 
   const handleChangePhoneNumber = (value, country) => {
     // Handle phone number change
@@ -108,9 +111,12 @@ const AddOrUpdateSpeaker = () => {
   const handleChangeImg = (e) => {
     const file = e.target.files[0];
     if (file) {
+      setImgChanged(true);
       setInputs({
         ...inputs,
-        image: file, // Set the image to the file, not the base64 string
+        image: file,
+        // set img base 64 url to imgURL
+        imgURl: URL.createObjectURL(file),
       });
     }
   };
@@ -123,13 +129,20 @@ const AddOrUpdateSpeaker = () => {
     if (speaker_id) {
       console.log("Speaker ID", speaker_id);
       if (state) {
-        setInputs(state);
+        setInputs({
+          ...state,
+          imgURl: `${mediaUrl}${state.image.thumbnail_1}`,
+        });
         setValue(state.detailedBio);
         setPhoneNumber(state.phone);
       } else {
         _getSpeaker(speaker_id).then((data) => {
           console.log("Data", data);
-          setInputs(data.company);
+          const speaker = data.company;
+          setInputs({
+            ...speaker,
+            imgURl: `${mediaUrl}${speaker.image.thumbnail_1}`,
+          });
           setValue(data?.detailedBio);
           setPhoneNumber(data.company.phone);
         });
@@ -144,84 +157,6 @@ const AddOrUpdateSpeaker = () => {
     });
     console.log(inputs);
   };
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   inputs.phone = phoneNumber;
-  //   // inputs.name = `${inputs.first_name} ${inputs.last_name}`;
-
-  //   // Validate the inputs
-  //   if (!validateSpeaker(inputs)) {
-  //     return;
-  //   }
-
-  //   const { facebookURL, twitterURL, instagramURL, linkedInURL } = inputs;
-  //   // delete from urls
-  //   delete inputs.facebookURL;
-  //   delete inputs.twitterURL;
-  //   delete inputs.instagramURL;
-  //   delete inputs.linkedInURL;
-
-  //   // Add social_links array to inputs
-  //   inputs.social_links = [];
-
-  //   // check if exists add to array
-  //   if (facebookURL)
-  //     inputs.social_links.push({ url: facebookURL, platform: "facebook" });
-  //   if (twitterURL)
-  //     inputs.social_links.push({ url: twitterURL, platform: "twitter" });
-  //   if (instagramURL)
-  //     inputs.social_links.push({ url: instagramURL, platform: "instagram" });
-  //   if (linkedInURL)
-  //     inputs.social_links.push({ url: linkedInURL, platform: "linkedin" });
-
-  //   const formData = new FormData();
-
-  //   // Append all inputs to formData
-  //   for (const key in inputs) {
-  //     if (inputs.hasOwnProperty(key)) {
-  //       if (key === "image" && inputs.image instanceof File) {
-  //         // formData.append(key, inputs.image); // Append the image file as 'image'
-  //       } else {
-  //         formData.append(key, inputs[key]);
-  //       }
-  //     }
-  //   }
-
-  //   console.log(inputs, formData);
-
-  //   if (speaker_id) {
-  //     _updateSpeaker(formData).then(() => {
-  //       console.log("Speaker Updated Successfully");
-  //       setInputs(EMPTY_OBJ);
-  //       setError(false);
-  //       navigate("/speakers");
-  //     });
-  //   } else {
-  //     // const id = await fetchAndFindMaxId("speakers");
-  //     // formData.append("id", (id + 1).toString());
-
-  //     // _addSpeaker(formData).then((res) => {
-  //     //   console.log(res);
-  //     //   console.log("Speaker Added Successfully");
-  //     // setInputs(EMPTY_OBJ);
-  //     // setError(false);
-  //     // navigate("/speakers");
-  //     // });
-
-  //     try {
-  //       const res = await axios.post(
-  //         baseUrl + "api/speaker/add_speaker",
-  //         formData,
-  //         { headers: { "x-sh-auth": localStorage.getItem("authToken") } }
-  //       );
-  //       console.log(res);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   }
-  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -256,47 +191,50 @@ const AddOrUpdateSpeaker = () => {
       inputs.social_links.push({ url: linkedInURL, platform: "linkedin" });
     }
 
-    // // Ensure that social_links is not empty; if it is, remove it from inputs
-    // if (inputs.social_links.length === 0) {
-    //   delete inputs.social_links; // This avoids sending an empty array
-    // }
-
     const formData = new FormData();
+    formData.append("first_name", inputs.first_name);
+    formData.append("last_name", inputs.last_name);
+    formData.append("email", inputs.email);
+    formData.append("phone", inputs.phone);
+    formData.append("expertise", inputs.expertise);
+    formData.append("bio", inputs.bio);
+    formData.append("status", inputs.status);
 
-    console.log("Is array:", Array.isArray(inputs.social_links));
+    if (inputs.image && inputs.image instanceof File && imgChanged) {
+      formData.append("image", inputs.image);
+    }
 
-    // Append all inputs to formData
-    for (const key in inputs) {
-      if (inputs.hasOwnProperty(key)) {
-        if (key === "image" && inputs.image instanceof File) {
-          formData.append(key, inputs.image); // Append the image file as 'image'
-        } else if (key === "social_links") {
-          // Append the social_links array as a JSON string
-          formData.append(key, JSON.stringify(inputs[key]));
-        } else {
-          formData.append(key, inputs[key]);
-        }
-      }
+    if (inputs.social_links.length > 0) {
+      formData.append("social_links", JSON.stringify(inputs.social_links));
     }
 
     console.log(inputs, formData);
 
-    if (speaker_id) {
-      _updateSpeaker(formData).then(() => {
-        console.log("Speaker Updated Successfully");
-        setInputs(EMPTY_OBJ);
-        setError(false);
-        navigate("/speakers");
-      });
-    } else {
-      _addSpeaker(formData).then((res) => {
+    try {
+      if (speaker_id) {
+        const res = await _updateSpeaker(inputs._id, formData);
         console.log(res);
-        console.log("Speaker Added Successfully");
-        // setInputs(EMPTY_OBJ);
-        // setError(false);
-        // navigate("/speakers");
-      });
-    }
+        if (res.code === 200) {
+          console.log("Speaker Updated Successfully");
+          showSnackbar("Speaker Updated Successfully", "success");
+          setInputs(EMPTY_OBJ);
+          navigate("/speakers");
+        } else {
+          showSnackbar(res.message, "error");
+        }
+      } else {
+        const res = await _addSpeaker(formData);
+        console.log(res);
+        if (res.code === 200) {
+          console.log("Speaker Added Successfully");
+          showSnackbar("Speaker Added Successfully", "success");
+          setInputs(EMPTY_OBJ);
+          navigate("/speakers");
+        } else {
+          showSnackbar(res.message, "error");
+        }
+      }
+    } catch (error) {}
   };
 
   return (
@@ -429,7 +367,7 @@ const AddOrUpdateSpeaker = () => {
                 <Avatar
                   sx={{ height: "60px", width: "60px" }}
                   variant="square"
-                  src={inputs.image}
+                  src={inputs.imgURl}
                 />
               </div>
               <div className="col-4 text-end">
@@ -486,7 +424,7 @@ const AddOrUpdateSpeaker = () => {
                   name="facebookURL"
                   value={inputs.facebookURL}
                   onChange={handleChange}
-                  placeholder="Facebook Username"
+                  placeholder="Facebook Profile URL"
                   fullWidth
                   InputProps={{
                     startAdornment: (
@@ -504,7 +442,7 @@ const AddOrUpdateSpeaker = () => {
                   name="twitterURL"
                   value={inputs.twitterURL}
                   onChange={handleChange}
-                  placeholder="Twitter Username"
+                  placeholder="Twitter Profile URL"
                   fullWidth
                   InputProps={{
                     startAdornment: (
@@ -524,7 +462,7 @@ const AddOrUpdateSpeaker = () => {
                   name="instagramURL"
                   value={inputs.instagramURL}
                   onChange={handleChange}
-                  placeholder="Instragram Username"
+                  placeholder="Instragram Profile URL"
                   fullWidth
                   InputProps={{
                     startAdornment: (
@@ -542,7 +480,7 @@ const AddOrUpdateSpeaker = () => {
                   name="linkedInURL"
                   value={inputs.linkedInURL}
                   onChange={handleChange}
-                  placeholder="LinkedIn Username"
+                  placeholder="LinkedIn Profile URL"
                   fullWidth
                   InputProps={{
                     startAdornment: (

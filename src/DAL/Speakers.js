@@ -35,9 +35,7 @@ export const _addSpeaker = async (data) => {
   return invokeApi(requestObj);
 };
 
-export const _updateSpeaker = async (data) => {
-  const id = data.get("_id");
-  data.delete("_id");
+export const _updateSpeaker = async (id, data) => {
   let requestObj = {
     path: `api/speaker/update_speaker/${id}`,
     method: "PUT",

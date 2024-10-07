@@ -30,7 +30,7 @@ const Events = () => {
   };
 
   const handleDetails = (row) => {
-    const selectedObj = events.find((item) => item.id === row.id);
+    const selectedObj = events.find((item) => item._id === row._id);
     setSelectedObject(selectedObj);
     showDetailsModal();
   };
@@ -50,7 +50,7 @@ const Events = () => {
   };
 
   const handleEditEvent = (row) => {
-    navigate(`/events/edit-event/${row.id}`, { state: row });
+    navigate(`/events/edit-event/${row._id}`, { state: row });
   };
 
   const columns = [

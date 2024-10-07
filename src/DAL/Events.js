@@ -35,9 +35,7 @@ export const _addEvent = async (data) => {
   return invokeApi(requestObj);
 };
 
-export const _updateEvent = async (data) => {
-  const id = data.get("_id");
-  data.delete("_id");
+export const _updateEvent = async (id, data) => {
   let requestObj = {
     path: `api/event/update_event/${id}`,
     method: "PUT",

@@ -37,7 +37,7 @@ const EmailConfirm = ({ setComponentState }) => {
 
     const data = {
       email: email,
-      user_type: "admin",
+      user_type: "company",
     };
 
     // Store the data in localStorage

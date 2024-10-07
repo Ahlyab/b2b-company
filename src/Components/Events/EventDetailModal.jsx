@@ -1,9 +1,12 @@
 import React from "react";
 import { TextField } from "@mui/material";
 import dayjs from "dayjs";
+import moment from "moment";
 
 const EventDetailModal = ({ handleClose, selectedObject }) => {
   selectedObject = selectedObject || {};
+
+  console.log("selected object", selectedObject);
 
   const formatDate = (date) => {
     if (!date) return "";
@@ -123,8 +126,8 @@ const EventDetailModal = ({ handleClose, selectedObject }) => {
             label="Start Time"
             variant="outlined"
             name="start_time"
-            type="date"
-            value={selectedObject.start_time}
+            type="time"
+            value={moment(selectedObject.start_time).format("HH:mm")}
             aria-readonly="true"
           />
         </div>
@@ -132,10 +135,10 @@ const EventDetailModal = ({ handleClose, selectedObject }) => {
           <TextField
             className="form-control mt-4 "
             label="End Time"
-            type="date"
+            type="time"
             name="end_time"
             variant="outlined"
-            value={selectedObject.end_time}
+            value={moment(selectedObject.end_time).format("HH:mm")}
             aria-readonly="true"
           />
         </div>

@@ -86,7 +86,7 @@ const ResetPassword = () => {
     // Create data object for reset password
     const data = {
       email: user.email,
-      user_type: "admin",
+      user_type: "company",
       password: password,
       confirm_password: confirmPassword,
     };

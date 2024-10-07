@@ -1,15 +1,20 @@
-import { TextField } from "@mui/material";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
 import { DatePicker, TimePicker } from "@mui/x-date-pickers";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
-import { fetchAndFindMaxId } from "../../Utils/Common";
 import { _addEvent, _getEvent, _updateEvent } from "../../DAL/Events";
 import ErrorMessage from "../../Components/GeneralComponents/ErrorMessage";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import moment from "moment";
+import { useSnackbar } from "../../Context/SnackbarContext";
 
 const EMPTY_OBJ = {
   name: "",
@@ -19,9 +24,9 @@ const EMPTY_OBJ = {
   end_date: dayjs(new Date()),
   start_time: dayjs(new Date().getTime()),
   end_time: dayjs(new Date().getTime()),
-  status: "scheduled",
-  capacity: 500,
-  numeber_of_attendees: 350,
+  status: "",
+  capacity: 0,
+  numeber_of_attendees: 0,
   event_type: "conference",
 };
 
@@ -47,13 +52,7 @@ const AddOrUpdateEvents = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [error, setError] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
-
-  const handleChangePhoneNumber = (value, country) => {
-    // Handle phone number change
-    console.log("Phone Number:", value);
-    console.log("Selected Country:", country);
-    setPhoneNumber(value);
-  };
+  const { showSnackbar } = useSnackbar();
 
   const validateEvent = (inputs) => {
     // Check for missing or null fields
@@ -82,50 +81,30 @@ const AddOrUpdateEvents = () => {
     if (event_id) {
       console.log("event ID", event_id);
       if (state) {
-        console.log(state);
+        console.log("data from prev page : ", state);
         setInputs({
           ...state,
           start_date: dayjs(state.start_date),
           end_date: dayjs(state.end_date),
+          start_time: dayjs(state.start_time),
+          end_time: dayjs(state.end_time),
         });
         setPhoneNumber(state.contactNumber);
       } else {
         _getEvent(event_id).then((data) => {
-          console.log("Data", data);
+          console.log("Data from url : ", data);
+          const event = data.event;
           setInputs({
-            ...data,
-            start_date: dayjs(data.start_date),
-            end_date: dayjs(data.end_date),
+            ...event,
+            start_date: dayjs(event.start_date),
+            end_date: dayjs(event.end_date),
+            start_time: dayjs(event.start_time),
+            end_time: dayjs(event.end_time),
           });
         });
-        setPhoneNumber(state.contactNumber);
       }
     }
   }, [event_id]);
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   // validations
-  //   if (!validateEvent(inputs)) {
-  //     return;
-  //   }
-
-  //   if (event_id) {
-  //     _updateEvent(inputs).then(() => {
-  //       console.log("Event updated");
-  //       setInputs(EMPTY_OBJ);
-  //       navigate("/events");
-  //     });
-  //   } else {
-  //     console.log(inputs);
-  //     _addEvent(inputs).then(() => {
-  //       console.log("Event added");
-  //       setInputs(EMPTY_OBJ);
-  //       navigate("/events");
-  //     });
-  //   }
-  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -135,23 +114,41 @@ const AddOrUpdateEvents = () => {
       return;
     }
 
-    inputs.start_date = moment(inputs.start_date).format("YYYY:MM:DD");
-    inputs.end_date = moment(inputs.end_date).format("YYYY:MM:DD");
+    const req = {};
+    req.name = inputs.name;
+    req.description = inputs.description;
+    req.location = inputs.location;
+    req.start_date = moment(inputs.start_date).format("YYYY:MM:DD");
+    req.end_date = moment(inputs.end_date).format("YYYY:MM:DD");
+    req.start_time = inputs.start_time;
+    req.end_time = inputs.end_time;
+    req.status = inputs.status;
+    req.capacity = inputs.capacity;
+    req.numeber_of_attendees = inputs.numeber_of_attendees;
+    req.event_type = inputs.event_type;
 
     try {
       if (event_id) {
-        await _updateEvent(inputs);
-        console.log("Event updated");
-      } else {
-        console.log(inputs);
-        const res = await _addEvent(inputs);
+        const res = await _updateEvent(inputs._id, req);
         console.log(res);
         if (res.code === 200) {
           setInputs(EMPTY_OBJ);
+          showSnackbar("Event updated successfully", "success");
           navigate("/events");
         } else {
-          setError(true);
-          setErrorMessage(res.message);
+          showSnackbar(res.message, "error");
+        }
+        console.log("Event updated");
+      } else {
+        console.log(inputs);
+        const res = await _addEvent(req);
+        console.log(res);
+        if (res.code === 200) {
+          showSnackbar("Event added successfully", "success");
+          setInputs(EMPTY_OBJ);
+          navigate("/events");
+        } else {
+          showSnackbar(res.message, "error");
         }
         console.log("Event added");
       }
@@ -201,7 +198,7 @@ const AddOrUpdateEvents = () => {
           <TextField
             className="form-control mt-4"
             label="Capacity"
-            type="text"
+            type="number"
             name="capacity"
             variant="outlined"
             value={inputs.capacity}
@@ -213,7 +210,7 @@ const AddOrUpdateEvents = () => {
           <TextField
             className="form-control mt-4"
             label="Number of Attendees"
-            type="text"
+            type="number"
             name="numeber_of_attendees"
             variant="outlined"
             required={true}
@@ -246,17 +243,22 @@ const AddOrUpdateEvents = () => {
             onChange={handleChange}
           />
         </div>
-        <div className="col-6">
-          <TextField
-            className="form-control mt-4"
-            label="Status"
-            type="text"
-            name="status"
-            variant="outlined"
-            required={true}
-            value={inputs.status}
-            onChange={handleChange}
-          />
+        <div className="col-6 mt-4">
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Status</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              value={inputs.status}
+              name="status"
+              label="Status"
+              onChange={handleChange}
+            >
+              <MenuItem value={"scheduled"}>Scheduled</MenuItem>
+              <MenuItem value={"ongoing"}>Ongoing</MenuItem>
+              <MenuItem value={"completed"}>Completed</MenuItem>
+              <MenuItem value={"cancelled"}>Cancelled</MenuItem>
+            </Select>
+          </FormControl>
         </div>
 
         <div className="col-12 col-md-6">

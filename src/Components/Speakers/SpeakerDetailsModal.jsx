@@ -1,5 +1,6 @@
 import React from "react";
 import { Avatar, TextField } from "@mui/material";
+import { mediaUrl } from "../../config/config";
 
 const SpeakerDetailsModal = ({ handleClose, selectedObject }) => {
   selectedObject = selectedObject || {};
@@ -16,7 +17,10 @@ const SpeakerDetailsModal = ({ handleClose, selectedObject }) => {
       </div>
       <div className="row">
         <div className="col-12 d-flex justify-content-center">
-          <Avatar sx={{ width: 100, height: 100 }} src={selectedObject.image} />
+          <Avatar
+            sx={{ width: 100, height: 100 }}
+            src={`${mediaUrl}${selectedObject.image.thumbnail_1}`}
+          />
         </div>
       </div>
       <form className="row">

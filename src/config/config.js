@@ -6,3 +6,4 @@ const envConfig = config[APP_ENV];
 
 //exporting Variables
 export const baseUrl = envConfig.API_BASE_URL;
+export const mediaUrl = envConfig.MEDIA_BASE_URL;

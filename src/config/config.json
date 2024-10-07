@@ -1,6 +1,7 @@
 {
   "dev": {
-    "API_BASE_URL": "http://67.207.70.240:5001/"
+    "API_BASE_URL": "http://67.207.70.240:5001/",
+    "MEDIA_BASE_URL": "https://b2b-app-bucket.s3.amazonaws.com/"
   },
   "prod": {
     "API_BASE_URL": "http://localhost:8001/"

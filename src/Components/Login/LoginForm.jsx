@@ -43,7 +43,7 @@ const LoginForm = () => {
     const data = {
       email,
       password,
-      user_type: "admin",
+      user_type: "company",
     };
 
     try {

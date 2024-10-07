@@ -8,7 +8,7 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import CustomModal from "../../Components/GeneralComponents/CustomModal";
 import { CircularProgress } from "@mui/material";
 import { _getSpeakers } from "../../DAL/Speakers";
-import { baseUrl } from "../../config/config";
+import { baseUrl, mediaUrl } from "../../config/config";
 
 const Speakers = () => {
   const [speakers, setSpeakers] = useState([]);
@@ -66,7 +66,7 @@ const Speakers = () => {
         return (
           <div onClick={(e) => handleDetails(row)}>
             <img
-              src={`${baseUrl}${row.image?.thumbnail_1}`}
+              src={`${mediaUrl}${row.image?.thumbnail_1}`}
               alt="profile"
               style={{
                 width: 50,
