@@ -306,6 +306,8 @@ const AddOrUpdateSpeaker = () => {
               </div>
               <div className="col-6 mb-3">
                 <PhoneInput
+                  dropdownClass="bg-white z-index-2"
+                  autoSelectCountry={true}
                   inputClass="form-control input-phone custom-input"
                   country="pk"
                   value={phoneNumber} // Current value of the phone number input (required)

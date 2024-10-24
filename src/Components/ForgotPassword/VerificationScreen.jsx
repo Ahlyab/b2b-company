@@ -24,7 +24,7 @@ const VerificationScreen = ({ setComponentState }) => {
     }
     const data = {
       email: user.email,
-      user_type: "company",
+      user_type: "admin",
       otp: otp,
     };
 

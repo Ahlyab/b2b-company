@@ -1,4 +1,12 @@
-import { Avatar, InputAdornment, TextField } from "@mui/material";
+import {
+  Avatar,
+  FormControl,
+  InputAdornment,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import PhoneInput from "react-phone-number-validation";
 import { _addExhibitor, _updateExhibitor } from "../../DAL/Exhibitors";
@@ -193,6 +201,7 @@ const AddOrUpdateExhibitor = ({
           );
           setExhibitors(updatedExhibitors);
           setIsOpen(false);
+          navigate("/exhibitors");
         } else {
           showSnackbar(res.message, "error");
           return;
@@ -289,17 +298,21 @@ const AddOrUpdateExhibitor = ({
           required={true}
         />
       </div>
-      <div className="col-12 col-md-6">
-        <TextField
-          className="form-control mt-4"
-          label="Status"
-          type="text"
-          name="status"
-          variant="outlined"
-          value={inputs.status}
-          onChange={handleChange}
-          required={true}
-        />
+      <div className="col-12 col-md-6 mt-4">
+        <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">Status</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            value={inputs.status}
+            name="status"
+            label="Status"
+            onChange={handleChange}
+          >
+            <MenuItem value={"Confirmed"}>Confirmed</MenuItem>
+            <MenuItem value={"Pending"}>Pending</MenuItem>
+            <MenuItem value={"Cancelled"}>Cancelled</MenuItem>
+          </Select>
+        </FormControl>
       </div>
       <div className="col-12 col-md-6">
         <TextField

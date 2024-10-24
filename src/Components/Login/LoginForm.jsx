@@ -43,25 +43,19 @@ const LoginForm = () => {
     const data = {
       email,
       password,
-      user_type: "company",
+      user_type: "admin",
     };
 
-    try {
-      const res = await _login(data);
-      console.log(res, res.status, res.token);
-
-      if (res.code === 200) {
-        console.log("token: ", res.token);
-        login(res.token);
-        localStorage.setItem("adminInfo", JSON.stringify(res.user));
-        showSnackbar("Login successful", "success");
-        navigate("/dashboard");
-      } else {
-        showSnackbar(res.message, "error");
-      }
-    } catch (error) {
-      showSnackbar("An error occurred. Please try again.", "error");
-      console.error("Login error: ", error);
+    const res = await _login(data);
+    console.log(res, res.status, res.token);
+    if (res.code === 200) {
+      console.log("token: ", res.token);
+      login(res.token);
+      localStorage.setItem("adminInfo", JSON.stringify(res.user));
+      showSnackbar("Login successful", "success");
+      navigate("/dashboard");
+    } else {
+      showSnackbar(res.message, "error");
     }
 
     setIsLoading(false);
@@ -69,6 +63,7 @@ const LoginForm = () => {
 
   useEffect(() => {
     if (token) {
+      console.log(state, "statestatestate");
       navigate(state ? state?.from?.pathname : "/dashboard");
     }
   }, [token]);

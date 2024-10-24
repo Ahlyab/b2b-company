@@ -72,9 +72,12 @@ const Exhibitors = () => {
       handleClick: handleDetails,
       className: "cursor-pointer",
     },
+    { id: "company", label: "Company", renderData: (row) => row.company?.name },
 
     { id: "email", label: "Email" },
     { id: "status", label: "Status" },
+    { id: "booth", label: "Booth" },
+    { id: "products_services", label: "Product/Services" },
     { id: "phone", label: "Phone Number" },
   ];
 

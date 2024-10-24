@@ -21,7 +21,7 @@ const SnackbarProvider = ({ children }) => {
   const showSnackbar = (
     message,
     severity = "info",
-    vertical = "top",
+    vertical = "bottom",
     horizontal = "right"
   ) => {
     setSnackbarState({ open: true, message, severity, vertical, horizontal });

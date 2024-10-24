@@ -63,6 +63,7 @@ const Events = () => {
       className: "cursor-pointer",
     },
     { id: "capacity", label: "Capacity" },
+    { id: "event_type", label: "Event Type" },
     { id: "start_date", label: "Start Date" },
     { id: "end_date", label: "End Date" },
     { id: "location", label: "Venue" },

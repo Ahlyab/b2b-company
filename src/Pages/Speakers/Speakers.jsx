@@ -10,6 +10,7 @@ import { CircularProgress } from "@mui/material";
 import { _getSpeakers } from "../../DAL/Speakers";
 import { baseUrl, mediaUrl } from "../../config/config";
 import { profile } from "../../Assests";
+import { render } from "@testing-library/react";
 
 const Speakers = () => {
   const [speakers, setSpeakers] = useState([]);
@@ -82,6 +83,12 @@ const Speakers = () => {
       },
     },
     { id: "email", label: "Email" },
+    {
+      id: "status",
+      label: "Status",
+      renderData: (row) => (row.status ? "Active" : "Inactive"),
+    },
+    { id: "expertise", label: "Expertise" },
     { id: "phone", label: "Phone Number" },
   ];
 
